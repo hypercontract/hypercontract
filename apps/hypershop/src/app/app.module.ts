@@ -1,7 +1,16 @@
-import { Module } from '@nestjs/common';
+import { hypercontract } from '@hypercontract/express';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { context } from './namespaces';
+import { profile, profileGraph } from './profile';
 
 @Module({
-  imports: [],
+    imports: [],
     controllers: []
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+    configure(consumer: MiddlewareConsumer) {
+        consumer
+            .apply(hypercontract(profileGraph, profile, context))
+            .forRoutes('profile(/*)?');
+    }
+}
