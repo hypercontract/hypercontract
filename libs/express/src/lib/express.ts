@@ -24,7 +24,6 @@ export function hypercontract(
     prefixes: Prefixes = {}
 ): RequestHandler {
     return (request, response, next) => {
-        console.log(request.headers.accept);
         const requestedMediaType = supportedMediaTypes
             .find(mediaType => request.accepts(mediaType));
 
