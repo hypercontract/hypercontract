@@ -3,25 +3,40 @@ import { Response } from 'express';
 import { BlankNode, DefaultGraph, Literal, NamedNode, Quad, Variable } from 'rdf-js';
 // @ts-ignore @types/rdflib contains invalid types
 import { blankNode, defaultGraph, graph as rdfLibGraph, lit, namedNode, serialize, Statement, variable } from 'rdflib';
-import { Handler, Prefixes } from './handler';
+import { RdfDocument } from '../profile';
+import { Handler } from './';
 
-export const rdfXml: Handler = (response: Response, document: NamedNode, quads: Quad[], prefixes: Prefixes) => {
+export const toRdfXml: Handler = (
+    response: Response,
+    { defaultNamespace, graph }: RdfDocument
+) => {
     const store = rdfLibGraph();
 
-    quads
+    graph
         .map(quad => toRdfLibStatement(quad))
         // @ts-ignore @types/rdflib contains invalid types
         .forEach(statement => store.add(statement));
 
     // target, kb, base, contentType, callback, options
-    serialize(undefined, store, document.value, 'application/rdf+xml', (error: any, rdfXml: string) => {
+    serialize(undefined, store, defaultNamespace, 'application/rdf+xml', (error: any, document: string) => {
         if (error) {
             response
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .send(error);
         }
-        response.send(rdfXml);
+
+        response.send(
+            setBase(document, defaultNamespace)
+        );
     });
+}
+
+function setBase(document: string, defaultNamespace: string): string {
+    // TODO: parse XML, set xml:base and serialize
+    return document.replace(
+        '<rdf:RDF',
+        `<rdf:RDF xml:base="${defaultNamespace}"`
+    );
 }
 
 function toRdfLibStatement(quad: Quad) {

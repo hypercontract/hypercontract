@@ -1,7 +1,6 @@
 import { hypercontract } from '@hypercontract/express';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { context } from './namespaces';
-import { profile, profileGraph } from './profile';
+import { profile } from './profile';
 
 @Module({
     imports: [],
@@ -10,7 +9,7 @@ import { profile, profileGraph } from './profile';
 export class AppModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
         consumer
-            .apply(hypercontract(profileGraph, profile, context))
+            .apply(hypercontract(profile))
             .forRoutes('profile(/*)?');
     }
 }

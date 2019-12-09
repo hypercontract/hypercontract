@@ -1,8 +1,11 @@
+import { Profile } from '@hypercontract/express';
 import { namedNode, quad } from '@rdfjs/data-model';
+import { trimEnd } from 'lodash';
 import { Quad } from 'rdf-js';
-import { owl, rdf, shop } from './namespaces';
+import { owl, prefixes, rdf, shop } from './namespaces';
 
-export const profileGraph = namedNode(shop(''));
+const uri = trimEnd(shop(''), '/');
+const defaultNamespace = shop('');
 
 const representationClass = (uri: string) => quad(
     namedNode(uri),
@@ -33,7 +36,7 @@ const shopDescriptor = (name: string) => representationDescriptor(shop(name));
 const shopLinkRelationType = (name: string) => representationLinkRelationType(shop(name));
 const shopPrecondition = (name: string) => hyperPrecondition(shop(name));
 
-export const profile: Quad[] = [
+const graph: Quad[] = [
     shopClass('SearchQuery'),
     shopClass('SearchResults'),
     shopClass('Product'),
@@ -86,3 +89,10 @@ export const profile: Quad[] = [
     shopPrecondition('isShoppingCartOrderable'),
     shopPrecondition('isOrderCancellable')
 ];
+
+export const profile: Profile = {
+    uri,
+    defaultNamespace,
+    graph,
+    prefixes
+};

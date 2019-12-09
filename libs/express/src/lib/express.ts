@@ -1,40 +1,80 @@
 import { HttpStatus } from '@nestjs/common';
-import { RequestHandler } from 'express';
-import { isUndefined, keys } from 'lodash';
-import { NamedNode, Quad } from 'rdf-js';
-import { HandlerMapping, Prefixes } from './handler';
-import { jsonld } from './jsonld';
-import { n3 } from './n3';
-import { rdfXml } from './rdflib';
+import { Request, RequestHandler, Response } from 'express';
+import { isEmpty, memoize, trimEnd, values } from 'lodash';
+import { DataFactory, Store } from 'n3';
+import { Quad } from 'rdf-js';
+import { toJsonLd, toNQuads, toNTriples, toRdfXml, toTriG, toTurtle } from './handler';
+import { MediaType } from './media-types';
+import { Profile, RdfDocument } from './profile';
 
-const handlerMapping: HandlerMapping = {
-    'application/ld+json': jsonld,
-    'application/rdf+xml': rdfXml,
-    'text/turtle': n3('text/turtle'),
-    'application/n-triples': n3('application/n-triples'),
-    'application/n-quads': n3('application/n-quads'),
-    'application/trig': n3('application/trig')
-}
+export function hypercontract(profile: Profile): RequestHandler {
+    return (request, response) => {
+        const rdfDocument: RdfDocument = getRdfDocumentForRequest(request, profile);
 
-const supportedMediaTypes = keys(handlerMapping);
-
-export function hypercontract(
-    document: NamedNode,
-    profile: Quad[],
-    prefixes: Prefixes = {}
-): RequestHandler {
-    return (request, response, next) => {
-        const requestedMediaType = supportedMediaTypes
-            .find(mediaType => request.accepts(mediaType));
-
-        if (isUndefined(requestedMediaType)) {
-            return response
-                .status(HttpStatus.NOT_ACCEPTABLE)
-                .header('Content-Type', supportedMediaTypes.join(', '))
-                .send();
+        if (isEmpty(rdfDocument.graph)) {
+            handleNotFound(response);
         }
 
-        response.type(requestedMediaType);
-        return handlerMapping[requestedMediaType](response, document, profile, prefixes);
+        response.format({
+            [MediaType.JsonLd]: () => toJsonLd(response, rdfDocument),
+            [MediaType.RdfXml]: () => toRdfXml(response, rdfDocument),
+            [MediaType.Turtle]: () => toTurtle(response, rdfDocument),
+            [MediaType.NTriples]: () => toNTriples(response, rdfDocument),
+            [MediaType.NQuads]: () => toNQuads(response, rdfDocument),
+            [MediaType.TriG]: () => toTriG(response, rdfDocument),
+            default: () => handleNotAcceptable(response)
+        })
     }
 }
+
+function handleNotAcceptable(response: Response) {
+    response
+        .status(HttpStatus.NOT_ACCEPTABLE)
+        .header('Content-Type', values(MediaType).join(', '))
+        .send()
+}
+
+function handleNotFound(response: Response) {
+    response
+        .status(HttpStatus.NOT_FOUND)
+        .send()
+}
+
+function getRdfDocumentForRequest(request: Request, profile: Profile): RdfDocument {
+    if (isProfileRequest(request, profile)) {
+        return profile;
+    }
+
+    const uri = getRdfDocumentUri(request, profile);
+    const graph = getRdfDocumentGraph(uri, profile);
+
+    return {
+        ...profile,
+        uri,
+        graph
+    };
+}
+
+function isProfileRequest(request: Request, profile: Profile) {
+    const normalizedProfileUri = trimEnd(profile.uri, '/');
+    const normalizedRequestPath = trimEnd(request.originalUrl, '/');
+    return normalizedProfileUri.endsWith(normalizedRequestPath);
+}
+
+function getRdfDocumentUri(request: Request, profile: Profile) {
+    const documentUri = new URL(profile.uri);
+    documentUri.pathname = request.originalUrl;
+    return documentUri.toString();
+}
+
+function getRdfDocumentGraph(rdfDocumentUri: string, profile: Profile): Quad[] {
+    const store = getStoreForProfile(profile);
+    const conceptNode = DataFactory.namedNode(rdfDocumentUri);
+    return [
+        ...store.getQuads(conceptNode, null, null, null),
+        ...store.getQuads(null, conceptNode, null, null),
+        ...store.getQuads(null, null, conceptNode, null)
+    ];
+}
+
+const getStoreForProfile = memoize((profile: Profile) => new Store(profile.graph));
