@@ -14,9 +14,7 @@
             "outputPath": "dist/apps/hypershop",
             "main": "apps/hypershop/src/main.ts",
             "tsConfig": "apps/hypershop/tsconfig.app.json",
-            "assets": [
-              "apps/hypershop/src/assets"
-            ]
+            "assets": ["apps/hypershop/src/assets"]
           },
           "configurations": {
             "production": {
@@ -47,10 +45,7 @@
               "apps/hypershop/tsconfig.app.json",
               "apps/hypershop/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**",
-              "!apps/hypershop/**"
-            ]
+            "exclude": ["**/node_modules/**", "!apps/hypershop/**"]
           }
         },
         "test": {
@@ -58,6 +53,33 @@
           "options": {
             "jestConfig": "apps/hypershop/jest.config.js",
             "tsConfig": "apps/hypershop/tsconfig.spec.json"
+          }
+        }
+      }
+    },
+    "express": {
+      "root": "libs/express",
+      "sourceRoot": "libs/express/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "config": "libs/express/.eslintrc",
+            "tsConfig": [
+              "libs/express/tsconfig.lib.json",
+              "libs/express/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/express/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/express/jest.config.js",
+            "tsConfig": "libs/express/tsconfig.spec.json"
           }
         }
       }
