@@ -25,15 +25,31 @@
     "help": "nx help"
   },
   "private": true,
-  "dependencies": {},
+  "dependencies": {
+    "@nestjs/common": "6.10.8",
+    "@nestjs/core": "6.10.8",
+    "@nestjs/platform-express": "6.10.8",
+    "reflect-metadata": "0.1.13"
+  },
   "devDependencies": {
+    "@nestjs/schematics": "6.7.5",
+    "@nestjs/testing": "6.10.8",
+    "@nrwl/eslint-plugin-nx": "8.9.0",
+    "@nrwl/jest": "8.9.0",
+    "@nrwl/nest": "8.9.0",
+    "@nrwl/node": "8.9.0",
     "@nrwl/workspace": "8.9.0",
-    "@types/node": "~8.9.4",
+    "@types/jest": "24.0.9",
+    "@types/node": "8.9.5",
+    "@typescript-eslint/eslint-plugin": "2.3.2",
+    "@typescript-eslint/parser": "2.3.2",
     "dotenv": "6.2.0",
-    "ts-node": "~7.0.0",
-    "tslint": "~5.11.0",
     "eslint": "6.1.0",
-    "typescript": "~3.5.3",
-    "prettier": "1.18.2"
+    "jest": "24.1.0",
+    "ts-jest": "24.0.0",
+    "ts-node": "7.0.1",
+    "tslint": "5.11.0",
+    "typescript": "3.5.3",
+    "webpack-merge": "4.2.2"
   }
 }

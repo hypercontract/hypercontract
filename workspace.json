@@ -1,8 +1,70 @@
 {
   "version": 1,
-  "projects": {},
+  "projects": {
+    "hypershop": {
+      "root": "apps/hypershop",
+      "sourceRoot": "apps/hypershop/src",
+      "projectType": "application",
+      "prefix": "hypershop",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "options": {
+            "outputPath": "dist/apps/hypershop",
+            "main": "apps/hypershop/src/main.ts",
+            "tsConfig": "apps/hypershop/tsconfig.app.json",
+            "assets": [
+              "apps/hypershop/src/assets"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/hypershop/src/environments/environment.ts",
+                  "with": "apps/hypershop/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "hypershop:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "config": "apps/hypershop/.eslintrc",
+            "tsConfig": [
+              "apps/hypershop/tsconfig.app.json",
+              "apps/hypershop/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/hypershop/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/hypershop/jest.config.js",
+            "tsConfig": "apps/hypershop/tsconfig.spec.json"
+          }
+        }
+      }
+    }
+  },
   "cli": {
-    "defaultCollection": "@nrwl/workspace"
+    "defaultCollection": "@nrwl/nest"
   },
   "schematics": {
     "@nrwl/workspace": {
@@ -48,5 +110,6 @@
         "linter": "eslint"
       }
     }
-  }
+  },
+  "defaultProject": "hypershop"
 }
