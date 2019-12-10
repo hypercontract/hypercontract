@@ -83,6 +83,33 @@
           }
         }
       }
+    },
+    "profile": {
+      "root": "libs/profile",
+      "sourceRoot": "libs/profile/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "config": "libs/profile/.eslintrc",
+            "tsConfig": [
+              "libs/profile/tsconfig.lib.json",
+              "libs/profile/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/profile/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/profile/jest.config.js",
+            "tsConfig": "libs/profile/tsconfig.spec.json"
+          }
+        }
+      }
     }
   },
   "cli": {

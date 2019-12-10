@@ -17,7 +17,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@hypercontract/express": ["libs/express/src/index.ts"]
+      "@hypercontract/express": ["libs/express/src/index.ts"],
+      "@hypercontract/profile": ["libs/profile/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
