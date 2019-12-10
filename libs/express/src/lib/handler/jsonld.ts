@@ -1,14 +1,25 @@
 import { Response } from 'express';
-import { JsonLdSerializer } from 'jsonld-streaming-serializer';
+import { compact, fromRDF } from 'jsonld';
 import { RdfDocument } from '../profile';
 import { Handler } from './';
 
 export const toJsonLd: Handler = (
     response: Response,
-    { prefixes, graph }: RdfDocument
+    { defaultNamespace, uri, prefixes, graph }: RdfDocument
 ) => {
-    const serializer = new JsonLdSerializer({ context: prefixes });
-    serializer.pipe(response);
-    graph.forEach(quad => serializer.write(quad));
-    serializer.end();
+    fromRDF(graph, {
+        useNativeTypes: true
+    })
+        .then(document => compact(document, {
+            ...prefixes,
+            'rdfs:domain': {
+                // '@id': 'rdfs:domain',
+                '@type': '@id'
+            },
+            'rdfs:range': {
+                // '@id': 'rdfs:range',
+                '@type': '@id'
+            }
+        }))
+        .then(document => response.send(document));
 }
