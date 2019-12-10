@@ -1,7 +1,7 @@
+import { RdfDocument } from '@hypercontract/profile';
 import { HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
 import { Writer } from 'n3';
-import { RdfDocument } from '../profile';
 import { Handler } from './';
 
 function createN3Writer(format: string): Handler {

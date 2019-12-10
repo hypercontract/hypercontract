@@ -1,3 +1,4 @@
+import { Profile, RdfDocument } from '@hypercontract/profile';
 import { HttpStatus } from '@nestjs/common';
 import { Request, RequestHandler, Response } from 'express';
 import { isEmpty, memoize, trimEnd, values } from 'lodash';
@@ -5,7 +6,6 @@ import { DataFactory, Store } from 'n3';
 import { Quad } from 'rdf-js';
 import { toJsonLd, toNQuads, toNTriples, toRdfXml, toTriG, toTurtle } from './handler';
 import { MediaType } from './media-types';
-import { Profile, RdfDocument } from './profile';
 
 export function hypercontract(profile: Profile): RequestHandler {
     return (request, response) => {
@@ -67,6 +67,8 @@ function getRdfDocumentUri(request: Request, profile: Profile) {
     return documentUri.toString();
 }
 
+const getStoreForProfile = memoize((profile: Profile) => new Store(profile.graph));
+
 function getRdfDocumentGraph(rdfDocumentUri: string, profile: Profile): Quad[] {
     const store = getStoreForProfile(profile);
     const conceptNode = DataFactory.namedNode(rdfDocumentUri);
@@ -76,5 +78,3 @@ function getRdfDocumentGraph(rdfDocumentUri: string, profile: Profile): Quad[] {
         ...store.getQuads(null, null, conceptNode, null)
     ];
 }
-
-const getStoreForProfile = memoize((profile: Profile) => new Store(profile.graph));

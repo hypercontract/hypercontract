@@ -5,4 +5,4 @@ export enum MediaType {
     NTriples = 'application/n-triples',
     NQuads = 'application/n-quads',
     TriG = 'application/trig'
-};
+}

@@ -1,189 +1,16 @@
-import { Profile } from '@hypercontract/express';
-import { literal, namedNode, quad } from '@rdfjs/data-model';
-import { flatten, isEmpty, trimEnd } from 'lodash';
-import { Quad, Quad_Object, Quad_Predicate, Quad_Subject } from 'rdf-js';
-import { isNull, isUndefined } from 'util';
-import { hyper, owl, prefixes, rdf, rdfs, shop, xsd } from './namespaces';
+import { Cardinality, HttpMethod, operation, Operation, Precondition, precondition, Profile, RepresentationClass, representationClass, representationProperty, RepresentationProperty, StateTransition, stateTransition, xsd } from '@hypercontract/profile';
+import { flatten, trimEnd } from 'lodash';
+import { Quad } from 'rdf-js';
+import { prefixes, shop } from './namespaces';
 
 const profileUri = trimEnd(shop(''), '/');
 const defaultNamespace = shop('');
 
-enum Cardinality {
-    One,
-    OneOrMore,
-    ZeroOrMore
-};
-
-enum HttpMethod {
-    GET = 'GET',
-    POST = 'POST',
-    PUT = 'PUT',
-    DELETE = 'DELETE',
-    PATCH = 'PATCH'
-};
-
-interface ConceptDefinition {
-    label: string;
-    description: string;
-}
-
-interface RepresentationClassDefinition extends ConceptDefinition { }
-
-interface RepresentationDescriptorDefinition extends ConceptDefinition {
-    domain: string[];
-    range: string[];
-    cardinality?: Cardinality;
-}
-
-interface RepresentationPropertyDefinition extends RepresentationDescriptorDefinition {
-    type?: string;
-}
-
-interface StateTransitionDefinition extends RepresentationDescriptorDefinition { }
-
-interface OperationDefinition extends StateTransitionDefinition {
-    method: HttpMethod,
-    expectedBody?: string;
-    expectedQueryParams?: string;
-    constraints?: string[];
-    returnedType?: string;
-}
-
-interface PreconditionDefinition extends ConceptDefinition {}
-
-type Statement = [Quad_Subject, Quad_Predicate, Quad_Object];
-
-const toQuads = (...statements: (Statement | null)[]) => statements
-    .filter(statement => !isNull(statement))
-    .map(statement => statement!)
-    .map(([subject, predicate, object]) => quad(subject, predicate, object))
-
-const concept = (uri: string, { label, description }: ConceptDefinition) => toQuads(
-    [namedNode(uri), namedNode(rdfs('label')), literal(label)],
-    [namedNode(uri), namedNode(rdfs('comment')), literal(description)]
-);
-
-const representationClass = (uri: string, definition: RepresentationClassDefinition) => [
-    ...concept(uri, definition),
-    ...toQuads(
-        [namedNode(uri), namedNode(rdf('type')), namedNode(owl('Class'))],
-    )
-];
-
-const representationDescriptor = (uri: string, definition: RepresentationDescriptorDefinition) => [
-    ...concept(uri, definition),
-    ...toQuads(
-        isOne(definition.cardinality) ? [namedNode(uri), namedNode(rdf('type')), namedNode(owl('FunctionalProperty'))] : null,
-        ...getDomainStatements(uri, definition),
-        ...getRangeStatements(uri, definition)
-    )
-];
-
-const representationProperty = (uri: string, definition: RepresentationPropertyDefinition) => [
-    ...representationDescriptor(uri, definition),
-    ...toQuads(
-        [namedNode(uri), namedNode(rdf('type')), namedNode(getPropertyType(definition))],
-    )
-];
-
-const stateTransition = (uri: string, definition: StateTransitionDefinition) => representationProperty(uri, {
-    ...definition,
-    type: owl('ObjectProperty')
-});
-
-const operation = (uri: string, definition: OperationDefinition) => [
-    ...stateTransition(uri, definition),
-    ...toQuads(
-        [namedNode(uri), namedNode(rdf('type')), namedNode(hyper('Operation'))],
-        [namedNode(uri), namedNode(hyper('method')), literal(definition.method)],
-        getReturnedTypeStatement(uri, definition),
-        getExpectedBodyStatement(uri, definition),
-        getExpectedQueryParamsStatement(uri, definition),
-        ...getConstraintStatements(uri, definition)
-    )
-];
-
-const precondition = (uri: string, definition: PreconditionDefinition) => [
-    ...concept(uri, definition),
-    ...toQuads(
-        [namedNode(uri), namedNode(rdf('type')), namedNode(hyper('Precondition'))]
-    )
-];
-
-function getDomainStatements(uri: string, { domain }: RepresentationDescriptorDefinition): Statement[] {
-    return domain.map(
-        domainUri => [namedNode(uri), namedNode(rdfs('domain')), namedNode(domainUri)]
-    );
-}
-function getRangeStatements(uri: string, { range }: RepresentationDescriptorDefinition): Statement[] {
-    return range.map(
-        rangeUri => [namedNode(uri), namedNode(rdfs('range')), namedNode(rangeUri)]
-    );
-}
-
-function getReturnedTypeStatement(uri: string, { returnedType }: OperationDefinition): Statement | null {
-    if (isUndefined(returnedType)) {
-        return null;
-    }
-
-    return [namedNode(uri), namedNode(hyper('returnedType')), namedNode(returnedType)];
-}
-
-function getExpectedBodyStatement(uri: string, { expectedBody }: OperationDefinition): Statement | null {
-    if (isUndefined(expectedBody)) {
-        return null;
-    }
-
-    return [namedNode(uri), namedNode(hyper('expectedBody')), namedNode(expectedBody)];
-}
-
-function getExpectedQueryParamsStatement(uri: string, { expectedQueryParams }: OperationDefinition): Statement | null {
-    if (isUndefined(expectedQueryParams)) {
-        return null;
-    }
-
-    return [namedNode(uri), namedNode(hyper('expectedQueryParams')), namedNode(expectedQueryParams)];
-}
-
-function getConstraintStatements(uri: string, { constraints }: OperationDefinition): Statement[] {
-    if (isEmpty(constraints)) {
-        return [];
-    }
-
-    return constraints!.map(
-        constraint => [namedNode(uri), namedNode(hyper('constraint')), namedNode(constraint)]
-    );
-}
-
-function getPropertyType({ type, range }: RepresentationPropertyDefinition): string {
-    if (!isUndefined(type)) {
-        return type;
-    }
-
-    if (isEmpty(range)) {
-        return rdf('Property');
-    }
-
-    if (hasXsdDatatypeRange(range)) {
-        return owl('DatatypeProperty');
-    }
-
-    return owl('ObjectProperty');
-}
-
-function hasXsdDatatypeRange(range: string[]) {
-    return range.some(uri => uri.startsWith(prefixes.xsd));
-}
-
-function isOne(cardinality: Cardinality | undefined) {
-    return isUndefined(cardinality) || cardinality === Cardinality.One;
-}
-
-const shopClass = (name: string, definition: RepresentationClassDefinition) => representationClass(shop(name), definition);
-const shopProperty = (name: string, definition: RepresentationPropertyDefinition) => representationProperty(shop(name), definition);
-const shopStateTransition = (name: string, definition: StateTransitionDefinition) => stateTransition(shop(name), definition);
-const shopOperation = (name: string, definition: OperationDefinition) => operation(shop(name), definition);
-const shopPrecondition = (name: string, definition: PreconditionDefinition) => precondition(shop(name), definition);
+const shopClass = (name: string, definition: RepresentationClass) => representationClass(shop(name), definition);
+const shopProperty = (name: string, definition: RepresentationProperty) => representationProperty(shop(name), definition);
+const shopStateTransition = (name: string, definition: StateTransition) => stateTransition(shop(name), definition);
+const shopOperation = (name: string, definition: Operation) => operation(shop(name), definition);
+const shopPrecondition = (name: string, definition: Precondition) => precondition(shop(name), definition);
 
 const profileGraph: Quad[] = flatten([
     shopClass('AdditionToShoppingCart', {
@@ -535,7 +362,7 @@ const profileGraph: Quad[] = flatten([
         label: 'product',
         description: 'A reference to a Product from the catalog.',
         domain: [
-            shop('AdditionToShopping'),
+            shop('AdditionToShoppingCart'),
             shop('CartShoppingCartItem')
         ],
         range: [

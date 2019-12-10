@@ -1,9 +1,10 @@
+import { RdfDocument } from '@hypercontract/profile';
 import { HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
 import { BlankNode, DefaultGraph, Literal, NamedNode, Quad, Variable } from 'rdf-js';
+/* eslint-disable @typescript-eslint/ban-ts-ignore */
 // @ts-ignore @types/rdflib contains invalid types
 import { blankNode, defaultGraph, graph as rdfLibGraph, lit, namedNode, serialize, Statement, variable } from 'rdflib';
-import { RdfDocument } from '../profile';
 import { Handler } from './';
 
 export const toRdfXml: Handler = (

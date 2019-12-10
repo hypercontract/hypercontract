@@ -1,11 +1,11 @@
+import { RdfDocument } from '@hypercontract/profile';
 import { Response } from 'express';
 import { compact, fromRDF } from 'jsonld';
-import { RdfDocument } from '../profile';
 import { Handler } from './';
 
 export const toJsonLd: Handler = (
     response: Response,
-    { defaultNamespace, uri, prefixes, graph }: RdfDocument
+    { prefixes, graph }: RdfDocument
 ) => {
     fromRDF(graph, {
         useNativeTypes: true
