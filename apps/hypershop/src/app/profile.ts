@@ -1,4 +1,4 @@
-import { Cardinality, HttpMethod, operation, Operation, Precondition, precondition, Profile, RepresentationClass, representationClass, representationProperty, RepresentationProperty, StateTransition, stateTransition, xsd } from '@hypercontract/profile';
+import { Cardinality, EntryPoint, entryPoint, HttpMethod, operation, Operation, Precondition, precondition, Profile, RepresentationClass, representationClass, representationProperty, RepresentationProperty, StateTransition, stateTransition, xsd } from '@hypercontract/profile';
 import { flatten, trimEnd } from 'lodash';
 import { Quad } from 'rdf-js';
 import { prefixes, shop } from './namespaces';
@@ -6,6 +6,7 @@ import { prefixes, shop } from './namespaces';
 const profileUri = trimEnd(shop(''), '/');
 const defaultNamespace = shop('');
 
+const shopEntryPoint = (name: string, definition: EntryPoint) => entryPoint(shop(name), definition);
 const shopClass = (name: string, definition: RepresentationClass) => representationClass(shop(name), definition);
 const shopProperty = (name: string, definition: RepresentationProperty) => representationProperty(shop(name), definition);
 const shopStateTransition = (name: string, definition: StateTransition) => stateTransition(shop(name), definition);
@@ -13,6 +14,10 @@ const shopOperation = (name: string, definition: Operation) => operation(shop(na
 const shopPrecondition = (name: string, definition: Precondition) => precondition(shop(name), definition);
 
 const profileGraph: Quad[] = flatten([
+    shopEntryPoint('ApiRoot', {
+        label: 'API Root',
+        description: 'The entry point for the hypershop REST API.'
+    }),
     shopClass('AdditionToShoppingCart', {
         label: 'Addition to Shopping Cart',
         description: 'All information necessary to add a Product to the Shopping Cart.'
@@ -20,10 +25,6 @@ const profileGraph: Quad[] = flatten([
     shopClass('Address', {
         label: 'Address',
         description: 'Postal addressed that can be used as Billing Address or Shipping Address when placing an Order. The Order will contain a copy of the address. Changes to an Address do not affect Orders that have been previously placed with that Address.'
-    }),
-    shopClass('ApiRoot', {
-        label: 'API Root',
-        description: 'The entry point for the hypershop REST API.'
     }),
     shopClass('BillingAddress', {
         label: 'Billing Address',
