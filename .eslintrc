@@ -25,7 +25,8 @@
           { "sourceTag": "*", "onlyDependOnLibsWithTags": ["*"] }
         ]
       }
-    ]
+    ],
+    "quotes": ["error", "single", { "avoidEscape": true, "allowTemplateLiterals": true }]
   },
   "overrides": [
     {
