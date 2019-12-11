@@ -1,43 +1,64 @@
 import { JSONSchema7 } from 'json-schema';
 import { Schema } from './schema';
 
-type JSONSchema = JSONSchema7;
+export type JSONSchema = JSONSchema7;
 
-const baseSchema: JSONSchema = {
-    '$schema': 'http://json-schema.org/draft-07/schema#'
-};
+export const toJsonSchemaId = (conceptUri: string, targetType: string) => `${conceptUri}/schema/${targetType}`;
 
-export const jsonSchema = (definition: JSONSchema): Schema => ({
-    fileExtension: 'json',
+export const jsonSchema = (conceptUri: string, definition: JSONSchema, targetType = 'application/json'): Schema => ({
+    conceptUri,
+    targetType,
     schemaType: 'application/schema+json',
-    targetTypes: [
-        'application/json'
-    ],
-    schemaDefinition: JSON.stringify(definition)
+    schemaDefinition: JSON.stringify({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        $id: toJsonSchemaId(conceptUri, targetType),
+        ...definition
+    })
 })
 
-export const jsonSchemaString = (definition: JSONSchema = {}): Schema => jsonSchema({
-    ...baseSchema,
+export const jsonSchemaObject = (definition: JSONSchema = {}): JSONSchema => ({
+    type: 'object',
+    ...definition
+});
+
+export const jsonSchemaString = (definition: JSONSchema = {}): JSONSchema => ({
     type: 'string',
     ...definition
 });
 
-export const jsonSchemaNumber = (definition: JSONSchema = {}): Schema => jsonSchema({
-    ...baseSchema,
+export const jsonSchemaHref = (conceptUri: string, definition: JSONSchema = {}): JSONSchema => jsonSchemaString({
+    $comment: `Value must be an URI for an instance of type <${conceptUri}>.`,
+    ...definition
+});
+
+export const jsonSchemaRef = (conceptUri: string, definition: JSONSchema = {}, targetType = 'application/json'): JSONSchema => ({
+    $ref: toJsonSchemaId(conceptUri, targetType),
+    ...definition
+});
+
+export const jsonSchemaResource = (conceptUri: string, definition: JSONSchema = {}, targetType = 'application/json'): JSONSchema => ({
+    oneOf: [
+        jsonSchemaHref(conceptUri),
+        jsonSchemaRef(conceptUri, {}, targetType)
+    ],
+    ...definition
+});
+
+export const jsonSchemaNumber = (definition: JSONSchema = {}): JSONSchema => ({
     type: 'number',
     ...definition
 });
 
-export const jsonSchemaInteger = (definition: JSONSchema = {}): Schema => jsonSchemaNumber({
+export const jsonSchemaInteger = (definition: JSONSchema = {}): JSONSchema => jsonSchemaNumber({
     multipleOf: 1,
     ...definition
 });
 
-export const jsonSchemaDecimal = (definition: JSONSchema = {}): Schema => jsonSchemaNumber({
+export const jsonSchemaDecimal = (definition: JSONSchema = {}): JSONSchema => jsonSchemaNumber({
     ...definition
 });
 
-export const jsonSchemaDate = (definition: JSONSchema = {}): Schema => jsonSchemaString({
+export const jsonSchemaDate = (definition: JSONSchema = {}): JSONSchema => jsonSchemaString({
     pattern: '^\\d\\d\\d\\d-(0?[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])Z?([-+](0?[1-9]|1[1-9]|2[0-3]):([0-5][0-9]))?$',
     ...definition
 });

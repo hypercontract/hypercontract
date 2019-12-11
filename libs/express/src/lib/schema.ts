@@ -1,42 +1,40 @@
 import { hyper, rdf } from '@hypercontract/profile';
-import { Response } from 'express';
-import { isNull } from 'lodash';
-import { handleNotFound } from './error';
+import { Request, Response } from 'express';
+import { isNull, values } from 'lodash';
+import { handleNotAcceptable, handleNotFound } from './error';
 import { ProfileStore } from './profile-store';
+import { MediaType } from './profile/media-types';
+import { getRequestUri } from './request';
 
-export function isSchemaRequest(requestUri: string, profileStore: ProfileStore) {
-    return !isNull(profileStore.getSubject(hyper('schemaDefinition'), requestUri));
+export function isSchemaRequest(request: Request, profileStore: ProfileStore) {
+    const requestUri = getRequestUri(request, profileStore);
+    const schemaType = getSchemaType(requestUri, profileStore);
+    return !isNull(schemaType) && request.accepts(schemaType);
 }
 
-export function handleSchemaRequest(requestUri: string, response: Response, profileStore: ProfileStore) {
-    const schemaUri = getSchemaUri(requestUri, profileStore);
+export function handleSchemaRequest(request: Request, response: Response, profileStore: ProfileStore) {
+    const schemaUri = getRequestUri(request, profileStore);
+    const schemaType = getSchemaType(schemaUri, profileStore);
+    const definition = getSchemaDefinition(schemaUri, profileStore);
 
-    if (isNull(schemaUri)) {
+    if (isNull(schemaType) || isNull(definition)) {
         return handleNotFound(response);
     }
 
-    /* eslint-disable @typescript-eslint/no-non-null-assertion */
-    const type = getSchemaType(schemaUri!, profileStore);
-    const definition = getSchemaDefinition(requestUri, profileStore);
-
-    if (isNull(type) || isNull(definition)) {
-        return handleNotFound(response);
-    }
-
-    return response
+    return response.format({
         /* eslint-disable @typescript-eslint/no-non-null-assertion */
-        .type(type!)
-        .send(definition);
-}
-
-function getSchemaUri(schemaDefinitionUri: string, profileStore: ProfileStore) {
-    return profileStore.getSubject(hyper('schemaDefinition'), schemaDefinitionUri);
+        [schemaType!]: () => response.send(definition),
+        default: () => handleNotAcceptable(response, [
+            ...values(MediaType),
+            schemaType!
+        ])
+    });
 }
 
 function getSchemaType(schemaUri: string, profileStore: ProfileStore) {
     return profileStore.getObject(schemaUri, hyper('schemaType'));
 }
 
-function getSchemaDefinition(schemaDefinitionUri: string, profileStore: ProfileStore) {
-    return profileStore.getObject(schemaDefinitionUri, rdf('value'));
+function getSchemaDefinition(schemaUri: string, profileStore: ProfileStore) {
+    return profileStore.getObject(schemaUri, rdf('value'));
 }

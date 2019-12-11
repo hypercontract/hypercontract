@@ -39,7 +39,7 @@ export class ProfileStore {
 
     getObject(subject: string, predicate: string) {
         const quads = this.store.getQuads(subject, predicate, null, null);
-        return isEmpty(quads) ? null : quads[0].subject.value;
+        return isEmpty(quads) ? null : quads[0].object.value;
     }
 }
 

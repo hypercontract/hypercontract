@@ -1,9 +1,10 @@
 import { RdfDocument } from '@hypercontract/profile';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { isEmpty, trimEnd, values } from 'lodash';
 import { Quad } from 'rdf-js';
 import { handleNotAcceptable, handleNotFound } from '../error';
 import { ProfileStore } from '../profile-store';
+import { getRequestUri } from '../request';
 import { toJsonLd } from './jsonld';
 import { MediaType } from './media-types';
 import { toNQuads, toNTriples, toTriG, toTurtle } from './n3';
@@ -11,23 +12,26 @@ import { toRdfXml } from './rdflib';
 
 const normalize = (uri: string) => trimEnd(uri, '/');
 
-export function isProfileRequest(requestUri: string, profileStore: ProfileStore) {
+export function isProfileRequest(request: Request, profileStore: ProfileStore) {
+    const requestUri = getRequestUri(request, profileStore);
     return normalize(requestUri) === normalize(profileStore.profileUri);
 }
 
-export function isConceptRequest(requestUri: string, profileStore: ProfileStore) {
+export function isConceptRequest(request: Request, profileStore: ProfileStore) {
+    const requestUri = getRequestUri(request, profileStore);
     return normalize(requestUri).startsWith(normalize(profileStore.profileUri));
 }
 
-export function handleProfileRequest(requestUri: string, response: Response, profileStore: ProfileStore) {
+export function handleProfileRequest(request: Request, response: Response, profileStore: ProfileStore) {
     return handleRequest(response, toRdfDocument(
         profileStore.profileUri,
         profileStore.getAll(),
         profileStore
-    ));
-}
+        ));
+    }
 
-export function handleConceptRequest(requestUri: string, response: Response, profileStore: ProfileStore) {
+export function handleConceptRequest(request: Request, response: Response, profileStore: ProfileStore) {
+    const requestUri = getRequestUri(request, profileStore);
     return handleRequest(response, toRdfDocument(
         requestUri,
         profileStore.getAllAbout(requestUri),
