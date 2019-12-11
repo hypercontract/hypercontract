@@ -1,7 +1,7 @@
-import { createNamespaceFn, prefixes as hyperPrefixes } from '@hypercontract/profile';
+import { createNamespaceFn, prefixes as hyperPrefixes, Prefixes } from '@hypercontract/profile';
 import { environment } from '../environments/environment';
 
-export const prefixes = {
+export const prefixes: Prefixes = {
     ...hyperPrefixes,
     shop: `${environment.baseUri}profile/`,
 };
