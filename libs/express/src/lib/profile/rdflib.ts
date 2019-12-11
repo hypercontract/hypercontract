@@ -5,7 +5,7 @@ import { BlankNode, DefaultGraph, Literal, NamedNode, Quad, Variable } from 'rdf
 /* eslint-disable @typescript-eslint/ban-ts-ignore */
 // @ts-ignore @types/rdflib contains invalid types
 import { blankNode, defaultGraph, graph as rdfLibGraph, lit, namedNode, serialize, Statement, variable } from 'rdflib';
-import { Handler } from './';
+import { Handler } from './handler';
 
 export const toRdfXml: Handler = (
     response: Response,
