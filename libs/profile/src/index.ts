@@ -1,3 +1,5 @@
 export * from './lib/builder';
+export * from './lib/jsonld-context';
 export * from './lib/namespaces';
-export { Prefixes, Profile, RdfDocument } from './lib/profile';
+export { JsonLdContext, Prefixes, Profile, RdfDocument } from './lib/profile';
+

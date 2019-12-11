@@ -4,12 +4,17 @@ export type Prefixes = {
     [key: string]: string;
 };
 
+export type JsonLdContext = {
+    [key: string]: string | {};
+};
+
 export interface Profile extends RdfDocument {}
 
 export interface RdfDocument {
     uri: string;
     defaultNamespace: string;
     prefixes: Prefixes;
+    jsonLdContext?: JsonLdContext;
     graph: Quad[];
 }
 
