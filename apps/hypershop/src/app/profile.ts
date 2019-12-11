@@ -1,7 +1,8 @@
-import { Cardinality, EntryPoint, entryPoint, HttpMethod, operation, Operation, Precondition, precondition, Profile, RepresentationClass, representationClass, representationProperty, RepresentationProperty, StateTransition, stateTransition, xsd } from '@hypercontract/profile';
+import { Cardinality, EntryPoint, entryPoint, HttpMethod, jsonLdContext, operation, Operation, Precondition, precondition, Profile, RepresentationClass, representationClass, representationProperty, RepresentationProperty, StateTransition, stateTransition, xsd } from '@hypercontract/profile';
 import { flatten, trimEnd } from 'lodash';
 import { Quad } from 'rdf-js';
 import { prefixes, shop } from './namespaces';
+import * as schemas from './schemas';
 
 const profileUri = trimEnd(shop(''), '/');
 const defaultNamespace = shop('');
@@ -101,7 +102,8 @@ const profileGraph: Quad[] = flatten([
             shop('Payment'),
             shop('PaymentOption')
         ],
-        range: [xsd('string')]
+        range: [xsd('string')],
+        schemas: schemas.accountOwner
     }),
     shopProperty('bic', {
         label: 'bic',
@@ -110,7 +112,8 @@ const profileGraph: Quad[] = flatten([
             shop('Payment'),
             shop('PaymentOption')
         ],
-        range: [xsd('string')]
+        range: [xsd('string')],
+        schemas: schemas.bic
     }),
     shopProperty('billingAddress', {
         label: 'billing address',
@@ -120,9 +123,11 @@ const profileGraph: Quad[] = flatten([
         ],
         range: [
             shop('BillingAddress')
-        ]
+        ],
+        schemas: schemas.billingAddress
     }),
     shopProperty('cancellationReason', {
+        schemas: schemas.cancellationReason,
         label: 'cancellation reason',
         description: 'A free-text reason for why the Order was or is being cancelled.',
         domain: [
@@ -132,6 +137,7 @@ const profileGraph: Quad[] = flatten([
         range: [xsd('string')]
     }),
     shopProperty('city', {
+        schemas: schemas.city,
         label: 'city',
         description: 'The city of an Address.',
         domain: [
@@ -142,6 +148,7 @@ const profileGraph: Quad[] = flatten([
         range: [xsd('string')]
     }),
     shopProperty('country', {
+        schemas: schemas.country,
         label: 'country',
         description: 'The name of the country of an Address.',
         domain: [
@@ -152,6 +159,7 @@ const profileGraph: Quad[] = flatten([
         range: [xsd('string')]
     }),
     shopProperty('iban', {
+        schemas: schemas.iban,
         label: 'iban',
         description: 'The IBAN of a banking account.',
         domain: [
@@ -161,6 +169,7 @@ const profileGraph: Quad[] = flatten([
         range: [xsd('string')]
     }),
     shopProperty('name', {
+        schemas: schemas.name,
         label: 'name',
         description: 'The first and last name of the addressee of an Address.',
         domain: [
@@ -171,6 +180,7 @@ const profileGraph: Quad[] = flatten([
         range: [xsd('string')]
     }),
     shopProperty('orderDate', {
+        schemas: schemas.orderDate,
         label: 'order date',
         description: 'The date when the Order was placed.',
         domain: [
@@ -179,6 +189,7 @@ const profileGraph: Quad[] = flatten([
         range: [xsd('date')]
     }),
     shopProperty('orderItem', {
+        schemas: schemas.orderItem,
         label: 'order item',
         description: 'A reference to an Order Item of an Order.',
         domain: [
@@ -196,7 +207,8 @@ const profileGraph: Quad[] = flatten([
             shop('Order')
         ],
         // TODO: find a way to represent enums
-        range: [xsd('string')]
+        range: [xsd('string')],
+        schemas: schemas.orderStatus
     }),
     shopProperty('payment', {
         label: 'payment',
@@ -206,7 +218,8 @@ const profileGraph: Quad[] = flatten([
         ],
         range: [
             shop('Payment')
-        ]
+        ],
+        schemas: schemas.payment
     }),
     shopProperty('price', {
         label: 'price',
@@ -217,7 +230,8 @@ const profileGraph: Quad[] = flatten([
             shop('ShoppingCartItem')
         ],
         // TODO: min: 0.01
-        range: [xsd('decimal')]
+        range: [xsd('decimal')],
+        schemas: schemas.price
     }),
     shopProperty('productDescription', {
         label: 'product description',
@@ -227,7 +241,8 @@ const profileGraph: Quad[] = flatten([
             shop('OrderItem'),
             shop('ShoppingCartItem')
         ],
-        range: [xsd('string')]
+        range: [xsd('string')],
+        schemas: schemas.productDescription
     }),
     shopProperty('productName', {
         label: 'product name',
@@ -237,7 +252,8 @@ const profileGraph: Quad[] = flatten([
             shop('OrderItem'),
             shop('ShoppingCartItem')
         ],
-        range: [xsd('string')]
+        range: [xsd('string')],
+        schemas: schemas.productName
     }),
     shopProperty('quantity', {
         label: 'quantity',
@@ -249,7 +265,8 @@ const profileGraph: Quad[] = flatten([
             shop('ShoppingCartItem')
         ],
         // TODO: min: 1
-        range: [xsd('integer')]
+        range: [xsd('integer')],
+        schemas: schemas.quantity
     }),
     shopProperty('queryString', {
         label: 'query string',
@@ -257,7 +274,8 @@ const profileGraph: Quad[] = flatten([
         domain: [
             shop('SearchQuery')
         ],
-        range: [xsd('string')]
+        range: [xsd('string')],
+        schemas: schemas.queryString
     }),
     shopProperty('shoppingCartItems', {
         label: 'shopping cart items',
@@ -268,7 +286,8 @@ const profileGraph: Quad[] = flatten([
         range: [
             shop('ShoppingCartItem')
         ],
-        cardinality: Cardinality.OneOrMore
+        cardinality: Cardinality.OneOrMore,
+        schemas: schemas.shoppingCartItems
     }),
     shopProperty('shippingAddress', {
         label: 'shipping address',
@@ -278,7 +297,8 @@ const profileGraph: Quad[] = flatten([
         ],
         range: [
             shop('ShippingAddress')
-        ]
+        ],
+        schemas: schemas.shippingAddress
     }),
     shopProperty('street', {
         label: 'street',
@@ -288,16 +308,18 @@ const profileGraph: Quad[] = flatten([
             shop('BillingAddress'),
             shop('ShippingAddress')
         ],
-        range: [xsd('string')]
+        range: [xsd('string')],
+        schemas: schemas.street
     }),
     shopProperty('totalPrice', {
         label: 'total price',
-        description: 'The total price of all items in the ShopPropertyping Cart. It is calculated by summing up the item\'s prices multiplied with their respective quantities.',
+        description: 'The total price of all items in the Shopping Cart. It is calculated by summing up the item\'s prices multiplied with their respective quantities.',
         domain: [
             shop('ShoppingCart')
         ],
         // TODO: min: 0.01
-        range: [xsd('decimal')]
+        range: [xsd('decimal')],
+        schemas: schemas.totalPrice
     }),
     shopProperty('totalResults', {
         label: 'total results',
@@ -306,7 +328,8 @@ const profileGraph: Quad[] = flatten([
             shop('SearchResults')
         ],
         // TODO: min: 0
-        range: [xsd('integer')]
+        range: [xsd('integer')],
+        schemas: schemas.totalResults
     }),
     shopProperty('zipCode', {
         label: 'zip code',
@@ -316,9 +339,9 @@ const profileGraph: Quad[] = flatten([
             shop('BillingAddress'),
             shop('ShippingAddress')
         ],
-        range: [xsd('string')]
+        range: [xsd('string')],
+        schemas: schemas.zipCode
     }),
-
     shopStateTransition('address', {
         label: 'address',
         description: 'A reference to an Address in a User Profile.',
@@ -509,5 +532,6 @@ export const profile: Profile = {
     uri: profileUri,
     defaultNamespace,
     graph: profileGraph,
-    prefixes
+    prefixes,
+    jsonLdContext
 };
