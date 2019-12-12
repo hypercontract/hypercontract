@@ -33,7 +33,7 @@ export const jsonSchemaString = (definition: JSONSchema = {}): JSONSchema => ({
 });
 
 export const jsonSchemaHref = (conceptUri: string, definition: JSONSchema = {}): JSONSchema => jsonSchemaString({
-    $comment: `Value must be an URI for an instance of type <${conceptUri}>.`,
+    $comment: `Value is a URI for an instance of type <${conceptUri}>.`,
     ...definition
 });
 
