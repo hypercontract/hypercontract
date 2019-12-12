@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Req, Res } from '@ne
 import { Request, Response } from 'express';
 import { sendResponse } from '../content-negotiation';
 import { getProductUri, getShoppingCartBasePath, getShoppingCartItemPath, getShoppingCartItemsPath, getShoppingCartRootPath, getShoppingCartRootUri } from '../routing';
+import { EntityId } from '../store';
 import { UserProfileService } from '../user-profile';
 import { renderShoppingCart } from './shopping-cart.html';
 import { ShoppingCartService } from './shopping-cart.service';
@@ -35,12 +36,12 @@ export class ShoppingCartController {
     async addToShoppingCart(
         @Res() response: Response,
         @Req() request: Request,
-        @Body('product') product: string,
+        @Body('product') product: EntityId,
         @Body('quantity') quantity: number
     ) {
         const productId = product.replace(new RegExp(getProductUri('(.*)')), '$1');
 
-        await this.shoppingCartService.addShoppingCartItem(productId, quantity);
+        await this.shoppingCartService.addToShoppingCart(productId, quantity);
 
         const statusCode = request.accepts('html') ? 303 : 201;
         return response.redirect(statusCode, getShoppingCartRootUri());
@@ -49,10 +50,10 @@ export class ShoppingCartController {
     @Patch(getShoppingCartItemPath())
     async changeQuantity(
         @Res() response: Response,
-        @Param('shoppingCartItemId') shoppingCartItemId: string,
+        @Param('shoppingCartItemId') shoppingCartItemId: EntityId,
         @Body('quantity') quantity: number
     ) {
-        await this.shoppingCartService.updateShoppingCartItemQuantity(shoppingCartItemId, quantity);
+        await this.shoppingCartService.changeQuantity(shoppingCartItemId, quantity);
 
         return response.redirect(303, getShoppingCartRootUri());
     }
@@ -60,9 +61,9 @@ export class ShoppingCartController {
     @Delete(getShoppingCartItemPath())
     async remove(
         @Res() response: Response,
-        @Param('shoppingCartItemId') shoppingCartItemId: string,
+        @Param('shoppingCartItemId') shoppingCartItemId: EntityId,
     ) {
-        await this.shoppingCartService.deleteShoppingCartItem(shoppingCartItemId);
+        await this.shoppingCartService.remove(shoppingCartItemId);
 
         return response.redirect(303, getShoppingCartRootUri());
     }

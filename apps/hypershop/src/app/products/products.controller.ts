@@ -2,6 +2,7 @@ import { Controller, Get, Param, Query, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { sendResponse } from '../content-negotiation';
 import { getProductPath, getProductsBasePath, getProductsRootPath } from '../routing/product.uris';
+import { EntityId } from '../store';
 import { ProductService } from './product.service';
 import { renderProduct, renderSearchResults } from './products.html';
 
@@ -30,7 +31,7 @@ export class ProductsController {
     @Get(getProductPath())
     async getProduct(
         @Res() response: Response,
-        @Param('productId') productId: string
+        @Param('productId') productId: EntityId
     ) {
         const product = await this.productService.getProduct(productId);
 

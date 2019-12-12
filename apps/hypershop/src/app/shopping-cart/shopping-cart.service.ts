@@ -27,7 +27,7 @@ export class ShoppingCartService {
         return this.store.getOne(id);
     }
 
-    public async addShoppingCartItem(productId: EntityId, quantity: number) {
+    public async addToShoppingCart(productId: EntityId, quantity: number) {
         const [product, shoppingCartItem] = await Promise.all([
             this.productService.getProduct(productId),
             this.getShoppingCartItemByProductId(productId)
@@ -36,7 +36,7 @@ export class ShoppingCartService {
         if (isNull(shoppingCartItem)) {
             return this.createShoppingCartItem(product, quantity);
         } else {
-            await this.updateShoppingCartItemQuantity(
+            await this.changeQuantity(
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 shoppingCartItem._id!,
                 shoppingCartItem.quantity + quantity
@@ -45,7 +45,7 @@ export class ShoppingCartService {
         }
     }
 
-    public deleteShoppingCartItem(id: EntityId) {
+    public remove(id: EntityId) {
         return this.store.remove(id);
     }
 
@@ -53,7 +53,7 @@ export class ShoppingCartService {
         return this.store.removeAll();
     }
 
-    public updateShoppingCartItemQuantity(id: EntityId, quantity: number) {
+    public changeQuantity(id: EntityId, quantity: number) {
         return this.store.update(
             id,
             { quantity }
