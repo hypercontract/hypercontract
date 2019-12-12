@@ -773,4 +773,7 @@ export const orderMocks: Order[] = [
             bic: 'BMCIMFJ1CIS'
         }
     }
-]
+];
+
+export const orderMock = orderMocks[0];
+export const orderMockId = orderMock._id;

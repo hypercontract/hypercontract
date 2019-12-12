@@ -211,4 +211,7 @@ export const productMocks: Product[] = [
         price: 23.73,
         image: 'http://lorempixel.com/640/480/food?3efe60f1-ffa4-47d5-9700-28bd4d4f27e7'
     }
-]
+];
+
+export const productMock = productMocks[0];
+export const productMockId = productMock._id;

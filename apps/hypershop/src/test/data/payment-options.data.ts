@@ -13,4 +13,4 @@ export const paymentOptionMocks: PaymentOption[] = [
         iban: 'PT94797506530440095307778',
         bic: 'PZIUWFX1'
     }
-]
+];
