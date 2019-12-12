@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { HomepageModule } from './homepage';
+import { ApiRootModule } from './api-root';
 import { OrdersModule } from './orders';
 import { ProductsModule } from './products';
 import { ProfileModule } from './profile';
@@ -8,7 +8,7 @@ import { UserProfileModule } from './user-profile';
 
 @Module({
     imports: [
-        HomepageModule,
+        ApiRootModule,
         OrdersModule,
         ProductsModule,
         ProfileModule,

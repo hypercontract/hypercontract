@@ -5,7 +5,7 @@ const activeNavItem = 'root';
 
 export function renderHomepage() {
     return [
-        'homepage/templates/homepage',
+        'api-root/templates/homepage',
         {
             activeNavItem,
             links: {

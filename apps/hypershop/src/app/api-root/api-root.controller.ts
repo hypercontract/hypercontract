@@ -1,14 +1,14 @@
 import { Controller, Get, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { sendResponse } from '../content-negotiation';
-import { getHomepageRootPath } from '../routing/homepage.uris';
-import { renderHomepage } from './homepage.html';
+import { getApiRootPath } from '../routing/api-root.uris';
+import { renderHomepage } from './api-root.html';
 
 @Controller()
-export class HomepageController {
+export class ApiRootController {
 
-    @Get(getHomepageRootPath())
-    getHomepage(
+    @Get(getApiRootPath())
+    getApiRoot(
         @Res() response: Response
     ) {
         return sendResponse(response, {

@@ -1,6 +1,6 @@
 import { Cardinality, HttpMethod, jsonLdContext, Profile, valueSchema, xsd } from '@hypercontract/profile';
 import { flatten, trimEnd } from 'lodash';
-import { getHomepageBaseUri } from '../routing';
+import { getApiRootBaseUri } from '../routing';
 import { prefixes, shop } from './namespaces';
 import { shopClass, shopEntryPoint, shopOperation, shopPrecondition, shopProperty, shopSchemas, shopStateTransition } from './profile-builder';
 
@@ -10,7 +10,7 @@ export const profile: Profile = {
     prefixes,
     jsonLdContext,
     graph: flatten([
-        shopEntryPoint(getHomepageBaseUri(), 'ApiRoot', {
+        shopEntryPoint(getApiRootBaseUri(), 'ApiRoot', {
             label: 'hypershop',
             description: 'The REST API for hypershop.'
         }),
