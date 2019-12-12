@@ -5,6 +5,7 @@ import { EntityId, Store } from '../store';
 import { Address, PaymentOption, UserProfileService } from '../user-profile';
 import { NewOrder, Order, OrderStatus } from './order.model';
 
+export const ORDERS = 'ORDERS';
 export const ORDER_STORE = 'ORDER_STORE';
 
 @Injectable()

@@ -3,6 +3,7 @@ import { defaultTo } from 'lodash';
 import { EntityId, Store } from '../store';
 import { Product, SearchResults } from './product.model';
 
+export const PRODUCTS = 'PRODUCTS';
 export const PRODUCT_STORE = 'PRODUCT_STORE';
 
 @Injectable()

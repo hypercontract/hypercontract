@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import addresses from '../../assets/addresses.mock.json';
-import paymentOptions from '../../assets/payment-options.mock.json';
+import { addressMocks } from '../../test/addresses.mock';
+import { paymentOptionMocks } from '../../test/payment-options.mock';
 import { createMockStore } from '../store';
 import { UserProfileController } from './user-profile.controller';
-import { ADDRESS_STORE, PAYMENT_OPTION_STORE, UserProfileService } from './user-profile.service';
+import { Address, PaymentOption } from './user-profile.model';
+import { ADDRESSES, ADDRESS_STORE, PAYMENT_OPTIONS, PAYMENT_OPTION_STORE, UserProfileService } from './user-profile.service';
 
 @Module({
     controllers: [
@@ -12,12 +13,22 @@ import { ADDRESS_STORE, PAYMENT_OPTION_STORE, UserProfileService } from './user-
     providers: [
         UserProfileService,
         {
+            provide: ADDRESSES,
+            useValue: addressMocks
+        },
+        {
             provide: ADDRESS_STORE,
-            useValue: createMockStore(addresses)
+            useFactory: (addresses: Address[]) => createMockStore(addresses),
+            inject: [ADDRESSES]
+        },
+        {
+            provide: PAYMENT_OPTIONS,
+            useValue: paymentOptionMocks
         },
         {
             provide: PAYMENT_OPTION_STORE,
-            useValue: createMockStore(paymentOptions)
+            useFactory: (paymentOptions: PaymentOption[]) => createMockStore(paymentOptions),
+            inject: [PAYMENT_OPTIONS]
         }
     ],
     exports: [

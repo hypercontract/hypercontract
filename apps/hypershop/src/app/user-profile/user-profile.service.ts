@@ -2,7 +2,9 @@ import { Inject, Injectable } from '@nestjs/common';
 import { createStore, EntityId } from '../store';
 import { Address, PaymentOption } from './user-profile.model';
 
+export const ADDRESSES = 'ADDRESSES';
 export const ADDRESS_STORE = 'ADDRESS_STORE';
+export const PAYMENT_OPTIONS = 'PAYMENT_OPTIONS';
 export const PAYMENT_OPTION_STORE = 'PAYMENT_OPTION_STORE';
 
 @Injectable()

@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
-import products from '../../assets/products.mock.json';
+import { productMocks } from '../../test/products.mock';
+// import products from '../../assets/products.mock.json';
 import { createMockStore } from '../store';
-import { ProductService, PRODUCT_STORE } from './product.service';
+import { Product } from './product.model';
+import { PRODUCTS, ProductService, PRODUCT_STORE } from './product.service';
 import { ProductsController } from './products.controller';
 
 @Module({
@@ -11,8 +13,13 @@ import { ProductsController } from './products.controller';
     providers: [
         ProductService,
         {
+            provide: PRODUCTS,
+            useValue: productMocks
+        },
+        {
             provide: PRODUCT_STORE,
-            useValue: createMockStore(products)
+            useFactory: (products: Product[]) => createMockStore(products),
+            inject: [PRODUCTS]
         }
     ],
     exports: [
