@@ -27,7 +27,7 @@ export function renderOrder(order: Order) {
         addToShoppingCart: getOrderUri(order._id!)
     };
 
-    if (['PaymentDue', 'Processing'].includes(order.status)) {
+    if (['PaymentDue', 'Processing'].includes(order.orderStatus)) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         links.cancel = getOrderUri(order._id!);
     }

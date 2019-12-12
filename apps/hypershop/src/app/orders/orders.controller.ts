@@ -31,18 +31,18 @@ export class OrdersController {
     async placeOrder(
         @Res() response: Response,
         @Req() request: Request,
-        @Body('items') items: EntityId[],
+        @Body('shoppingCartItems') shoppingCartItems: EntityId[],
         @Body('billingAddress') billingAddress: EntityId,
         @Body('shippingAddress') shippingAddress: EntityId,
         @Body('payment') payment: EntityId
     ) {
-        const itemIds = items.map(item => item.replace(new RegExp(getShoppingCartItemUri('(.*)')), '$1') as EntityId);
+        const shoppingCartItemIds = shoppingCartItems.map(item => item.replace(new RegExp(getShoppingCartItemUri('(.*)')), '$1') as EntityId);
         const billingAddressId = billingAddress.replace(new RegExp(getAddressUri('(.*)')), '$1');
         const shippingAddressId = shippingAddress.replace(new RegExp(getAddressUri('(.*)')), '$1');
         const paymentId = payment.replace(new RegExp(getPaymentOptionUri('(.*)')), '$1');
 
         const orderId = await this.orderService.placeOrder({
-            items: itemIds,
+            shoppingCartItems: shoppingCartItemIds,
             billingAddress: billingAddressId,
             shippingAddress: shippingAddressId,
             payment: paymentId

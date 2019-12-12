@@ -1,13 +1,13 @@
 <%- include('../../layout/head') %>
 
-<h1 class="mb-5">Orders</h1>
+<h1 class="mb-5">Order History</h1>
 
 <ul class="list-unstyled">
     <% orders.forEach(function (order, index) { %>
     <li class="row align-items-center mb-5">
         <div class="col">
-            <h2 class="h5 mb-1"><a href="<%= links.order[index] %>">Order <%= formatDate(order.date) %></a></h2>
-            <p class="mt-2"><span class="badge badge-secondary"><%= order.status %></span></p>
+            <h2 class="h5 mb-1"><a href="<%= links.order[index] %>">Order <%= formatDate(order.orderDate) %></a></h2>
+            <p class="mt-2"><span class="badge badge-secondary"><%= order.orderStatus %></span></p>
         </div>
 
         <div class="col-12 mt-2 row">

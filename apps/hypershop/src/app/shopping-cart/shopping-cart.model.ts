@@ -6,8 +6,8 @@ export interface ShoppingCart {
 }
 
 export interface ShoppingCartItem extends Entity {
-    name: string;
-    description: string;
+    productName: string;
+    productDescription: string;
     price: number;
     quantity: number;
     product: EntityId;

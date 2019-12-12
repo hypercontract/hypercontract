@@ -1,19 +1,19 @@
 import { globals } from '../layout/globals';
 import { getProductUri, getShoppingCartItemsUri } from '../routing';
-import { Product } from './product.model';
+import { Product, SearchResults } from './product.model';
 
 const activeNavItem = 'products';
 
-export function renderSearchResults(products: Product[]) {
+export function renderSearchResults(searchResults: SearchResults) {
     return [
         'products/templates/search-results',
         {
             activeNavItem,
-            products,
+            searchResults,
             links: {
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                product: products.map(product => getProductUri(product._id!)),
-                addToShoppingCart: products.map(() => getShoppingCartItemsUri())
+                product: searchResults.products.map(product => getProductUri(product._id!)),
+                addToShoppingCart: searchResults.products.map(() => getShoppingCartItemsUri())
             },
             ...globals
         }

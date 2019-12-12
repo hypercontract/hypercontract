@@ -16,8 +16,8 @@
         <% shoppingCart.items.forEach(function (shoppingCartItem, index) { %>
         <tr>
             <td>
-                <a href="<%= links.product[index] %>"><%= shoppingCartItem.name %></a><br />
-                <small><%= shoppingCartItem.description %></small>
+                <a href="<%= links.product[index] %>"><%= shoppingCartItem.productName %></a><br />
+                <small><%= shoppingCartItem.productDescription %></small>
             </td>
             <td class="text-right"><%= shoppingCartItem.price.toFixed(2) %></td>
             <td style="width: 15%">
@@ -26,7 +26,7 @@
                     <label for="quantity" class="sr-only">Quantity</label>
                     <input type="number" name="quantity" title="Quantity" value="<%= shoppingCartItem.quantity %>" class="form-control text-right">
                     <div class="input-group-append">
-                        <button type="submit" class="btn btn-primary" title="Update Quantity">Update</button>
+                        <button type="submit" class="btn btn-primary" title="Update Quantity">Change</button>
                     </div>
                 </form>
             </td>
@@ -59,7 +59,7 @@
 <% if (links.placeOrder) { %>
 <form action="<%= links.placeOrder %>" method="POST" class="mt-5 row align-items-start">
     <% shoppingCart.items.forEach(function (shoppingCartItem, index) { %>
-        <input type="hidden" name="items[]" value="<%= shoppingCartItem._id %>" />
+        <input type="hidden" name="shoppingCartItems[]" value="<%= shoppingCartItem._id %>" />
     <% }) %>
 
     <h2 class="col-12 h3 mb-4">Place Order</h2>

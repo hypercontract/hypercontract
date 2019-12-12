@@ -1,25 +1,29 @@
-import { ShoppingCartItem } from '../shopping-cart';
 import { Entity, EntityId } from '../store';
 import { Address, PaymentOption } from '../user-profile';
 
 export interface Order extends Entity {
-    status: OrderStatus;
-    items: EntityId[] | OrderItem[];
+    orderStatus: OrderStatus;
+    orderItems: EntityId[] | OrderItem[];
     billingAddress: EntityId | Address;
     shippingAddress: EntityId | Address;
     payment: EntityId | PaymentOption;
-    date: string;
+    orderDate: string;
     cancellationReason?: string;
 }
 
 export interface NewOrder {
-    items: EntityId[];
+    shoppingCartItems: EntityId[];
     billingAddress: EntityId;
     shippingAddress: EntityId;
     payment: EntityId;
 }
 
-export interface OrderItem extends ShoppingCartItem {}
+export interface OrderItem {
+    productName: string;
+    productDescription: string;
+    price: number;
+    quantity: number;
+}
 
 export enum OrderStatus {
     Cancelled = 'Cancelled',

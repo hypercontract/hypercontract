@@ -16,13 +16,13 @@ export class ProductsController {
     @Get(getProductsRootPath())
     async getSearchResults(
         @Res() response: Response,
-        @Query('query') query: string
+        @Query('queryString') queryString: string
     ) {
-        const products = await this.productService.findProducts(query);
+        const searchResults = await this.productService.searchCatalog(queryString);
 
         return sendResponse(response, {
-            json: products,
-            html: renderSearchResults(products),
+            json: searchResults,
+            html: renderSearchResults(searchResults),
             // [jsonHalWithProfile]: hal.fromProducts(products, query),
             // [jsonLdWithProfile]: ld.fromProducts(products, query)
         });

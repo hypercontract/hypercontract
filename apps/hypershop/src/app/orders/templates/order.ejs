@@ -1,6 +1,6 @@
 <%- include('../../layout/head') %>
 
-<h1 class="mb-5">Order <%= formatDate(order.date) %></h1>
+<h1 class="mb-5">Order <%= formatDate(order.orderDate) %></h1>
 
 <% if (links.cancel) { %>
 <form action="<%= links.cancel %>" method="POST" class="row mb-5">
@@ -15,13 +15,13 @@
 </form>
 <% } %>
 
-<% if (order.status === 'Delivered') { %>
+<% if (order.orderStatus === 'Delivered') { %>
 <div class="alert alert-success mb-5" role="alert">
     <strong>Order delivered</strong>
 </div>
 <% } %>
 
-<% if (order.status === 'Cancelled') { %>
+<% if (order.orderStatus === 'Cancelled') { %>
 <div class="alert alert-danger mb-5" role="alert">
     <strong>Order cancelled</strong>
     <p class="mb-0"><%= order.cancellationReason %></p>
@@ -38,14 +38,14 @@
         </tr>
     </thead>
     <tbody>
-        <% order.items.forEach(function (lineItem, index) { %>
+        <% order.orderItems.forEach(function (orderItem, index) { %>
         <tr>
             <td>
-                <%= lineItem.name %><br />
-                <small><%= lineItem.description %></small>
+                <%= orderItem.productName %><br />
+                <small><%= orderItem.productDescription %></small>
             </td>
-            <td class="text-right"><%= lineItem.price.toFixed(2) %></td>
-            <td class="text-right"><%= lineItem.quantity %></td>
+            <td class="text-right"><%= orderItem.price.toFixed(2) %></td>
+            <td class="text-right"><%= orderItem.quantity %></td>
         </tr>
         <% }) %>
     </tbody>

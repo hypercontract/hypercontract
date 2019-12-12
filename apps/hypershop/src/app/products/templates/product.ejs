@@ -1,12 +1,12 @@
 <%- include('../../layout/head') %>
 
-<h1 class="mb-5"><%= product.name %></h1>
+<h1 class="mb-5"><%= product.productName %></h1>
 
 <div class="row align-items-start">
 
     <div class="col-4">
         <figure class="figure">
-            <img src="<%= product.image %>" class="figure-img img-fluid rounded" alt="Product Image of <%= product.name %>" />
+            <img src="<%= product.image %>" class="figure-img img-fluid rounded" alt="Product Image of <%= product.productName %>" />
         </figure>
     </div>
 
@@ -25,7 +25,7 @@
             </div>
         </form>
 
-        <p class="col mt-5"><%= product.description %></p>
+        <p class="col mt-5"><%= product.productDescription %></p>
     </div>
 </div>
 

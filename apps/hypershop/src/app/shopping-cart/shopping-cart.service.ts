@@ -62,8 +62,8 @@ export class ShoppingCartService {
 
     private createShoppingCartItem(product: Product, quantity: number) {
         return this.store.insert({
-            name: product.name,
-            description: product.description,
+            productName: product.productName,
+            productDescription: product.productDescription,
             price: product.price,
             quantity: quantity,
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

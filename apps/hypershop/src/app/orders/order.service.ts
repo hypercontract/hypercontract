@@ -16,18 +16,18 @@ export class OrderService {
         private userProfileService: UserProfileService
     ) {}
 
-    public async placeOrder(values: NewOrder) {
-        const [lineItems, billingAddress, shippingAddress, payment] = await Promise.all([
-            Promise.all(values.items.map(
+    public async placeOrder(newOrder: NewOrder) {
+        const [shoppingCartItems, billingAddress, shippingAddress, payment] = await Promise.all([
+            Promise.all(newOrder.shoppingCartItems.map(
                 (shoppingCartItemId: EntityId) => this.shoppingCartService.getShoppingCartItem(shoppingCartItemId)
             )),
-            this.userProfileService.getAddress(values.billingAddress),
-            this.userProfileService.getAddress(values.shippingAddress),
-            this.userProfileService.getPaymentOption(values.payment)
+            this.userProfileService.getAddress(newOrder.billingAddress),
+            this.userProfileService.getAddress(newOrder.shippingAddress),
+            this.userProfileService.getPaymentOption(newOrder.payment)
         ]);
 
         const orderId = await this.store.insert(
-            newOrderFrom(lineItems, billingAddress, shippingAddress, payment)
+            newOrderFrom(shoppingCartItems, billingAddress, shippingAddress, payment)
         );
 
         await this.shoppingCartService.emptyShoppingCart();
@@ -49,7 +49,7 @@ export class OrderService {
         return this.store.update(
             id,
             {
-                status: OrderStatus.Cancelled,
+                orderStatus: OrderStatus.Cancelled,
                 cancellationReason
             }
         );
@@ -57,11 +57,11 @@ export class OrderService {
 
 }
 
-function newOrderFrom(lineItems: ShoppingCartItem[], billingAddress: Address, shippingAddress: Address, payment: PaymentOption) {
+function newOrderFrom(shoppingCartItems: ShoppingCartItem[], billingAddress: Address, shippingAddress: Address, payment: PaymentOption): Order {
     return {
-        date: (new Date()).toISOString(),
-        status: OrderStatus.Processing,
-        items: lineItems.map(item => omit(item, ['_id'])),
+        orderDate: (new Date()).toISOString(),
+        orderStatus: OrderStatus.Processing,
+        orderItems: shoppingCartItems.map(item => omit(item, ['_id', 'product'])),
         billingAddress: omit(billingAddress, ['_id']),
         shippingAddress: omit(shippingAddress, ['_id']),
         payment: omit(payment, ['_id'])
@@ -71,5 +71,5 @@ function newOrderFrom(lineItems: ShoppingCartItem[], billingAddress: Address, sh
 function sortOrdersByDate(orders: Order[]) {
     return orders
         .concat()
-        .sort((order1, order2) => new Date(order2.date).valueOf() - new Date(order1.date).valueOf());
+        .sort((order1, order2) => new Date(order2.orderDate).valueOf() - new Date(order1.orderDate).valueOf());
 }
