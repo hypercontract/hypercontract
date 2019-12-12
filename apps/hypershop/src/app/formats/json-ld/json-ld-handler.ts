@@ -1,9 +1,14 @@
-// import { Response } from 'express';
+import { Response } from 'express';
+import { compact } from 'jsonld';
+import { shop } from '../../profile/namespaces';
+import { MediaType } from '../media-type';
 
-// function handleJsonLdResponse(response: Response, responseBody: ResponseBody) {
-//     const body = await compactWithDomainContext(responseBody);
+export async function handleJsonLdResponse(response: Response, responseBody: any) {
+    const body = await compact(responseBody, {
+        '@vocab': shop('')
+    });
 
-//     return response
-//         .type(jsonLdWithProfile)
-//         .send(body);
-// }
+    return response
+        .type(MediaType.JsonLd)
+        .send(body);
+}

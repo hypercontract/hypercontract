@@ -1,8 +1,10 @@
 import { Controller, Get, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { sendResponse } from '../formats/handler';
+import { MediaType } from '../formats/media-type';
 import { getApiRootPath } from '../routing/api-root.uris';
 import { renderHomepage } from './api-root.html';
+import { apiRoot } from './api-root.json-ld';
 
 @Controller()
 export class ApiRootController {
@@ -15,7 +17,7 @@ export class ApiRootController {
             json: {},
             html: renderHomepage(),
             // [jsonHalWithProfile]: hal.fromApiRoot(apiRoot),
-            // [jsonLdWithProfile]: ld.fromApiRoot(apiRoot, apiRootProfile)
+            [MediaType.JsonLd]: apiRoot()
         });
     }
 
