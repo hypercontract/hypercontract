@@ -1,0 +1,86 @@
+<%- include('../../layout/head') %>
+
+<h1 class="mb-5">Order <%= formatDate(order.date) %></h1>
+
+<% if (links.cancel) { %>
+<form action="<%= links.cancel %>" method="POST" class="row mb-5">
+    <input type="hidden" name="_method" value="PATCH" />
+
+    <div class="input-group mb-2 col-4 offset-md-8">
+        <input type="text" class="form-control" name="cancellationReason" placeholder="cancellation reason..." />
+        <div class="input-group-append">
+            <button type="submit" class="btn btn-danger btn-small" title="Cancel Order">Cancel</button>
+        </div>
+    </div>
+</form>
+<% } %>
+
+<% if (order.status === 'Delivered') { %>
+<div class="alert alert-success mb-5" role="alert">
+    <strong>Order delivered</strong>
+</div>
+<% } %>
+
+<% if (order.status === 'Cancelled') { %>
+<div class="alert alert-danger mb-5" role="alert">
+    <strong>Order cancelled</strong>
+    <p class="mb-0"><%= order.cancellationReason %></p>
+</div>
+<% } %>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Item</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <% order.items.forEach(function (lineItem, index) { %>
+        <tr>
+            <td>
+                <%= lineItem.name %><br />
+                <small><%= lineItem.description %></small>
+            </td>
+            <td class="text-right"><%= lineItem.price.toFixed(2) %></td>
+            <td class="text-right"><%= lineItem.quantity %></td>
+        </tr>
+        <% }) %>
+    </tbody>
+</table>
+
+<div class="col-12 mt-5 row">
+    <address class="col-3">
+        <h3 class="h6">Billing Address</h3>
+        <em><%= order.billingAddress.name %></em><br />
+        <small>
+            <%= order.billingAddress.street %><br />
+            <%= order.billingAddress.zipCode %>
+            <%= order.billingAddress.city %><br />
+            <%= order.billingAddress.country %>
+        </small>
+    </address>
+    <address class="col-3">
+        <h3 class="h6">Shipping Address</h3>
+        <em><%= order.shippingAddress.name %></em><br />
+        <small>
+            <%= order.shippingAddress.street %><br />
+            <%= order.shippingAddress.zipCode %>
+            <%= order.shippingAddress.city %><br />
+            <%= order.shippingAddress.country %>
+        </small>
+    </address>
+    <div class="payment col-3">
+        <h3 class="h6">Payment</h3>
+        <em><%= order.payment.accountOwner %></em><br />
+        <small>
+            <%= order.payment.iban %><br />
+            <%= order.payment.bic %>
+        </small>
+    </div>
+</div>
+
+
+<%- include('../../layout/foot') %>

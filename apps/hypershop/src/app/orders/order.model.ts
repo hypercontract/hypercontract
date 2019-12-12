@@ -9,6 +9,7 @@ export interface Order extends Entity {
     shippingAddress: EntityId | Address;
     payment: EntityId | PaymentOption;
     date: string;
+    cancellationReason?: string;
 }
 
 export interface NewOrder {

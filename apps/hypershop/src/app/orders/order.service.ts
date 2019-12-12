@@ -16,7 +16,7 @@ export class OrderService {
         private userProfileService: UserProfileService
     ) {}
 
-    public async createOrder(values: NewOrder) {
+    public async placeOrder(values: NewOrder) {
         const [lineItems, billingAddress, shippingAddress, payment] = await Promise.all([
             Promise.all(values.items.map(
                 (shoppingCartItemId: EntityId) => this.shoppingCartService.getShoppingCartItem(shoppingCartItemId)
@@ -37,7 +37,7 @@ export class OrderService {
     }
 
     public getOrder(id: EntityId) {
-        return this.store.findOne(id);
+        return this.store.getOne(id);
     }
 
     public async getOrders() {
@@ -45,10 +45,13 @@ export class OrderService {
         return sortOrdersByDate(orders);
     }
 
-    public updateOrderStatus(id: EntityId, status: OrderStatus) {
+    public cancelOrder(id: EntityId, cancellationReason?: string) {
         return this.store.update(
             id,
-            { status }
+            {
+                status: OrderStatus.Cancelled,
+                cancellationReason
+            }
         );
     }
 

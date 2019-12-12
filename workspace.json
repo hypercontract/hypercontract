@@ -20,7 +20,8 @@
                 "apps/hypershop/src/app/api-root/templates",
                 "apps/hypershop/src/app/products/templates",
                 "apps/hypershop/src/app/shopping-cart/templates",
-                "apps/hypershop/src/app/user-profile/templates"
+                "apps/hypershop/src/app/user-profile/templates",
+                "apps/hypershop/src/app/orders/templates"
             ]
           },
           "configurations": {

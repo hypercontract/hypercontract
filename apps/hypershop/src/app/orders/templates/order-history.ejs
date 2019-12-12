@@ -1,0 +1,41 @@
+<%- include('../../layout/head') %>
+
+<h1 class="mb-5">Orders</h1>
+
+<ul class="list-unstyled">
+    <% orders.forEach(function (order, index) { %>
+    <li class="row align-items-center mb-5">
+        <div class="col">
+            <h2 class="h5 mb-1"><a href="<%= links.order[index] %>">Order <%= formatDate(order.date) %></a></h2>
+            <p class="mt-2"><span class="badge badge-secondary"><%= order.status %></span></p>
+        </div>
+
+        <div class="col-12 mt-2 row">
+            <div class="col-3 billing-address">
+                <h3 class="h6">Billing Address</h3>
+
+                <address class="mb-0">
+                    <em><%= order.billingAddress.name %></em><br />
+                    <small><%= order.billingAddress.street %>, <%= order.billingAddress.city %></small>
+                </address>
+            </div>
+            <div class="col-3 shipping-address">
+                <h3 class="h6">Shipping Address</h3>
+
+                <address class="mb-0">
+                    <em><%= order.shippingAddress.name %></em><br />
+                    <small><%= order.shippingAddress.street %>, <%= order.shippingAddress.city %></small>
+                </address>
+            </div>
+            <div class="col-3 payment">
+                <h3 class="h6">Payment</h3>
+
+                <em><%= order.payment.accountOwner %></em><br />
+                <small><%= order.payment.iban %></small>
+            </div>
+        </div>
+    </li>
+    <% }) %>
+</ul>
+
+<%- include('../../layout/foot') %>
