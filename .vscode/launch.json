@@ -7,7 +7,7 @@
         {
             "type": "node",
             "request": "attach",
-            "name": "Debug API",
+            "name": "Debug",
             "sourceMaps": true,
             "port": 7777
         }
