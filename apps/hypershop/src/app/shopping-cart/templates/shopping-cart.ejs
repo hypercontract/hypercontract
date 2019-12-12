@@ -21,7 +21,7 @@
             </td>
             <td class="text-right"><%= shoppingCartItem.price.toFixed(2) %></td>
             <td style="width: 15%">
-                <form action="<%= links.updateQuantity[index] %>" method="POST" class="input-group">
+                <form action="<%= links.changeQuantity[index] %>" method="POST" class="input-group">
                     <input type="hidden" name="_method" value="PATCH" />
                     <label for="quantity" class="sr-only">Quantity</label>
                     <input type="number" name="quantity" title="Quantity" value="<%= shoppingCartItem.quantity %>" class="form-control text-right">

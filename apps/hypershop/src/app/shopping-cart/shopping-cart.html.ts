@@ -12,8 +12,8 @@ export function renderShoppingCart(shoppingCart: ShoppingCart, userProfile: User
         remove: shoppingCart.items.map(
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             shoppingCartItem => getShoppingCartItemUri(shoppingCartItem._id!)
-            ),
-            updateQuantity: shoppingCart.items.map(
+        ),
+        changeQuantity: shoppingCart.items.map(
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             shoppingCartItem => getShoppingCartItemUri(shoppingCartItem._id!)
         )

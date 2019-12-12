@@ -27,10 +27,10 @@ export function toJsonLdShoppingCart(shoppingCart: ShoppingCart) {
 export function toJsonLdShoppingCartItem(shoppingCartItem: ShoppingCartItem) {
     return {
         '@id': getShoppingCartItemUri(shoppingCartItem._id!),
-        '@type': shop('LineItem'),
+        '@type': shop('ShoppingCartItem'),
         ...shopify(omit(shoppingCartItem, ['_id'])),
         [shop('product')]: getProductUri(shoppingCartItem.product),
-        [shop('updateQuantity')]: getShoppingCartItemUri(shoppingCartItem._id!),
+        [shop('changeQuantity')]: getShoppingCartItemUri(shoppingCartItem._id!),
         [shop('remove')]: getShoppingCartItemUri(shoppingCartItem._id!)
     };
 }
