@@ -1,10 +1,12 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { sendResponse } from '../formats/handler';
+import { MediaType } from '../formats/media-type';
 import { getProductUri, getShoppingCartBasePath, getShoppingCartItemPath, getShoppingCartItemsPath, getShoppingCartRootPath, getShoppingCartRootUri } from '../routing';
 import { EntityId } from '../store';
 import { UserProfileService } from '../user-profile';
 import { renderShoppingCart } from './shopping-cart.html';
+import { toJsonLdShoppingCart } from './shopping-cart.json-ld';
 import { ShoppingCartService } from './shopping-cart.service';
 
 @Controller(getShoppingCartBasePath())
@@ -28,7 +30,7 @@ export class ShoppingCartController {
             json: shoppingCart,
             html: renderShoppingCart(shoppingCart, userProfile),
             // [jsonHalWithProfile]: hal.fromShoppingCart(shoppingCart),
-            // [jsonLdWithProfile]: ld.fromShoppingCart(shoppingCart)
+            [MediaType.JsonLd]: toJsonLdShoppingCart(shoppingCart)
         })
     }
 

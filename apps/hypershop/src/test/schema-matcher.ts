@@ -1,6 +1,6 @@
 import { toJsonSchemaId } from '@hypercontract/profile';
-import * as Ajv from 'ajv';
-import * as request from 'supertest';
+import Ajv from 'ajv';
+import request from 'supertest';
 import { shop } from '../app/profile/namespaces';
 import { schemas } from '../app/profile/schemas';
 

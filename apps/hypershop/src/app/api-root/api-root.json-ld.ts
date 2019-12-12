@@ -1,7 +1,7 @@
 import { shop } from '../profile/namespaces';
 import { getApiRootUri, getCatalogSearchUri, getOrdersRootUri, getShoppingCartRootUri, getUserProfileRootUri } from '../routing';
 
-export function apiRoot() {
+export function toJsonLdApiRoot() {
     return {
         '@id': getApiRootUri(),
         '@type': shop('ApiRoot'),

@@ -1,10 +1,12 @@
 import { Body, Controller, Get, Param, Patch, Post, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { sendResponse } from '../formats/handler';
+import { MediaType } from '../formats/media-type';
 import { getAddressUri, getOrderPath, getOrdersBasePath, getOrdersRootPath, getOrderUri, getPaymentOptionUri, getShoppingCartItemUri } from '../routing';
 import { EntityId } from '../store';
 import { OrderService } from './order.service';
 import { renderOrder, renderOrderHistory } from './orders.html';
+import { toJsonLdOrder, toJsonLdOrderHistory } from './orders.json-ld';
 
 @Controller(getOrdersBasePath())
 export class OrdersController {
@@ -23,7 +25,7 @@ export class OrdersController {
             json: orderHistory,
             html: renderOrderHistory(orderHistory),
             // [jsonHalWithProfile]: hal.fromOrders(orders),
-            // [jsonLdWithProfile]: ld.fromOrders(orders)
+            [MediaType.JsonLd]: toJsonLdOrderHistory(orderHistory)
         });
     }
 
@@ -63,7 +65,7 @@ export class OrdersController {
             json: order,
             html: renderOrder(order),
             // [jsonHalWithProfile]: hal.fromOrder(order),
-            // [jsonLdWithProfile]: ld.fromOrder(order)
+            [MediaType.JsonLd]: toJsonLdOrder(order)
         });
     }
 

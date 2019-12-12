@@ -1,6 +1,6 @@
-import * as Datastore from 'nedb';
+import Datastore from 'nedb';
 import { isNull } from 'util';
-import * as uuid from 'uuid/v1';
+import uuid from 'uuid/v1';
 import { Entity, EntityId } from './entity.model';
 import { Store } from './store.model';
 

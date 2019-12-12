@@ -1,8 +1,10 @@
 import { Controller, Get, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { sendResponse } from '../formats/handler';
+import { MediaType } from '../formats/media-type';
 import { getUserProfileBasePath, getUserProfileRootPath } from '../routing';
 import { renderUserProfile } from './user-profile.html';
+import { toJsonLdUserProfile } from './user-profile.json-ld';
 import { UserProfileService } from './user-profile.service';
 
 @Controller(getUserProfileBasePath())
@@ -22,7 +24,7 @@ export class UserProfileController {
             json: userProfile,
             html: renderUserProfile(userProfile),
             // [jsonHalWithProfile]: hal.fromUserProfile(userProfile),
-            // [jsonLdWithProfile]: ld.fromUserProfile(userProfile)
+            [MediaType.JsonLd]: toJsonLdUserProfile(userProfile)
         })
     }
 }

@@ -4,7 +4,7 @@ import { sendResponse } from '../formats/handler';
 import { MediaType } from '../formats/media-type';
 import { getApiRootPath } from '../routing/api-root.uris';
 import { renderHomepage } from './api-root.html';
-import { apiRoot } from './api-root.json-ld';
+import { toJsonLdApiRoot } from './api-root.json-ld';
 
 @Controller()
 export class ApiRootController {
@@ -17,7 +17,7 @@ export class ApiRootController {
             json: {},
             html: renderHomepage(),
             // [jsonHalWithProfile]: hal.fromApiRoot(apiRoot),
-            [MediaType.JsonLd]: apiRoot()
+            [MediaType.JsonLd]: toJsonLdApiRoot()
         });
     }
 
