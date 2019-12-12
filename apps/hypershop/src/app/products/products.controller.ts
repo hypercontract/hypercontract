@@ -1,4 +1,4 @@
-import { Controller, Get, Res } from '@nestjs/common';
+import { Controller, Get, Param, Query, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { sendResponse } from '../content-negotiation';
 import { getProductPath, getProductsBasePath, getProductsRootPath } from '../routing/product.uris';
@@ -13,23 +13,26 @@ export class ProductsController {
     ) {}
 
     @Get(getProductsRootPath())
-    getAll(@Res() response: Response) {
-        this.productService.findProducts('')
-            .then(products => sendResponse(response, {
-                html: fromProducts(products)
-            }));
+    async getAll(
+        @Res() response: Response,
+        @Query('query') query: string
+    ) {
+        const products = await this.productService.findProducts(query);
+
+        return sendResponse(response, {
+            html: fromProducts(products)
+        });
     }
 
     @Get(getProductPath())
-    get(@Res() response: Response) {
-        sendResponse(response, {
-            html: fromProduct({
-                _id: '',
-                description: '',
-                image: '',
-                name: '',
-                price: 0
-            })
+    async get(
+        @Res() response: Response,
+        @Param('productId') productId: string
+    ) {
+        const product = await this.productService.getProduct(productId);
+
+        return sendResponse(response, {
+            html: fromProduct(product)
         });
     }
 
