@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { productMocks } from '../../test/products.mock';
+import { productMocks } from '../../test';
 import { createMockStore } from '../store';
 import { ProductService, PRODUCT_STORE } from './product.service';
 import { ProductsController } from './products.controller';

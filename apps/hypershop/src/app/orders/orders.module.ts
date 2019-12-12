@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { orderMocks } from '../../test/orders.mock';
+import { orderMocks } from '../../test';
 import { ShoppingCartModule } from '../shopping-cart';
 import { createMockStore } from '../store';
 import { UserProfileModule } from '../user-profile';

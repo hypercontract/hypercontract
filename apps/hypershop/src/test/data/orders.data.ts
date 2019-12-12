@@ -1,4 +1,4 @@
-import { Order, OrderStatus } from '../app/orders/order.model';
+import { Order, OrderStatus } from '../../app/orders/order.model';
 
 export const orderMocks: Order[] = [
     {

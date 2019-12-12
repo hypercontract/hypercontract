@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
-import { addressMocks } from '../../test/addresses.mock';
-import { paymentOptionMocks } from '../../test/payment-options.mock';
+import { addressMocks, paymentOptionMocks } from '../../test';
 import { createMockStore } from '../store';
 import { UserProfileController } from './user-profile.controller';
 import { ADDRESS_STORE, PAYMENT_OPTION_STORE, UserProfileService } from './user-profile.service';
