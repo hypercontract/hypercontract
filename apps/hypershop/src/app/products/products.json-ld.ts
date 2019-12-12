@@ -3,7 +3,7 @@ import { shop, shopify } from '../profile/namespaces';
 import { getCatalogSearchUri, getProductUri, getShoppingCartItemsUri } from '../routing';
 import { Product, SearchResults } from './product.model';
 
-export function toJsonLdSearchResults(searchResults: SearchResults, queryString: string) {
+export function toJsonLdSearchResults(searchResults: SearchResults, queryString?: string) {
     return {
         '@context': {
             products: {
