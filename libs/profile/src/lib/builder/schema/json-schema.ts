@@ -21,6 +21,12 @@ export const jsonSchemaObject = (definition: JSONSchema = {}): JSONSchema => ({
     ...definition
 });
 
+export const jsonSchemaArray = (items: JSONSchema, definition: JSONSchema = {}): JSONSchema => ({
+    type: 'array',
+    items,
+    ...definition
+});
+
 export const jsonSchemaString = (definition: JSONSchema = {}): JSONSchema => ({
     type: 'string',
     ...definition
