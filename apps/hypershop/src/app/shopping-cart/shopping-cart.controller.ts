@@ -25,7 +25,7 @@ export class ShoppingCartController {
         ]);
 
         return sendResponse(response, {
-            // json: shoppingCart,
+            json: shoppingCart,
             html: renderShoppingCart(shoppingCart, userProfile),
             // [jsonHalWithProfile]: hal.fromShoppingCart(shoppingCart),
             // [jsonLdWithProfile]: ld.fromShoppingCart(shoppingCart)
