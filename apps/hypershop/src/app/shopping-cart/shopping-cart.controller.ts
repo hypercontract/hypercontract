@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { sendResponse } from '../content-negotiation';
+import { sendResponse } from '../formats/handler';
 import { getProductUri, getShoppingCartBasePath, getShoppingCartItemPath, getShoppingCartItemsPath, getShoppingCartRootPath, getShoppingCartRootUri } from '../routing';
 import { EntityId } from '../store';
 import { UserProfileService } from '../user-profile';

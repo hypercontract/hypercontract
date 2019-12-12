@@ -1,6 +1,6 @@
 import { Controller, Get, Res } from '@nestjs/common';
 import { Response } from 'express';
-import { sendResponse } from '../content-negotiation';
+import { sendResponse } from '../formats/handler';
 import { getUserProfileBasePath, getUserProfileRootPath } from '../routing';
 import { renderUserProfile } from './user-profile.html';
 import { UserProfileService } from './user-profile.service';

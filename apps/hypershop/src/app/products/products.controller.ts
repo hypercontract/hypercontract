@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Query, Res } from '@nestjs/common';
 import { Response } from 'express';
-import { sendResponse } from '../content-negotiation';
+import { sendResponse } from '../formats/handler';
 import { getProductPath, getProductsBasePath, getProductsRootPath } from '../routing/product.uris';
 import { EntityId } from '../store';
 import { ProductService } from './product.service';

@@ -1,5 +1,5 @@
 import { JSONSchema } from '@hypercontract/profile';
-import { MediaType } from '../../content-negotiation';
+import { MediaType } from '../../formats/media-type';
 import { shop } from '../namespaces';
 import { jsonSchemaFor } from './json-schema-builder';
 

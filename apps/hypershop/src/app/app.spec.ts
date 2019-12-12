@@ -5,7 +5,7 @@ import * as Ajv from 'ajv';
 import * as request from 'supertest';
 import { orderMocks, productMocks } from '../test';
 import { AppModule } from './app.module';
-import { MediaType } from './content-negotiation';
+import { MediaType } from './formats/media-type';
 import { shop } from './profile/namespaces';
 import { schemas } from './profile/schemas';
 

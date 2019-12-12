@@ -1,6 +1,6 @@
 import { Controller, Get, Res } from '@nestjs/common';
 import { Response } from 'express';
-import { sendResponse } from '../content-negotiation';
+import { sendResponse } from '../formats/handler';
 import { getApiRootPath } from '../routing/api-root.uris';
 import { renderHomepage } from './api-root.html';
 
