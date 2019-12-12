@@ -68,3 +68,8 @@ export const jsonSchemaDate = (definition: JSONSchema = {}): JSONSchema => jsonS
     pattern: '^\\d\\d\\d\\d-(0?[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])Z?([-+](0?[1-9]|1[1-9]|2[0-3]):([0-5][0-9]))?$',
     ...definition
 });
+
+export const jsonSchemaDateTime = (definition: JSONSchema = {}): JSONSchema => jsonSchemaString({
+    pattern: '^\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d\.\\d+([+-][0-2]\\d:[0-5]\\d|Z)$',
+    ...definition
+});

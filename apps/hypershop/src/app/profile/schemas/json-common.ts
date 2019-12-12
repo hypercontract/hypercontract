@@ -10,7 +10,7 @@ const jsonMediaTypes = [
 ];
 
 export const jsonCommonSchemas: Schema[] = flatten(jsonMediaTypes.map(targetType => {
-    const { array, date, decimal, empty, href, integer, objectWith, refSchema, string  } = jsonSchemaFor(targetType);
+    const { array, dateTime, decimal, empty, integer, objectWith, refSchema, string  } = jsonSchemaFor(targetType);
 
     return [
         string('accountOwner'),
@@ -21,7 +21,7 @@ export const jsonCommonSchemas: Schema[] = flatten(jsonMediaTypes.map(targetType
         string('country'),
         string('iban'),
         string('name'),
-        date('orderDate'),
+        dateTime('orderDate'),
         array('orderItems', refSchema('OrderItem'), { minItems: 1 }),
         string('orderStatus', { enum: ['Processing', 'Delivered', 'Cancelled'] }),
         empty('payment', refSchema('Payment')),
@@ -33,7 +33,7 @@ export const jsonCommonSchemas: Schema[] = flatten(jsonMediaTypes.map(targetType
         empty('shippingAddress', refSchema('ShippingAddress')),
         array('shoppingCartItems', refSchema('ShoppingCartItem'), { minItems: 1 }),
         string('street'),
-        decimal('totalPrice', { multipleOf: 0.01, minimum: 0.01 }),
+        decimal('totalPrice', { multipleOf: 0.01, minimum: 0 }),
         integer('totalResults', { minimum: 0 }),
         string('zipCode'),
         objectWith('AdditionToShoppingCart', ['product', 'quantity']),

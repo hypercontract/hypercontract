@@ -11,6 +11,10 @@ export interface Order extends Entity {
     cancellationReason?: string;
 }
 
+export interface OrderHistory {
+    orders: Order[];
+}
+
 export interface NewOrder {
     shoppingCartItems: EntityId[];
     billingAddress: EntityId;

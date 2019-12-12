@@ -3,7 +3,7 @@ import { omit } from 'lodash';
 import { ShoppingCartItem, ShoppingCartService } from '../shopping-cart';
 import { EntityId, Store } from '../store';
 import { Address, PaymentOption, UserProfileService } from '../user-profile';
-import { NewOrder, Order, OrderStatus } from './order.model';
+import { NewOrder, Order, OrderHistory, OrderStatus } from './order.model';
 
 export const ORDER_STORE = 'ORDER_STORE';
 
@@ -40,9 +40,11 @@ export class OrderService {
         return this.store.getOne(id);
     }
 
-    public async getOrders() {
+    public async getOrderHistory(): Promise<OrderHistory> {
         const orders = await this.store.find();
-        return sortOrdersByDate(orders);
+        return {
+            orders: sortOrdersByDate(orders)
+        };
     }
 
     public cancelOrder(id: EntityId, cancellationReason?: string) {

@@ -17,11 +17,11 @@ export class OrdersController {
     async getOrderHistory(
         @Res() response: Response
     ) {
-        const orders = await this.orderService.getOrders();
+        const orderHistory = await this.orderService.getOrderHistory();
 
         return sendResponse(response, {
-            json: orders,
-            html: renderOrderHistory(orders),
+            json: orderHistory,
+            html: renderOrderHistory(orderHistory),
             // [jsonHalWithProfile]: hal.fromOrders(orders),
             // [jsonLdWithProfile]: ld.fromOrders(orders)
         });

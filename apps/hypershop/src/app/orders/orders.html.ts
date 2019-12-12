@@ -1,11 +1,11 @@
 import { format } from 'date-fns';
 import { globals } from '../layout/globals';
 import { getOrderUri } from '../routing';
-import { Order } from './order.model';
+import { Order, OrderHistory } from './order.model';
 
 const activeNavItem = 'orderHistory';
 
-export function renderOrderHistory(orders: Order[]) {
+export function renderOrderHistory({ orders }: OrderHistory) {
     return [
         'orders/templates/order-history',
         {
