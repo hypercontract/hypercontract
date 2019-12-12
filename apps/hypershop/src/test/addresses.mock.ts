@@ -1,4 +1,4 @@
-import { Address } from '../app/user-profile';
+import { Address } from '../app/user-profile/user-profile.model';
 
 export const addressMocks: Address[] = [
     {

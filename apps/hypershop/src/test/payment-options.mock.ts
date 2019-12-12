@@ -1,4 +1,4 @@
-import { PaymentOption } from '../app/user-profile';
+import { PaymentOption } from '../app/user-profile/user-profile.model';
 
 export const paymentOptionMocks: PaymentOption[] = [
     {
