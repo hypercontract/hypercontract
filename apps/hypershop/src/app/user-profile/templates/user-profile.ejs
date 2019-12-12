@@ -1,0 +1,37 @@
+<%- include('../../layout/head') %>
+
+<h1 class="mb-5">User Profile</h1>
+
+<div class="row">
+    <section class="mb-5 col-4">
+        <h2 class="h5 mb-3">Addresses</h2>
+
+        <ul class="list-unstyled">
+            <% userProfile.addresses.forEach(function (address, index) { %>
+            <li class="mb-3">
+                <address class="mb-0">
+                    <%= address.name %><br />
+                    <small>
+                        <%= address.street %>, <%= address.city %>
+                    </small>
+                </address>
+            </li>
+            <% }) %>
+        </ul>
+    </section>
+
+    <section class="mb-5 col-4">
+        <h2 class="h5 mb-3">Payment Options</h2>
+
+        <ul class="list-unstyled">
+            <% userProfile.paymentOptions.forEach(function (paymentOption, index) { %>
+            <li class="mb-3">
+                <%= paymentOption.accountOwner %><br />
+                <small><%= paymentOption.iban %></small>
+            </li>
+            <% }) %>
+        </ul>
+    </section>
+</div>
+
+<%- include('../../layout/foot') %>
