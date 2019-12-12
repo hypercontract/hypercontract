@@ -11,7 +11,7 @@ import { AppModule } from './app/app.module';
 
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
-    const port = process.env.port || 3333;
+    const port = process.env.port || 80;
 
     app.setBaseViewsDir(join(__dirname, 'app'));
     app.setViewEngine('ejs');
