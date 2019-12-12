@@ -12,15 +12,14 @@ export class NeDBStore<T extends Entity> implements Store<T> {
         this.dataStore = new Datastore();
     }
 
-    getOne(entityId: EntityId) {
-        return this.findOne(entityId)
-            .then(entity => {
-                if (isNull(entity)) {
-                    throw new Error(`No entity found for ID <${entityId}>.`);
-                }
+    async getOne(entityId: EntityId) {
+        const entity = await this.findOne(entityId)
 
-                return entity;
-            })
+        if (isNull(entity)) {
+            throw new Error(`No entity found for ID <${entityId}>.`);
+        }
+
+        return entity;
     }
 
     findOne(entityId: EntityId) {
@@ -45,9 +44,9 @@ export class NeDBStore<T extends Entity> implements Store<T> {
         });
     }
 
-    insert(entity: T) {
-        return this.bulkInsert([entity])
-            .then((entityIds: EntityId[]) => entityIds[0]);
+    async insert(entity: T) {
+        const entityIds = await this.bulkInsert([entity]);
+        return entityIds[0];
     }
 
     bulkInsert(entities: T[]) {
@@ -56,6 +55,7 @@ export class NeDBStore<T extends Entity> implements Store<T> {
                 if (error) {
                     return reject(error);
                 }
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 return resolve(entities.map(entity => entity._id!));
             });
         });

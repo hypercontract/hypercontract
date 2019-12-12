@@ -16,22 +16,23 @@ export class OrderService {
         private userProfileService: UserProfileService
     ) {}
 
-    public createOrder(values: NewOrder) {
-        return Promise.all([
+    public async createOrder(values: NewOrder) {
+        const [lineItems, billingAddress, shippingAddress, payment] = await Promise.all([
             Promise.all(values.items.map(
                 (shoppingCartItemId: EntityId) => this.shoppingCartService.getShoppingCartItem(shoppingCartItemId)
             )),
             this.userProfileService.getAddress(values.billingAddress),
             this.userProfileService.getAddress(values.shippingAddress),
             this.userProfileService.getPaymentOption(values.payment)
-        ])
-            .then(([lineItems, billingAddress, shippingAddress, payment]) => {
-                return this.store.insert(
-                    newOrderFrom(lineItems, billingAddress, shippingAddress, payment)
-                )
-                    .then(orderId => this.shoppingCartService.emptyShoppingCart()
-                        .then(() => orderId));
-            });
+        ]);
+
+        const orderId = await this.store.insert(
+            newOrderFrom(lineItems, billingAddress, shippingAddress, payment)
+        );
+
+        await this.shoppingCartService.emptyShoppingCart();
+
+        return orderId;
 
     }
 
@@ -39,9 +40,9 @@ export class OrderService {
         return this.store.findOne(id);
     }
 
-    public getOrders() {
-        return this.store.find()
-            .then(orders => sortOrdersByDate(orders));
+    public async getOrders() {
+        const orders = await this.store.find();
+        return sortOrdersByDate(orders);
     }
 
     public updateOrderStatus(id: EntityId, status: OrderStatus) {

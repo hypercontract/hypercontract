@@ -39,12 +39,11 @@ function handleHtmlResponse(response: Response, responseBody: ResponseBody) {
 }
 
 // function handleJsonLdResponse(response: Response, responseBody: ResponseBody) {
-//     compactWithDomainContext(responseBody)
-//         .then(body => {
-//             return response
-//             .type(jsonLdWithProfile)
-//             .send(body);
-//         });
+//     const body = await compactWithDomainContext(responseBody);
+
+//     return response
+//         .type(jsonLdWithProfile)
+//         .send(body);
 // }
 
 // function handleJsonHalResponse(response: Response, responseBody: ResponseBody) {

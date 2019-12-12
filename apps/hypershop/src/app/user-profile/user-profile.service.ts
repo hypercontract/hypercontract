@@ -13,17 +13,16 @@ export class UserProfileService {
         @Inject(PAYMENT_OPTION_STORE) private paymentOptionStore = createStore<PaymentOption>()
     ) {}
 
-    public getUserProfile() {
-        return Promise.all([
+    public async getUserProfile() {
+        const [paymentOptions, addresses] = await Promise.all([
             this.paymentOptionStore.find(),
             this.addressStore.find()
         ])
-            .then(([paymentOptions, addresses]) => {
-                return {
-                    paymentOptions,
-                    addresses
-                };
-            });
+
+        return {
+            paymentOptions,
+            addresses
+        };
     }
 
     public getAddress(id: EntityId) {

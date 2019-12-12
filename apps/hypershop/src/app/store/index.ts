@@ -8,9 +8,9 @@ export function createStore<T>(): Store<T> {
     return new NeDBStore<T>();
 }
 
-export function createMockStore<T>(entities: T[]): Promise<Store<T>> {
+export async function createMockStore<T>(entities: T[]): Promise<Store<T>> {
     const store = createStore<T>();
-    return store.bulkInsert(entities)
-        .then(() => store);
+    await store.bulkInsert(entities);
+    return store;
 }
 

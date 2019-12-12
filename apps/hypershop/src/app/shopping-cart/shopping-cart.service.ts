@@ -14,36 +14,35 @@ export class ShoppingCartService {
         private productService: ProductService
     ) {}
 
-    public getShoppingCart() {
-        return this.store.find()
-            .then(shoppingCartItems => {
-                return {
-                    items: shoppingCartItems,
-                    totalPrice: getTotalPrice(shoppingCartItems)
-                };
-            });
+    public async getShoppingCart() {
+        const shoppingCartItems = await this.store.find();
+
+        return {
+            items: shoppingCartItems,
+            totalPrice: getTotalPrice(shoppingCartItems)
+        };
     }
 
     public getShoppingCartItem(id: EntityId) {
         return this.store.getOne(id);
     }
 
-    public addShoppingCartItem(productId: EntityId, quantity: number) {
-        return Promise.all([
+    public async addShoppingCartItem(productId: EntityId, quantity: number) {
+        const [product, shoppingCartItem] = await Promise.all([
             this.productService.getProduct(productId),
             this.getShoppingCartItemByProductId(productId)
-        ])
-            .then(([product, shoppingCartItem]) => {
-                if (isNull(shoppingCartItem)) {
-                    return this.createShoppingCartItem(product, quantity);
-                } else {
-                    return this.updateShoppingCartItemQuantity(
-                        shoppingCartItem!._id!,
-                        shoppingCartItem!.quantity + quantity
-                    )
-                        .then(() => shoppingCartItem._id);
-                }
-            });
+        ]);
+
+        if (isNull(shoppingCartItem)) {
+            return this.createShoppingCartItem(product, quantity);
+        } else {
+            await this.updateShoppingCartItemQuantity(
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                shoppingCartItem._id!,
+                shoppingCartItem.quantity + quantity
+            );
+            return shoppingCartItem._id;
+        }
     }
 
     public deleteShoppingCartItem(id: EntityId) {
@@ -67,15 +66,16 @@ export class ShoppingCartService {
             description: product.description,
             price: product.price,
             quantity: quantity,
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             product: product._id!
         });
     }
 
-    private getShoppingCartItemByProductId(productId: EntityId) {
-        return this.store.find({
+    private async getShoppingCartItemByProductId(productId: EntityId) {
+        const shoppingCartItems = await this.store.find({
             product: productId
-        })
-            .then(shoppingCartItems => shoppingCartItems.length > 0 ? shoppingCartItems[0] : null);
+        });
+        return shoppingCartItems.length > 0 ? shoppingCartItems[0] : null;
     }
 }
 

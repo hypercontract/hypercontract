@@ -3,16 +3,18 @@ import { Response } from 'express';
 import { compact, fromRDF } from 'jsonld';
 import { Handler } from './handler';
 
-export const toJsonLd: Handler = (
+export const toJsonLd: Handler = async (
     response: Response,
     { prefixes, graph, jsonLdContext }: RdfDocument
 ) => {
-    fromRDF(graph, {
+    const document = await fromRDF(graph, {
         useNativeTypes: true
-    })
-        .then(document => compact(document, {
-            ...prefixes,
-            ...jsonLdContext
-        }))
-        .then(document => response.send(document));
+    });
+
+    const compactedDocument = await compact(document, {
+        ...prefixes,
+        ...jsonLdContext
+    });
+
+    return response.send(compactedDocument);
 }
