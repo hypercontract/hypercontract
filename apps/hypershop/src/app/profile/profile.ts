@@ -1,5 +1,6 @@
 import { Cardinality, HttpMethod, jsonLdContext, Profile, valueSchema, xsd } from '@hypercontract/profile';
 import { flatten, trimEnd } from 'lodash';
+import { environment } from '../../environments/environment';
 import { prefixes, shop } from './namespaces';
 import { shopClass, shopEntryPoint, shopOperation, shopPrecondition, shopProperty, shopSchemas, shopStateTransition } from './profile-builder';
 
@@ -9,7 +10,11 @@ export const profile: Profile = {
     prefixes,
     jsonLdContext,
     graph: flatten([
-        shopEntryPoint('ApiRoot', {
+        shopEntryPoint(environment.baseUri, 'ApiRoot', {
+            label: 'hypershop',
+            description: 'The REST API for hypershop.'
+        }),
+        shopClass('ApiRoot', {
             label: 'API Root',
             description: 'The entry point for the hypershop REST API.'
         }),

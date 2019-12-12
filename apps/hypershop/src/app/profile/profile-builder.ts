@@ -4,10 +4,11 @@ import { schemas } from './schemas';
 
 export const shopSchemas = (name: string) => schemas.get(shop(name));
 
-export const shopEntryPoint = (name: string, definition: EntryPoint) => entryPoint(
-    shop(name),
-    { ...definition, schemas: shopSchemas(name)
-});
+export const shopEntryPoint = (entryPointUrl: string, type: string, definition: EntryPoint) => entryPoint(
+    entryPointUrl,
+    shop(type),
+    definition
+);
 
 export const shopClass = (name: string, definition: RepresentationClass) => representationClass(
     shop(name),
