@@ -4,9 +4,9 @@ import { Product } from './product.model';
 
 const activeNavItem = 'products';
 
-export function fromProducts(products: Product[]) {
+export function renderSearchResults(products: Product[]) {
     return [
-        'products/templates/products',
+        'products/templates/search-results',
         {
             activeNavItem,
             products,
@@ -20,7 +20,7 @@ export function fromProducts(products: Product[]) {
     ];
 }
 
-export function fromProduct(product: Product) {
+export function renderProduct(product: Product) {
     return [
         'products/templates/product',
         {

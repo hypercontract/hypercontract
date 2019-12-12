@@ -3,7 +3,7 @@ import { Response } from 'express';
 import { sendResponse } from '../content-negotiation';
 import { getProductPath, getProductsBasePath, getProductsRootPath } from '../routing/product.uris';
 import { ProductService } from './product.service';
-import { fromProduct, fromProducts } from './products.html';
+import { renderProduct, renderSearchResults } from './products.html';
 
 @Controller(getProductsBasePath())
 export class ProductsController {
@@ -13,7 +13,7 @@ export class ProductsController {
     ) {}
 
     @Get(getProductsRootPath())
-    async getAll(
+    async getSearchResults(
         @Res() response: Response,
         @Query('query') query: string
     ) {
@@ -21,14 +21,14 @@ export class ProductsController {
 
         return sendResponse(response, {
             json: products,
-            html: fromProducts(products),
+            html: renderSearchResults(products),
             // [jsonHalWithProfile]: hal.fromProducts(products, query),
             // [jsonLdWithProfile]: ld.fromProducts(products, query)
         });
     }
 
     @Get(getProductPath())
-    async get(
+    async getProduct(
         @Res() response: Response,
         @Param('productId') productId: string
     ) {
@@ -36,7 +36,7 @@ export class ProductsController {
 
         return sendResponse(response, {
             json: product,
-            html: fromProduct(product),
+            html: renderProduct(product),
             // [jsonHalWithProfile]: hal.fromProduct(product),
             // [jsonLdWithProfile]: ld.fromProduct(product)
         });

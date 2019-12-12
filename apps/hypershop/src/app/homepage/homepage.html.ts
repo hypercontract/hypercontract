@@ -3,7 +3,7 @@ import { getOrdersRootUri, getProductsRootUri, getShoppingCartRootUri, getUserPr
 
 const activeNavItem = 'root';
 
-export function homepage() {
+export function renderHomepage() {
     return [
         'homepage/templates/homepage',
         {

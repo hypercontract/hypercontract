@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { sendResponse } from '../content-negotiation';
 import { getProductUri, getShoppingCartBasePath, getShoppingCartItemPath, getShoppingCartItemsPath, getShoppingCartRootPath, getShoppingCartRootUri } from '../routing';
 import { UserProfileService } from '../user-profile';
-import { fromShoppingCart } from './shopping-cart.html';
+import { renderShoppingCart } from './shopping-cart.html';
 import { ShoppingCartService } from './shopping-cart.service';
 
 @Controller(getShoppingCartBasePath())
@@ -15,7 +15,7 @@ export class ShoppingCartController {
     ) {}
 
     @Get(getShoppingCartRootPath())
-    async get(
+    async getShoppingCart(
         @Res() response: Response
     ) {
         const [shoppingCart, userProfile] = await Promise.all([
@@ -25,7 +25,7 @@ export class ShoppingCartController {
 
         return sendResponse(response, {
             // json: shoppingCart,
-            html: fromShoppingCart(shoppingCart, userProfile),
+            html: renderShoppingCart(shoppingCart, userProfile),
             // [jsonHalWithProfile]: hal.fromShoppingCart(shoppingCart),
             // [jsonLdWithProfile]: ld.fromShoppingCart(shoppingCart)
         })

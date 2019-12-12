@@ -3,7 +3,7 @@ import { UserProfile } from './user-profile.model';
 
 const activeNavItem = 'userProfile';
 
-export function fromUserProfile(userProfile: UserProfile) {
+export function renderUserProfile(userProfile: UserProfile) {
     return [
         'user-profile/templates/user-profile',
         {

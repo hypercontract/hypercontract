@@ -5,7 +5,7 @@ import { ShoppingCart } from './shopping-cart.model';
 
 const activeNavItem = 'shoppingCart';
 
-export function fromShoppingCart(shoppingCart: ShoppingCart, userProfile: UserProfile) {
+export function renderShoppingCart(shoppingCart: ShoppingCart, userProfile: UserProfile) {
     const links: { [key: string]: string | string[] } = {
         product: shoppingCart.items.map(
             shoppingCartItem => getProductUri(shoppingCartItem.product)

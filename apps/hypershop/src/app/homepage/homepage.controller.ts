@@ -2,18 +2,18 @@ import { Controller, Get, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { sendResponse } from '../content-negotiation';
 import { getHomepageRootPath } from '../routing/homepage.uris';
-import { homepage } from './homepage.html';
+import { renderHomepage } from './homepage.html';
 
 @Controller()
 export class HomepageController {
 
     @Get(getHomepageRootPath())
-    get(
+    getHomepage(
         @Res() response: Response
     ) {
         return sendResponse(response, {
             json: {},
-            html: homepage(),
+            html: renderHomepage(),
             // [jsonHalWithProfile]: hal.fromApiRoot(apiRoot),
             // [jsonLdWithProfile]: ld.fromApiRoot(apiRoot, apiRootProfile)
         });
