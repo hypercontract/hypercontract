@@ -18,7 +18,8 @@
                 "apps/hypershop/src/assets",
                 "apps/hypershop/src/app/layout",
                 "apps/hypershop/src/app/homepage/templates",
-                "apps/hypershop/src/app/products/templates"
+                "apps/hypershop/src/app/products/templates",
+                "apps/hypershop/src/app/shopping-cart/templates"
             ]
           },
           "configurations": {

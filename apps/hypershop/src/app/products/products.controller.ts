@@ -20,7 +20,10 @@ export class ProductsController {
         const products = await this.productService.findProducts(query);
 
         return sendResponse(response, {
-            html: fromProducts(products)
+            json: products,
+            html: fromProducts(products),
+            // [jsonHalWithProfile]: hal.fromProducts(products, query),
+            // [jsonLdWithProfile]: ld.fromProducts(products, query)
         });
     }
 
@@ -32,7 +35,10 @@ export class ProductsController {
         const product = await this.productService.getProduct(productId);
 
         return sendResponse(response, {
-            html: fromProduct(product)
+            json: product,
+            html: fromProduct(product),
+            // [jsonHalWithProfile]: hal.fromProduct(product),
+            // [jsonLdWithProfile]: ld.fromProduct(product)
         });
     }
 

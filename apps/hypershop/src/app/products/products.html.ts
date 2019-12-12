@@ -1,6 +1,5 @@
 import { globals } from '../layout/globals';
-import { getShoppingCartItemsUri } from '../routing';
-import { getProductUri } from '../routing/product.uris';
+import { getProductUri, getShoppingCartItemsUri } from '../routing';
 import { Product } from './product.model';
 
 const activeNavItem = 'products';
@@ -12,6 +11,7 @@ export function fromProducts(products: Product[]) {
             activeNavItem,
             products,
             links: {
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 product: products.map(product => getProductUri(product._id!)),
                 addToShoppingCart: products.map(() => getShoppingCartItemsUri())
             },

@@ -8,9 +8,14 @@ import { homepage } from './homepage.html';
 export class HomepageController {
 
     @Get(getHomepageRootPath())
-    get(@Res() response: Response) {
-        sendResponse(response, {
-            html: homepage()
+    get(
+        @Res() response: Response
+    ) {
+        return sendResponse(response, {
+            json: {},
+            html: homepage(),
+            // [jsonHalWithProfile]: hal.fromApiRoot(apiRoot),
+            // [jsonLdWithProfile]: ld.fromApiRoot(apiRoot, apiRootProfile)
         });
     }
 
