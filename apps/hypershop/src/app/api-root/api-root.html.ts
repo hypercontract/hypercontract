@@ -1,4 +1,4 @@
-import { globals } from '../layout/globals';
+import { globals } from '../formats/html/globals';
 import { getOrdersRootUri, getProductsRootUri, getShoppingCartRootUri, getUserProfileRootUri } from '../routing';
 
 const activeNavItem = 'root';

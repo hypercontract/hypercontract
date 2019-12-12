@@ -1,4 +1,4 @@
-import { globals } from '../layout/globals';
+import { globals } from '../formats/html/globals';
 import { UserProfile } from './user-profile.model';
 
 const activeNavItem = 'userProfile';

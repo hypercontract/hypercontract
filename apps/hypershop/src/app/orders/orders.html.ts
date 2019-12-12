@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import { globals } from '../layout/globals';
+import { globals } from '../formats/html/globals';
 import { getOrderUri } from '../routing';
 import { Order, OrderHistory } from './order.model';
 

@@ -16,7 +16,7 @@
             "tsConfig": "apps/hypershop/tsconfig.app.json",
             "assets": [
                 "apps/hypershop/src/assets",
-                "apps/hypershop/src/app/layout",
+                "apps/hypershop/src/app/formats/html",
                 "apps/hypershop/src/app/api-root/templates",
                 "apps/hypershop/src/app/products/templates",
                 "apps/hypershop/src/app/shopping-cart/templates",

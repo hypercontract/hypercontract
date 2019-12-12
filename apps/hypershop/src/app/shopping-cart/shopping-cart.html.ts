@@ -1,4 +1,4 @@
-import { globals } from '../layout/globals';
+import { globals } from '../formats/html/globals';
 import { getOrdersRootUri, getProductUri, getShoppingCartItemUri } from '../routing';
 import { UserProfile } from '../user-profile';
 import { ShoppingCart } from './shopping-cart.model';

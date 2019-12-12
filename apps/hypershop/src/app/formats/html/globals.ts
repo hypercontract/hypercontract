@@ -1,4 +1,4 @@
-import { getApiRootUri, getOrdersRootUri, getProductsRootUri, getShoppingCartRootUri, getUserProfileRootUri } from '../routing';
+import { getApiRootUri, getOrdersRootUri, getProductsRootUri, getShoppingCartRootUri, getUserProfileRootUri } from '../../routing';
 
 export const globals = {
     navigation: {
