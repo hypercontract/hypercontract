@@ -5,7 +5,7 @@ import { jsonSchemaFor } from './json-schema-builder';
 
 const { array, hrefSchema, object, refSchema } = jsonSchemaFor(MediaType.JsonHal);
 
-const halLinkObject = (href: JSONSchema): JSONSchema => ({
+export const halLinkObject = (href: JSONSchema): JSONSchema => ({
     type: 'object',
     properties: {
         href

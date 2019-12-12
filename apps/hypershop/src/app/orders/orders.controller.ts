@@ -6,6 +6,7 @@ import { getAddressUri, getOrderPath, getOrdersBasePath, getOrdersRootPath, getO
 import { EntityId } from '../store';
 import { OrderService } from './order.service';
 import { renderOrder, renderOrderHistory } from './orders.html';
+import { toJsonHalOrder, toJsonHalOrders as toJsonHalOrderHistory } from './orders.json-hal';
 import { toJsonLdOrder, toJsonLdOrderHistory } from './orders.json-ld';
 
 @Controller(getOrdersBasePath())
@@ -24,7 +25,7 @@ export class OrdersController {
         return sendResponse(response, {
             json: orderHistory,
             html: renderOrderHistory(orderHistory),
-            // [jsonHalWithProfile]: hal.fromOrders(orders),
+            [MediaType.JsonHal]: toJsonHalOrderHistory(orderHistory),
             [MediaType.JsonLd]: toJsonLdOrderHistory(orderHistory)
         });
     }
@@ -64,7 +65,7 @@ export class OrdersController {
         return sendResponse(response, {
             json: order,
             html: renderOrder(order),
-            // [jsonHalWithProfile]: hal.fromOrder(order),
+            [MediaType.JsonHal]: toJsonHalOrder(order),
             [MediaType.JsonLd]: toJsonLdOrder(order)
         });
     }

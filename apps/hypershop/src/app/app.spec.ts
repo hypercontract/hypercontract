@@ -22,7 +22,7 @@ describe('hypershop', () => {
 
     [
         MediaType.Json,
-        // MediaType.JsonHal,
+        MediaType.JsonHal,
         MediaType.JsonLd
     ].forEach(mediaType => {
 

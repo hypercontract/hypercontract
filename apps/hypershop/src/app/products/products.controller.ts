@@ -6,6 +6,7 @@ import { getProductPath, getProductsBasePath, getProductsRootPath } from '../rou
 import { EntityId } from '../store';
 import { ProductService } from './product.service';
 import { renderProduct, renderSearchResults } from './products.html';
+import { toJsonHalProduct, toJsonHalSearchResults } from './products.json-hal';
 import { toJsonLdProduct, toJsonLdSearchResults } from './products.json-ld';
 
 @Controller(getProductsBasePath())
@@ -25,7 +26,7 @@ export class ProductsController {
         return sendResponse(response, {
             json: searchResults,
             html: renderSearchResults(searchResults),
-            // [jsonHalWithProfile]: hal.fromProducts(products, query),
+            [MediaType.JsonHal]: toJsonHalSearchResults(searchResults, queryString),
             [MediaType.JsonLd]: toJsonLdSearchResults(searchResults, queryString)
         });
     }
@@ -40,7 +41,7 @@ export class ProductsController {
         return sendResponse(response, {
             json: product,
             html: renderProduct(product),
-            // [jsonHalWithProfile]: hal.fromProduct(product),
+            [MediaType.JsonHal]: toJsonHalProduct(product),
             [MediaType.JsonLd]: toJsonLdProduct(product)
         });
     }

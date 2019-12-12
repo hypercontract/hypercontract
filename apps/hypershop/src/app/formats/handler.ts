@@ -2,6 +2,7 @@ import { HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
 import { mapValues, values } from 'lodash';
 import { handleHtmlResponse } from './html/html-handler';
+import { handleJsonHalResponse } from './json-hal/json-hal-handler';
 import { handleJsonLdResponse } from './json-ld/json-ld-handler';
 import { handleJsonResponse } from './json/json-handler';
 import { MediaType } from './media-type';
@@ -15,7 +16,7 @@ interface HandlerMapping {
 const handlerMapping: HandlerMapping = {
     json: handleJsonResponse,
     html: handleHtmlResponse,
-    // [jsonHalWithProfile]: handleJsonHalResponse,
+    [MediaType.JsonHal]: handleJsonHalResponse,
     [MediaType.JsonLd]: handleJsonLdResponse
 };
 

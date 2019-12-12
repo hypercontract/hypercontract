@@ -1,6 +1,6 @@
 import { Schema } from '@hypercontract/profile';
 import { MediaType } from '../../formats/media-type';
-import { hal, halHref } from './json-hal-builder';
+import { hal, halHref, halLinkObject } from './json-hal-builder';
 import { jsonSchemaFor } from './json-schema-builder';
 
 const { array, object, refSchema } = jsonSchemaFor(MediaType.JsonHal);
@@ -21,6 +21,13 @@ export const jsonHalSchemas: Schema[] = [
     array('orders', refSchema('Order')),
     array('paymentOptions', refSchema('PaymentOption'), { minItems: 1 }),
     array('products', refSchema('Product')),
+    object(
+        'image',
+        halLinkObject({
+            type: 'string',
+            $comment: 'Value is a URI for an image.'
+        })
+    ),
     halHref('addToShoppingCart', 'ShoppingCartItems'),
     halHref('cancel', 'Order'),
     halHref('changeQuantity', 'ShoppingCartItem'),
