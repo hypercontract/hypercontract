@@ -1,5 +1,5 @@
 import { Schema } from '@hypercontract/profile';
-import { MediaType } from '../media-types';
+import { MediaType } from '../../content-negotiation';
 import { jsonSchemaFor } from './json-schema-builder';
 
 const { array, href, object, objectWith, refSchema, string } = jsonSchemaFor(MediaType.Json);

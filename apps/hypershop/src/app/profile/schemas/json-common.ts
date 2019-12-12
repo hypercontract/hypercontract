@@ -1,6 +1,6 @@
 import { Schema } from '@hypercontract/profile';
 import { flatten } from 'lodash';
-import { MediaType } from '../media-types';
+import { MediaType } from '../../content-negotiation';
 import { jsonSchemaFor } from './json-schema-builder';
 
 const jsonMediaTypes = [
