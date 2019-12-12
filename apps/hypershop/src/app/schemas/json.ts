@@ -2,30 +2,25 @@ import { Schema } from '@hypercontract/profile';
 import { MediaType } from '../media-types';
 import { jsonSchemaFor } from './json-schema-builder';
 
-const { string, date, decimal, empty, integer } = jsonSchemaFor(MediaType.Json);
+const { array, href, object, objectWith, refSchema, string } = jsonSchemaFor(MediaType.Json);
 
 export const jsonSchemas: Schema[] = [
-    string('accountOwner'),
-    string('bic'),
-    /* TODO */ empty('billingAddress', {}), // billingAddress: jsonSchema BillingAddress
-    string('cancellationReason'),
-    string('city'),
-    string('country'),
-    string('iban'),
-    string('name'),
-    date('orderDate'),
-    /* TODO */ empty('orderItem', {}), // orderItem: jsonSchema OrderItem OneOrMore
-    string('orderStatus', { enum: ['Processing', 'Delivered', 'Cancelled'] }),
-    /* TODO */ empty('payment', {}), // payment: jsonSchema Payment,
-    decimal('price', { multipleOf: 0.01, minimum: 0.01 }),
-    string('productDescription'),
-    string('productName'),
-    integer('quantity', { minimum: 1 }),
-    string('queryString'),
-    /* TODO */ empty('shoppingCartItems', {}), // shoppingCartItems: jsonSchema ShoppingCartItem OneOrMore
-    /* TODO */ empty('shippingAddress', {}), // shippingAddress: jsonSchema ShippingAddress
-    string('street'),
-    decimal('totalPrice', { multipleOf: 0.01, minimum: 0.01 }),
-    integer('totalResults', { minimum: 0 }),
-    string('zipCode')
+    string('_id', { $comment: 'A unique identifier.' }),
+    string('image', { $comment: 'Value is a URI for an image.' }),
+    objectWith('Address', ['_id', 'city', 'country', 'name', 'street', 'zipCode']),
+    object('ApiRoot'),
+    objectWith('Order', ['_id', 'orderDate', 'orderStatus', 'orderItems', 'payment', 'billingAddress', 'shippingAddress'], ['cancellationReason']),
+    objectWith('OrderHistory', ['orders']),
+    objectWith('PaymentOption', ['_id', 'accountOwner', 'bic', 'iban']),
+    objectWith('Product', ['_id', 'image', 'price', 'productDescription', 'productName']),
+    objectWith('SearchResults', ['products', 'totalResults']),
+    objectWith('ShoppingCart', ['items', 'totalPrice']),
+    objectWith('ShoppingCartItem', ['_id', 'price', 'productDescription', 'productName', 'quantity', 'product']),
+    objectWith('UserProfile', ['addresses', 'paymentOptions']),
+    href('product', 'Product'),
+    array('addresses', refSchema('Address'), { minItems: 1 }),
+    array('items', refSchema('ShoppingCartItem')),
+    array('orders', refSchema('Order')),
+    array('paymentOptions', refSchema('PaymentOption'), { minItems: 1 }),
+    array('products', refSchema('Product'))
 ];
