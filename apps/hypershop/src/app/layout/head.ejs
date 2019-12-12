@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>hypershop: Example App for hypercontract</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+        <style>
+        body {  overflow-y: overlay; }
+        </style>
+    </head>
+    <body class="pb-5">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-5">
+            <div class="container">
+                <a class="navbar-brand" href="<%= navigation.homepage %>">hypershop</a>
+                <ul class="navbar-nav">
+                    <li class="nav-item<%= (activeNavItem === 'products' ? ' active' : '') %>">
+                        <a class="nav-link" href="<%= navigation.catalog %>">Catalog</a>
+                    </li>
+                    <li class="nav-item<%= (activeNavItem === 'shoppingCart' ? ' active' : '') %>">
+                        <a class="nav-link" href="<%= navigation.shoppingCart %>">Shopping Cart</a>
+                    </li>
+                    <li class="nav-item<%= (activeNavItem === 'orderHistory' ? ' active' : '') %>">
+                        <a class="nav-link" href="<%= navigation.orderHistory %>">Orders</a>
+                    </li>
+                    <li class="nav-item<%= (activeNavItem === 'userProfile' ? ' active' : '') %>">
+                        <a class="nav-link" href="<%= navigation.userProfile %>">User Profile</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main class="container">

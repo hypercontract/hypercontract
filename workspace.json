@@ -14,7 +14,12 @@
             "outputPath": "dist/apps/hypershop",
             "main": "apps/hypershop/src/main.ts",
             "tsConfig": "apps/hypershop/tsconfig.app.json",
-            "assets": ["apps/hypershop/src/assets"]
+            "assets": [
+                "apps/hypershop/src/assets",
+                "apps/hypershop/src/app/layout",
+                "apps/hypershop/src/app/homepage/templates",
+                "apps/hypershop/src/app/products/templates"
+            ]
           },
           "configurations": {
             "production": {

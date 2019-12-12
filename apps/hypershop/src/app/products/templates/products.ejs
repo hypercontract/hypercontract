@@ -1,0 +1,43 @@
+<%- include('../../layout/head') %>
+
+<h1 class="mb-5">Products</h1>
+
+<% if (products.length > 0) { %>
+<ul class="list-unstyled">
+    <% products.forEach(function (product, index) { %>
+    <li class="row align-items-center mb-5">
+        <figure class="figure col-2">
+            <img src="<%= product.image %>" class="figure-img img-fluid rounded" alt="Product Image of <%= product.name %>">
+        </figure>
+
+        <div class="col-8">
+            <h2 class="h5 mb-1"><a href="<%= links.product[index] %>"><%= product.name %></a></h2>
+            <p class="mb-1"><small><%= product.description %></small></p>
+            <p><strong><%= product.price.toFixed(2) %></strong></p>
+        </div>
+
+        <div class="col-2">
+            <form action="<%= links.addToShoppingCart[index] %>" method="POST" class="form-inline">
+                <input type="hidden" name="product" value="<%= product._id %>" />
+
+                <div class="input-group">
+                    <label for="quantity" class="sr-only">Quantity</label>
+                    <input type="number" name="quantity" title="Quantity" value="1" class="form-control text-right">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary" title="Add to Shopping Cart">Add</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </li>
+    <% }) %>
+</ul>
+<% } %>
+
+<% if (products.length === 0) { %>
+<div class="alert alert-warning" role="alert">
+    No products found.
+</div>
+<% } %>
+
+<%- include('../../layout/foot') %>
