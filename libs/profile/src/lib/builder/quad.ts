@@ -4,6 +4,6 @@ import { Statement } from '../profile';
 
 export const toQuads = (...statements: (Statement | null)[]) => statements
     .filter(statement => !isNull(statement))
-    /* eslint-disable @typescript-eslint/no-non-null-assertion */
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     .map(statement => statement!)
     .map(([subject, predicate, object]) => quad(subject, predicate, object))

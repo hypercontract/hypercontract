@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { HomepageModule } from './homepage/homepage.module';
-import { OrdersModule } from './orders/orders.module';
-import { ProductsModule } from './products/products.module';
+import { HomepageModule } from './homepage';
+import { OrdersModule } from './orders';
+import { ProductsModule } from './products';
 import { ProfileModule } from './profile';
-import { ShoppingCartModule } from './shopping-cart/shopping-cart.module';
-import { USerProfileModule } from './user-profile/user-profile.module';
+import { ShoppingCartModule } from './shopping-cart';
+import { UserProfileModule } from './user-profile';
 
 @Module({
     imports: [
@@ -13,7 +13,7 @@ import { USerProfileModule } from './user-profile/user-profile.module';
         ProductsModule,
         ProfileModule,
         ShoppingCartModule,
-        USerProfileModule
+        UserProfileModule
     ]
 })
 export class AppModule {}

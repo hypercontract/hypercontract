@@ -1,7 +1,7 @@
 import { globals } from '../layout/globals';
-import * as shoppingCartUris from '../shopping-cart/shopping-cart.uris';
+import { getShoppingCartItemsUri } from '../routing';
+import { getProductUri } from '../routing/product.uris';
 import { Product } from './product.model';
-import { getProductUri } from './product.uris';
 
 const activeNavItem = 'products';
 
@@ -13,7 +13,7 @@ export function fromProducts(products: Product[]) {
             products,
             links: {
                 product: products.map(product => getProductUri(product._id!)),
-                addToShoppingCart: products.map(() => shoppingCartUris.getShoppingCartItemsUri())
+                addToShoppingCart: products.map(() => getShoppingCartItemsUri())
             },
             ...globals
         }
@@ -27,7 +27,7 @@ export function fromProduct(product: Product) {
             activeNavItem,
             product,
             links: {
-                addToShoppingCart: shoppingCartUris.getShoppingCartItemsUri()
+                addToShoppingCart: getShoppingCartItemsUri()
             },
             ...globals
         }

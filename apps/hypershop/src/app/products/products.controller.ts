@@ -1,17 +1,23 @@
 import { Controller, Get, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { sendResponse } from '../content-negotiation';
-import { getBasePath, getProductPath, getRootPath } from './product.uris';
+import { getProductPath, getProductsBasePath, getProductsRootPath } from '../routing/product.uris';
+import { ProductService } from './product.service';
 import { fromProduct, fromProducts } from './products.html';
 
-@Controller(getBasePath())
+@Controller(getProductsBasePath())
 export class ProductsController {
 
-    @Get(getRootPath())
+    constructor(
+        private productService: ProductService
+    ) {}
+
+    @Get(getProductsRootPath())
     getAll(@Res() response: Response) {
-        sendResponse(response, {
-            html: fromProducts([])
-        });
+        this.productService.findProducts('')
+            .then(products => sendResponse(response, {
+                html: fromProducts(products)
+            }));
     }
 
     @Get(getProductPath())

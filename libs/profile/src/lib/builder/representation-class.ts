@@ -22,7 +22,7 @@ function getInstanceSchemaStatements(uri: string, { schemas }: RepresentationCla
         return []
     }
 
-    /* eslint-disable @typescript-eslint/no-non-null-assertion */
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return flatten(schemas!.map(
         schema => instanceSchema(uri, schema)
     ));

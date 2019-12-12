@@ -62,7 +62,7 @@ function getConstraintStatements(uri: string, { constraints }: Operation): State
         return [];
     }
 
-    /* eslint-disable @typescript-eslint/no-non-null-assertion */
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return constraints!.map(
         constraint => [namedNode(uri), namedNode(hyper('constraint')), namedNode(constraint)]
     );

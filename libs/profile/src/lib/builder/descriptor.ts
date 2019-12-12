@@ -34,7 +34,7 @@ function getValueSchemaStatements(uri: string, { schemas }: Descriptor) {
         return [];
     }
 
-    /* eslint-disable @typescript-eslint/no-non-null-assertion */
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return flatten(schemas!.map(
         schema => valueSchema(uri, schema)
     ));

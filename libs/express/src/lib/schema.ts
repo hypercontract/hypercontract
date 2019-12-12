@@ -22,10 +22,11 @@ export function handleSchemaRequest(request: Request, response: Response, profil
     }
 
     return response.format({
-        /* eslint-disable @typescript-eslint/no-non-null-assertion */
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         [schemaType!]: () => response.send(definition),
         default: () => handleNotAcceptable(response, [
             ...values(MediaType),
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             schemaType!
         ])
     });

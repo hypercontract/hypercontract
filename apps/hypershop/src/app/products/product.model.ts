@@ -1,4 +1,4 @@
-import { Entity } from '../store/entity.model';
+import { Entity } from '../store';
 
 export interface Product extends Entity {
     name: string;

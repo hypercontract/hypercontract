@@ -1,26 +1,26 @@
 import { isNull, isUndefined } from 'lodash';
 import { URL } from 'url';
-import * as homepageUris from '../homepage/homepage.uris';
-import { EntityId } from '../store/entity.model';
+import { EntityId } from '../store';
+import { getBaseUri } from './base.uri';
 
-export function getBasePath() {
+export function getProductsBasePath() {
     return '/products';
 }
 
-export function getBaseUri() {
-    return homepageUris.getBaseUri() + getBasePath();
+export function getProductsBaseUri() {
+    return getBaseUri() + getProductsBasePath();
 }
 
-export function getRootPath() {
+export function getProductsRootPath() {
     return '/';
 }
 
-export function getRootUri() {
-    return getBaseUri() + getRootPath();
+export function getProductsRootUri() {
+    return getProductsBaseUri() + getProductsRootPath();
 }
 
 export function getCatalogSearchUri(query?: string) {
-    const url = new URL(getRootUri());
+    const url = new URL(getProductsRootUri());
 
     if (!isUndefined(query)) {
         url.searchParams.append('query', query);
@@ -30,11 +30,11 @@ export function getCatalogSearchUri(query?: string) {
 }
 
 export function getCatalogSearchUriTemplate() {
-    return getRootUri() + '{?query}';
+    return getProductsRootUri() + '{?query}';
 }
 
 export function getProductPath(id: EntityId | null = null) {
-    const pathTemplate = getRootPath() + ':productId/';
+    const pathTemplate = getProductsRootPath() + ':productId/';
 
     if (!isNull(id)) {
         return pathTemplate.replace(':productId', id);
@@ -44,5 +44,5 @@ export function getProductPath(id: EntityId | null = null) {
 }
 
 export function getProductUri(id: EntityId) {
-    return getBaseUri() + getProductPath(id);
+    return getProductsBaseUri() + getProductPath(id);
 }
