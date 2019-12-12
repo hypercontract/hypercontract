@@ -1,4 +1,3 @@
-import { globals } from '../formats/html/globals';
 import { getProductUri, getShoppingCartItemsUri } from '../routing';
 import { Product, SearchResults } from './product.model';
 
@@ -14,8 +13,7 @@ export function renderSearchResults(searchResults: SearchResults) {
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 product: searchResults.products.map(product => getProductUri(product._id!)),
                 addToShoppingCart: searchResults.products.map(() => getShoppingCartItemsUri())
-            },
-            ...globals
+            }
         }
     ];
 }
@@ -28,8 +26,7 @@ export function renderProduct(product: Product) {
             product,
             links: {
                 addToShoppingCart: getShoppingCartItemsUri()
-            },
-            ...globals
+            }
         }
     ];
 }

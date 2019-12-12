@@ -1,4 +1,3 @@
-import { globals } from '../formats/html/globals';
 import { getOrdersRootUri, getProductUri, getShoppingCartItemUri } from '../routing';
 import { UserProfile } from '../user-profile';
 import { ShoppingCart } from './shopping-cart.model';
@@ -30,8 +29,7 @@ export function renderShoppingCart(shoppingCart: ShoppingCart, userProfile: User
             activeNavItem,
             shoppingCart,
             userProfile,
-            links,
-            ...globals
+            links
         }
     ];
 }

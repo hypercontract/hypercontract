@@ -1,4 +1,3 @@
-import { globals } from '../formats/html/globals';
 import { getOrdersRootUri, getProductsRootUri, getShoppingCartRootUri, getUserProfileRootUri } from '../routing';
 
 const activeNavItem = 'root';
@@ -13,8 +12,7 @@ export function renderHomepage() {
                 shoppingCart: getShoppingCartRootUri(),
                 orders: getOrdersRootUri(),
                 userProfile: getUserProfileRootUri()
-            },
-            ...globals
+            }
         }
     ];
 }

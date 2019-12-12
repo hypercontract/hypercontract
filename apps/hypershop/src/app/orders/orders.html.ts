@@ -1,5 +1,4 @@
 import { format } from 'date-fns';
-import { globals } from '../formats/html/globals';
 import { getOrderUri } from '../routing';
 import { Order, OrderHistory } from './order.model';
 
@@ -15,8 +14,7 @@ export function renderOrderHistory({ orders }: OrderHistory) {
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 order: orders.map(order => getOrderUri(order._id!))
             },
-            formatDate,
-            ...globals
+            formatDate
         }
     ];
 }
@@ -38,8 +36,7 @@ export function renderOrder(order: Order) {
             activeNavItem,
             order,
             links,
-            formatDate,
-            ...globals
+            formatDate
         }
     ];
 }

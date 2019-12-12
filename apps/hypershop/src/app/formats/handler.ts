@@ -1,8 +1,10 @@
 import { Response } from 'express';
-import { isArray, mapValues } from 'lodash';
+import { mapValues } from 'lodash';
+import { handleHtmlResponse } from './html/html-handler';
+import { handleJsonResponse } from './json/json-handler';
 
-type ResponseBody = any;
-type Handler = (response: Response, responseBody: ResponseBody) => Response | Promise<Response>;
+type Handler = (response: Response, responseBody: any) => Response | Promise<Response>;
+
 interface HandlerMapping {
     [key: string]: Handler;
 }
@@ -14,8 +16,7 @@ const handlerMapping: HandlerMapping = {
     // [jsonLdWithProfile]: handleJsonLdResponse
 };
 
-
-export function sendResponse(response: Response, responseBodies: { [key: string]: ResponseBody }) {
+export function sendResponse(response: Response, responseBodies: { [key: string]: any }) {
     response
         .format(mapValues(
             responseBodies,
@@ -23,35 +24,4 @@ export function sendResponse(response: Response, responseBodies: { [key: string]
                 handlerMapping[mediaType](response, responseBody);
             }
         ));
-}
-
-function handleHtmlResponse(response: Response, responseBody: ResponseBody) {
-    let view = responseBody;
-    let locals = {};
-
-    if (isArray(responseBody)) {
-        view = responseBody[0];
-        locals = responseBody[1];
-    }
-
-    response.render(view, locals);
-    return response;
-}
-
-// function handleJsonLdResponse(response: Response, responseBody: ResponseBody) {
-//     const body = await compactWithDomainContext(responseBody);
-
-//     return response
-//         .type(jsonLdWithProfile)
-//         .send(body);
-// }
-
-// function handleJsonHalResponse(response: Response, responseBody: ResponseBody) {
-//     return handleJsonResponse(response, responseBody, jsonHalWithProfile);
-// }
-
-function handleJsonResponse(response: Response, responseBody: ResponseBody, mediaType = 'json') {
-    return response
-        .type(mediaType)
-        .send(responseBody);
 }
