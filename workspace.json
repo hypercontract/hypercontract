@@ -15,13 +15,13 @@
             "main": "apps/hypershop/src/main.ts",
             "tsConfig": "apps/hypershop/tsconfig.app.json",
             "assets": [
-                "apps/hypershop/src/assets",
-                "apps/hypershop/src/app/formats/html",
-                "apps/hypershop/src/app/api-root/templates",
-                "apps/hypershop/src/app/products/templates",
-                "apps/hypershop/src/app/shopping-cart/templates",
-                "apps/hypershop/src/app/user-profile/templates",
-                "apps/hypershop/src/app/orders/templates"
+              "apps/hypershop/src/assets",
+              "apps/hypershop/src/app/formats/html",
+              "apps/hypershop/src/app/api-root/templates",
+              "apps/hypershop/src/app/products/templates",
+              "apps/hypershop/src/app/shopping-cart/templates",
+              "apps/hypershop/src/app/user-profile/templates",
+              "apps/hypershop/src/app/orders/templates"
             ]
           },
           "configurations": {
@@ -53,7 +53,10 @@
               "apps/hypershop/tsconfig.app.json",
               "apps/hypershop/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!apps/hypershop/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/hypershop/**"
+            ]
           }
         },
         "test": {
@@ -80,7 +83,10 @@
               "libs/express/tsconfig.lib.json",
               "libs/express/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/express/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/express/**"
+            ]
           }
         },
         "test": {
@@ -107,7 +113,10 @@
               "libs/profile/tsconfig.lib.json",
               "libs/profile/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/profile/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/profile/**"
+            ]
           }
         },
         "test": {
@@ -115,6 +124,67 @@
           "options": {
             "jestConfig": "libs/profile/jest.config.js",
             "tsConfig": "libs/profile/tsconfig.spec.json"
+          }
+        }
+      }
+    },
+    "hypercontract": {
+      "root": "apps/hypercontract",
+      "sourceRoot": "apps/hypercontract/src",
+      "projectType": "application",
+      "prefix": "hypercontract",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "options": {
+            "outputPath": "dist/apps/hypercontract",
+            "main": "apps/hypercontract/src/main.ts",
+            "tsConfig": "apps/hypercontract/tsconfig.app.json",
+            "assets": [
+              "apps/hypercontract/src/assets"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/hypercontract/src/environments/environment.ts",
+                  "with": "apps/hypercontract/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "hypercontract:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "config": "apps/hypercontract/.eslintrc",
+            "tsConfig": [
+              "apps/hypercontract/tsconfig.app.json",
+              "apps/hypercontract/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/hypercontract/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/hypercontract/jest.config.js",
+            "tsConfig": "apps/hypercontract/tsconfig.spec.json"
           }
         }
       }

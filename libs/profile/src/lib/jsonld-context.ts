@@ -2,7 +2,11 @@ import { JsonLdContext } from './profile';
 
 export const jsonLdContext: JsonLdContext = {
     'rdfs:domain': { '@type': '@id' },
-    'rdfs:range': { '@type': '@id' },
+    'rdfs:range': { '@type': '@id' }
+};
+
+export const jsonLdHyperContext: JsonLdContext = {
+    ...jsonLdContext,
     'hyper:valueSchema': { '@type': '@id' },
     'hyper:instanceSchema': { '@type': '@id' },
     'hyper:expectedBody': { '@type': '@id' },

@@ -1,4 +1,4 @@
-import { Cardinality, HttpMethod, jsonLdContext, Profile, valueSchema, xsd } from '@hypercontract/profile';
+import { Cardinality, HttpMethod, jsonLdHyperContext, Profile, valueSchema, xsd } from '@hypercontract/profile';
 import { flatten, trimEnd } from 'lodash';
 import { getApiRootBaseUri } from '../routing';
 import { prefixes, shop } from './namespaces';
@@ -8,7 +8,7 @@ export const profile: Profile = {
     uri: trimEnd(shop(''), '/'),
     defaultNamespace: shop(''),
     prefixes,
-    jsonLdContext,
+    jsonLdContext: jsonLdHyperContext,
     graph: flatten([
         shopEntryPoint(getApiRootBaseUri(), 'ApiRoot', {
             label: 'hypershop',
