@@ -1,4 +1,4 @@
-import { JsonLdContext, Prefixes, Profile } from '@hypercontract/profile';
+import { JsonLdContext, Prefixes, Profile, rdf } from '@hypercontract/profile';
 import { defaultTo, isEmpty, memoize } from 'lodash';
 import { N3Store, Store } from 'n3';
 
@@ -32,14 +32,28 @@ export class ProfileStore {
         ];
     }
 
+    getAllByType(typeUri: string) {
+        return this.getSubjects(rdf('type'), typeUri);
+    }
+
     getSubject(predicate: string, object: string) {
-        const quads = this.store.getQuads(null, predicate, object, null);
-        return isEmpty(quads) ? null : quads[0].subject.value;
+        const subjects = this.getSubjects(predicate, object);
+        return isEmpty(subjects) ? null : subjects[0];
+    }
+
+    getSubjects(predicate: string, object: string) {
+        return this.store.getQuads(null, predicate, object, null)
+            .map(quad => quad.subject.value);
     }
 
     getObject(subject: string, predicate: string) {
-        const quads = this.store.getQuads(subject, predicate, null, null);
-        return isEmpty(quads) ? null : quads[0].object.value;
+        const objects = this.getObjects(subject, predicate);
+        return isEmpty(objects) ? null : objects[0];
+    }
+
+    getObjects(subject: string, predicate: string) {
+        return this.store.getQuads(subject, predicate, null, null)
+            .map(quad => quad.object.value);
     }
 }
 

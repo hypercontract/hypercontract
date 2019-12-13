@@ -1,7 +1,7 @@
 import { RdfDocument } from '@hypercontract/profile';
 import { Response } from 'express';
 import { compact, fromRDF } from 'jsonld';
-import { Handler } from './handler';
+import { Handler } from '../handler';
 
 export const toJsonLd: Handler = async (
     response: Response,

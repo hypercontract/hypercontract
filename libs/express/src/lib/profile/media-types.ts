@@ -1,4 +1,5 @@
 export enum MediaType {
+    HTML = 'text/html',
     JsonLd = 'application/ld+json',
     RdfXml = 'application/rdf+xml',
     Turtle = 'text/turtle',

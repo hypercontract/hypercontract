@@ -1,8 +1,8 @@
 import { namedNode } from '@rdfjs/data-model';
 import { hyper, rdf } from '../namespaces';
 import { Concept } from './concept';
+import { conceptClass } from './concept-class';
 import { toQuads } from './quad';
-import { conceptClass } from './resource-class';
 
 export interface EntryPoint extends Concept {}
 

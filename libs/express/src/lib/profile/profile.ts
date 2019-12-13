@@ -5,10 +5,11 @@ import { Quad } from 'rdf-js';
 import { handleNotAcceptable, handleNotFound } from '../error';
 import { ProfileStore } from '../profile-store';
 import { getRequestUri } from '../request';
-import { toJsonLd } from './jsonld';
+import { toHtml } from './html/html';
 import { MediaType } from './media-types';
-import { toNQuads, toNTriples, toTriG, toTurtle } from './n3';
-import { toRdfXml } from './rdflib';
+import { toJsonLd } from './rdf/jsonld';
+import { toNQuads, toNTriples, toTriG, toTurtle } from './rdf/n3';
+import { toRdfXml } from './rdf/rdflib';
 
 const normalize = (uri: string) => trimEnd(uri, '/');
 
@@ -30,7 +31,7 @@ export function handleProfileRequest(request: Request, response: Response, profi
             profileStore.getAll(),
             profileStore
         ),
-        profileStore.profileUri
+        profileStore
     );
 }
 
@@ -43,11 +44,11 @@ export function handleConceptRequest(request: Request, response: Response, profi
             profileStore.getAllAbout(requestUri),
             profileStore
         ),
-        profileStore.profileUri
+        profileStore
     );
 }
 
-function handleRequest(response: Response, rdfDocument: RdfDocument, profileUri: string) {
+function handleRequest(response: Response, rdfDocument: RdfDocument, profileStore: ProfileStore) {
     if (isEmpty(rdfDocument.graph)) {
         return handleNotFound(response);
     }
@@ -59,7 +60,8 @@ function handleRequest(response: Response, rdfDocument: RdfDocument, profileUri:
         [MediaType.NTriples]: () => toNTriples(response, rdfDocument),
         [MediaType.NQuads]: () => toNQuads(response, rdfDocument),
         [MediaType.TriG]: () => toTriG(response, rdfDocument),
-        default: () => handleNotAcceptable(response, values(MediaType), [profileUri])
+        html: () => toHtml(response, profileStore),
+        default: () => handleNotAcceptable(response, values(MediaType), [profileStore.profileUri])
     });
 }
 

@@ -14,7 +14,7 @@ export const profile: Profile = {
     graph: flatten([
         shopProfile(profileUri, {
             label: 'hypershop API',
-            description: 'This an example of how to describe a RESTful Web API with RDF and hypercontract.'
+            description: 'A RESTful Web API described with RDF and hypercontract.'
         }),
         shopEntryPoint(getApiRootBaseUri(), 'ApiRoot', {
             label: 'hypershop',
@@ -378,9 +378,9 @@ export const profile: Profile = {
             ],
             cardinality: Cardinality.ZeroOrMore
         }),
-        shopStateTransition('paymentOption', {
-            label: 'payment option',
-            description: 'A reference to a Payment Option in a User Profile.',
+        shopStateTransition('paymentOptions', {
+            label: 'payment options',
+            description: 'A reference to all Payment Options in a User Profile.',
             domain: [
                 shop('UserProfile')
             ],

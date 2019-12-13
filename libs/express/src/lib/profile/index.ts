@@ -1,3 +1,4 @@
-export { toJsonLd } from './jsonld';
-export { toNQuads, toNTriples, toTriG, toTurtle } from './n3';
-export { toRdfXml } from './rdflib';
+export { toJsonLd } from './rdf/jsonld';
+export { toNQuads, toNTriples, toTriG, toTurtle } from './rdf/n3';
+export { toRdfXml } from './rdf/rdflib';
+

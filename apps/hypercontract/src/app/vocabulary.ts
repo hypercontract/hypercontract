@@ -18,6 +18,10 @@ export const vocabulary: RdfDocument = {
             label: 'Entry Point',
             description: 'Instances of this class serve as entry points to the API. The URI of the instance is also the URL of the resource.'
         }),
+        hyperClass('StateTransition', {
+            label: 'State Transition',
+            description: 'A link relation type that describes a state transition. Unsafe state transitions must also be defined as an Operation.'
+        }),
         hyperClass('Operation', {
             label: 'Operation',
             description: 'Either an unsafe state transition or a safe state transition that expects certain query params or has a returned type different from the rdfs:range value of the propery describing the state transition.'

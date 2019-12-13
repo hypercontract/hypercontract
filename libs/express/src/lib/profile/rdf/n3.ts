@@ -1,8 +1,8 @@
 import { RdfDocument } from '@hypercontract/profile';
 import { Response } from 'express';
 import { Writer } from 'n3';
-import { handleInternalServerError } from '../error';
-import { Handler } from './handler';
+import { handleInternalServerError } from '../../error';
+import { Handler } from '../handler';
 
 function createN3Writer(format: string): Handler {
     return (
