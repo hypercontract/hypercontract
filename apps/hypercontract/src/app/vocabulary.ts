@@ -1,7 +1,8 @@
-import { concept, Concept, hyper, jsonLdContext, prefixes, RdfDocument } from '@hypercontract/profile';
+import { Cardinality, hyper, jsonLdContext, owl, prefixes, RdfDocument, rdfs, resourceClass, ResourceClass, resourceProperty, ResourceProperty, xsd } from '@hypercontract/profile';
 import { flatten, trimEnd } from 'lodash';
 
-const hyperConcept = (name: string, definition: Concept) => concept(hyper(name), definition);
+const hyperClass = (name: string, definition: ResourceClass) => resourceClass(hyper(name), definition);
+const hyperProperty = (name: string, definition: ResourceProperty) => resourceProperty(hyper(name), definition);
 
 export const vocabulary: RdfDocument = {
     uri: trimEnd(hyper(''), '/'),
@@ -9,57 +10,84 @@ export const vocabulary: RdfDocument = {
     prefixes,
     jsonLdContext,
     graph: flatten([
-        hyperConcept('schemaType', {
-            label: 'schemaType',
-            description: 'schemaType schemaType schemaType'
+        hyperClass('EntryPoint', {
+            label: 'Entry Point',
+            description: 'Instances of this class serve as entry points to the API. The URI of the instance is also the URL of the resource.'
         }),
-        hyperConcept('EntryPoint', {
-            label: 'EntryPoint',
-            description: 'EntryPoint EntryPoint EntryPoint'
-        }),
-        hyperConcept('Operation', {
+        hyperClass('Operation', {
             label: 'Operation',
-            description: 'Operation Operation Operation'
+            description: 'Either an unsafe state transition or a safe state transition that expects certain query params or has a returned type different from the rdfs:range value of the propery describing the state transition.'
         }),
-        hyperConcept('method', {
+        hyperProperty('method', {
             label: 'method',
-            description: 'method method method'
+            description: 'The HTTP method of the Operation request (e.g. POST).',
+            domain: [hyper('Operation')],
+            range: [xsd('string')]
         }),
-        hyperConcept('returnedType', {
-            label: 'returnedType',
-            description: 'returnedType returnedType returnedType'
+        hyperProperty('returnedType', {
+            label: 'returned type',
+            description: 'The type of representation returned as a result of the Operation. When the Operation redirects to another resource, this type may differ from the rdfs:range value of the property describing the state transition.',
+            domain: [hyper('Operation')],
+            range: [rdfs('Class')],
+            type: owl('ObjectProperty'),
+            cardinality: Cardinality.OneOrMore
         }),
-        hyperConcept('expectedBody', {
-            label: 'expectedBody',
-            description: 'expectedBody expectedBody expectedBody'
+        hyperProperty('expectedBody', {
+            label: 'expected body',
+            description: 'The type of representation expected in the request body of the Operation request.',
+            domain: [hyper('Operation')],
+            range: [rdfs('Class')],
+            type: owl('ObjectProperty'),
+            cardinality: Cardinality.OneOrMore
         }),
-        hyperConcept('expectedQueryParams', {
-            label: 'expectedQueryParams',
-            description: 'expectedQueryParams expectedQueryParams expectedQueryParams'
+        hyperProperty('expectedQueryParams', {
+            label: 'expected query parameters',
+            description: 'The type that describes the query parameters of the Operation request.',
+            domain: [hyper('Operation')],
+            range: [rdfs('Class')],
+            type: owl('ObjectProperty'),
+            cardinality: Cardinality.OneOrMore
         }),
-        hyperConcept('constraint', {
+        hyperProperty('constraint', {
             label: 'constraint',
-            description: 'constraint constraint constraint'
+            description: 'The constraints defined for the Operation.',
+            domain: [hyper('Operation')],
+            range: [hyper('Precondition')],
+            cardinality: Cardinality.ZeroOrMore
         }),
-        hyperConcept('Precondition', {
+        hyperClass('Precondition', {
             label: 'Precondition',
-            description: 'Precondition Precondition Precondition'
+            description: 'A precondition that needs to be met before the Operation can be performed.'
         }),
-        hyperConcept('instanceSchema', {
-            label: 'instanceSchema',
-            description: 'instanceSchema instanceSchema instanceSchema'
+        hyperProperty('instanceSchema', {
+            label: 'instance schema',
+            description: 'The Schemas that describe the serialization of a class instance.',
+            domain: [rdfs('Class')],
+            range: [hyper('Schema')],
+            cardinality: Cardinality.ZeroOrMore
         }),
-        hyperConcept('Schema', {
+        hyperProperty('valueSchema', {
+            label: 'value schema',
+            description: 'The Schemas that describe the serialization of a property value.',
+            domain: [rdfs('Property')],
+            range: [hyper('Schema')],
+            cardinality: Cardinality.ZeroOrMore
+        }),
+        hyperClass('Schema', {
             label: 'Schema',
-            description: 'Schema Schema Schema'
+            description: 'A schema that describes the serialization of a class instance or property value for a specified target format.'
         }),
-        hyperConcept('targetType', {
-            label: 'targetType',
-            description: 'targetType targetType targetType'
+        hyperProperty('schemaType', {
+            label: 'schema type',
+            description: 'The media type of the schema definition (e.g. application/schema+json).',
+            domain: [hyper('Schema')],
+            range: [xsd('string')]
         }),
-        hyperConcept('valueSchema', {
-            label: 'valueSchema',
-            description: 'valueSchema valueSchema valueSchema'
+        hyperProperty('targetType', {
+            label: 'target type',
+            description: 'The media type of the serialization that the Schema describes (e.g. application/json).',
+            domain: [hyper('Schema')],
+            range: [xsd('string')]
         })
     ])
 };
