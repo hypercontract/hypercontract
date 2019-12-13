@@ -1,0 +1,1314 @@
+{
+	"info": {
+		"_postman_id": "047dbc5e-f733-4382-8e84-4875a111c5bc",
+		"name": "hypercontract JSON-HAL",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Check API Root",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e046aeed-fb81-402c-a870-e19dc1c9b9c1",
+						"exec": [
+							"var defaultContentType = postman.getEnvironmentVariable('defaultContentType');",
+							"var defaultContentTypeRegExp = postman.getEnvironmentVariable('defaultContentTypeRegExp');",
+							"var baseUrl = postman.getEnvironmentVariable('baseUrl');",
+							"var nsUri = postman.getEnvironmentVariable('nsUri');",
+							"var apiRoot = JSON.parse(responseBody);",
+							"",
+							"var selfLink = apiRoot._links.self.href;",
+							"var searchCatalogLink = apiRoot._links[nsUri + 'searchCatalog'].href;",
+							"var shoppingCartLink = apiRoot._links[nsUri + 'shoppingCart'].href;",
+							"var ordersLink = apiRoot._links[nsUri + 'orderHistory'].href;",
+							"var userProfileLink = apiRoot._links[nsUri + 'userProfile'].href;",
+							"",
+							"tests['status code is 200 OK'] = responseCode.code === 200;",
+							"tests['Content-Type header is ' + defaultContentType] = postman.getResponseHeader('Content-Type').match(defaultContentTypeRegExp);",
+							"// tests['response body contains the API version'] = apiRoot.version === '1.0';",
+							"tests['response body contains self link'] = selfLink === baseUrl;",
+							"tests['response body contains link to search catalog'] = searchCatalogLink === baseUrl + 'products/{?queryString}';",
+							"tests['response body contains link to shopping cart'] = shoppingCartLink === baseUrl + 'shoppingCart/';",
+							"tests['response body contains link to order history'] = ordersLink === baseUrl + 'orders/';",
+							"tests['response body contains link to user profile'] = userProfileLink === baseUrl + 'userProfile/';",
+							"",
+							"postman.setEnvironmentVariable('apiRootLink', selfLink);",
+							"postman.setEnvironmentVariable('searchCatalogLink', searchCatalogLink.replace('{?queryString}', '?queryString=pizza'));",
+							"postman.setEnvironmentVariable('shoppingCartLink', shoppingCartLink);",
+							"postman.setEnvironmentVariable('ordersLink', ordersLink);",
+							"postman.setEnvironmentVariable('userProfileLink', userProfileLink);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "61ac6996-078e-4867-9810-32c61b3d4eb9",
+						"exec": [
+							"postman.clearEnvironmentVariables();",
+							"",
+							"var baseUrl = postman.getGlobalVariable('baseUrl');",
+							"",
+							"var nsUri = baseUrl + 'profile/';",
+							"var mediaType = 'application/hal+json'; // ;profile=\"' + nsUri + '\"';",
+							"",
+							"var mediaTypeRegExp = _.escapeRegExp(mediaType).split(';').join('(.*)');",
+							"",
+							"postman.setEnvironmentVariable('defaultAccept', mediaType);",
+							"postman.setEnvironmentVariable('defaultContentType', mediaType);",
+							"postman.setEnvironmentVariable('defaultContentTypeRegExp', mediaTypeRegExp);",
+							"postman.setEnvironmentVariable('baseUrl', baseUrl);",
+							"postman.setEnvironmentVariable('nsUri', nsUri);",
+							"",
+							"var linksSchema = {",
+							"    type: 'object',",
+							"    properties: {",
+							"        self: {",
+							"            type: 'object',",
+							"            properties: {",
+							"                href: {",
+							"                    type: 'string'",
+							"                }",
+							"            }",
+							"        }",
+							"    },",
+							"    required: [",
+							"        'self'",
+							"    ]",
+							"};",
+							"",
+							"postman.setEnvironmentVariable('productsSchema', JSON.stringify({",
+							"    type: 'object',",
+							"    properties: {",
+							"        _embedded: {",
+							"            type: 'object',",
+							"            properties: {",
+							"                [nsUri + 'products']: {",
+							"                    type: 'array',",
+							"                    items: {",
+							"                        type: 'object',",
+							"                        properties: {",
+							"                            name: {",
+							"                                type: 'string'",
+							"                            },",
+							"                            description: {",
+							"                                type: 'string'",
+							"                            },",
+							"                            price: {",
+							"                                type: 'number'",
+							"                            },",
+							"                            _links: linksSchema",
+							"                        },",
+							"                        additionalProperties: false,",
+							"                        required: [",
+							"                            'name',",
+							"                            'description',",
+							"                            'price',",
+							"                            '_links'",
+							"                        ]",
+							"                    }",
+							"                }",
+							"            },",
+							"            additionalProperties: false,",
+							"            required: [",
+							"                nsUri + 'products'",
+							"            ]",
+							"        },",
+							"        _links: linksSchema",
+							"    },",
+							"    additionalProperties: false,",
+							"    required: [",
+							"        '_embedded',",
+							"        '_links'",
+							"    ]",
+							"}));",
+							"",
+							"postman.setEnvironmentVariable('shoppingCartSchema', JSON.stringify({",
+							"    type: 'object',",
+							"    properties: {",
+							"        totalPrice: {",
+							"            type: 'number'",
+							"        },",
+							"        _embedded: {",
+							"            type: 'object',",
+							"            properties: {",
+							"                [nsUri + 'items']: {",
+							"                    type: 'array',",
+							"                    items: {",
+							"                        type: 'object',",
+							"                        properties: {",
+							"                            name: {",
+							"                                type: 'string'",
+							"                            },",
+							"                            description: {",
+							"                                type: 'string'",
+							"                            },",
+							"                            price: {",
+							"                                type: 'number'",
+							"                            },",
+							"                            quantity: {",
+							"                                type: 'number'",
+							"                            },",
+							"                            _links: linksSchema",
+							"                        },",
+							"                        additionalProperties: false,",
+							"                        required: [",
+							"                            'name',",
+							"                            'description',",
+							"                            'price',",
+							"                            'quantity',",
+							"                            '_links'",
+							"                        ]",
+							"                    }",
+							"                }",
+							"            },",
+							"            additionalProperties: false,",
+							"            required: [",
+							"                nsUri + 'items'",
+							"            ]",
+							"        },",
+							"        _links: linksSchema",
+							"    },",
+							"    additionalProperties: false,",
+							"    required: [",
+							"        'totalPrice',",
+							"        '_embedded',",
+							"        '_links'",
+							"    ]",
+							"}));",
+							"",
+							"postman.setEnvironmentVariable('userProfileSchema', JSON.stringify({",
+							"    type: 'object',",
+							"    properties: {",
+							"        _embedded: {",
+							"            type: 'object',",
+							"            properties: {",
+							"                [nsUri + 'paymentOptions']: {",
+							"                    type: 'array',",
+							"                    items: {",
+							"                        type: 'object',",
+							"                        properties: {",
+							"                            accountOwner: {",
+							"                                type: 'string'",
+							"                            },",
+							"                            iban: {",
+							"                                type: 'string'",
+							"                            },",
+							"                            bic: {",
+							"                                type: 'string'",
+							"                            },",
+							"                            _links: linksSchema",
+							"                        },",
+							"                        additionalProperties: false,",
+							"                        required: [",
+							"                            'accountOwner',",
+							"                            'iban',",
+							"                            'bic',",
+							"                            '_links'",
+							"                        ]",
+							"                    }",
+							"                },",
+							"                [nsUri + 'addresses']: {",
+							"                    type: 'array',",
+							"                    items: {",
+							"                        type: 'object',",
+							"                        properties: {",
+							"                            name: {",
+							"                                type: 'string'",
+							"                            },",
+							"                            street: {",
+							"                                type: 'string'",
+							"                            },",
+							"                            zipCode: {",
+							"                                type: 'string'",
+							"                            },",
+							"                            city: {",
+							"                                type: 'string'",
+							"                            },",
+							"                            country: {",
+							"                                type: 'string'",
+							"                            },",
+							"                            _links: linksSchema",
+							"                        },",
+							"                        additionalProperties: false,",
+							"                        required: [",
+							"                            'name',",
+							"                            'street',",
+							"                            'zipCode',",
+							"                            'city',",
+							"                            'country',",
+							"                            '_links'",
+							"                        ]",
+							"                    }",
+							"                },",
+							"            },",
+							"            additionalProperties: false,",
+							"            required: [",
+							"                nsUri + 'paymentOptions',",
+							"                nsUri + 'addresses'",
+							"            ]",
+							"        },",
+							"        _links: linksSchema",
+							"    },",
+							"    additionalProperties: false,",
+							"    required: [",
+							"        '_embedded',",
+							"        '_links'",
+							"    ]",
+							"}));",
+							"",
+							"postman.setEnvironmentVariable('orderSchema', JSON.stringify({",
+							"    type: 'object',",
+							"    properties: {",
+							"        date: {",
+							"            type: 'string'",
+							"        },",
+							"        status: {",
+							"            type: 'string',",
+							"            enum: [",
+							"                'Cancelled',",
+							"                'Delivered',",
+							"                'InTransit',",
+							"                'PaymentDue',",
+							"                'PickupAvailable',",
+							"                'Problem',",
+							"                'Processing',",
+							"                'Returned'",
+							"            ]",
+							"        },",
+							"        items: {",
+							"            type: 'array',",
+							"            items: {",
+							"                type: 'object',",
+							"                properties: {",
+							"                    'name': {",
+							"                        type: 'string'",
+							"                    },",
+							"                    'description': {",
+							"                        type: 'string'",
+							"                    },",
+							"                    'price': {",
+							"                        type: 'number'",
+							"                    },",
+							"                    'quantity': {",
+							"                        type: 'number'",
+							"                    },",
+							"                    'product': {",
+							"                        type: 'string'",
+							"                    },",
+							"                },",
+							"                additionalProperties: false,",
+							"                required: [",
+							"                    'name',",
+							"                    'description',",
+							"                    'price',",
+							"                    'quantity',",
+							"                    'product'",
+							"                ]",
+							"            }",
+							"        },",
+							"        billingAddress: {",
+							"            type: 'object',",
+							"            properties: {",
+							"                name: {",
+							"                    type: 'string'",
+							"                },",
+							"                street: {",
+							"                    type: 'string'",
+							"                },",
+							"                zipCode: {",
+							"                    type: 'string'",
+							"                },",
+							"                city: {",
+							"                    type: 'string'",
+							"                },",
+							"                country: {",
+							"                    type: 'string'",
+							"                }",
+							"            },",
+							"            additionalProperties: false,",
+							"            required: [",
+							"                'name',",
+							"                'street',",
+							"                'zipCode',",
+							"                'city',",
+							"                'country'",
+							"            ]",
+							"        },",
+							"        shippingAddress: {",
+							"            type: 'object',",
+							"            properties: {",
+							"                name: {",
+							"                    type: 'string'",
+							"                },",
+							"                street: {",
+							"                    type: 'string'",
+							"                },",
+							"                zipCode: {",
+							"                    type: 'string'",
+							"                },",
+							"                city: {",
+							"                    type: 'string'",
+							"                },",
+							"                country: {",
+							"                    type: 'string'",
+							"                }",
+							"            },",
+							"            additionalProperties: false,",
+							"            required: [",
+							"                'name',",
+							"                'street',",
+							"                'zipCode',",
+							"                'city',",
+							"                'country'",
+							"            ]",
+							"        },",
+							"        payment: {",
+							"            type: 'object',",
+							"            properties: {",
+							"                accountOwner: {",
+							"                    type: 'string'",
+							"                },",
+							"                iban: {",
+							"                    type: 'string'",
+							"                },",
+							"                bic: {",
+							"                    type: 'string'",
+							"                },",
+							"            },",
+							"            additionalProperties: false,",
+							"            required: [",
+							"                'accountOwner',",
+							"                'iban',",
+							"                'bic'",
+							"            ]",
+							"        },",
+							"        _links: linksSchema",
+							"    },",
+							"    additionalProperties: false,",
+							"    required: [",
+							"        'date',",
+							"        'items',",
+							"        'billingAddress',",
+							"        'shippingAddress',",
+							"        'payment',",
+							"        '_links'",
+							"    ]",
+							"}));",
+							"",
+							"postman.setEnvironmentVariable('ordersSchema', JSON.stringify({",
+							"    type: 'object',",
+							"    properties: {",
+							"        _embedded: {",
+							"            type: 'object',",
+							"            properties: {",
+							"                [nsUri + 'orders']: {",
+							"                    type: 'array',",
+							"                    items: JSON.parse(postman.getEnvironmentVariable('orderSchema'))",
+							"                }",
+							"            },",
+							"            additionalProperties: false,",
+							"            required: [",
+							"                nsUri + 'orders'",
+							"            ]",
+							"        },",
+							"        _links: linksSchema",
+							"    },",
+							"    additionalProperties: false,",
+							"    required: [",
+							"        '_embedded',",
+							"        '_links'",
+							"    ]",
+							"}));",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{defaultAccept}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}",
+					"host": [
+						"{{baseUrl}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View empty Shopping Cart",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1f1d1995-48e1-4d88-ab2e-af727027f34d",
+						"exec": [
+							"var schema = JSON.parse(postman.getEnvironmentVariable('shoppingCartSchema'));",
+							"var defaultContentType = postman.getEnvironmentVariable('defaultContentType');",
+							"var defaultContentTypeRegExp = postman.getEnvironmentVariable('defaultContentTypeRegExp');",
+							"var baseUrl = postman.getEnvironmentVariable('baseUrl');",
+							"var nsUri = postman.getEnvironmentVariable('nsUri');",
+							"var shoppingCart = JSON.parse(responseBody);",
+							"",
+							"var selfLink = shoppingCart._links.self.href;",
+							"var shoppingCartItemList = shoppingCart._embedded[nsUri + 'items'];",
+							"",
+							"tests['status code is 200 OK'] = responseCode.code === 200;",
+							"tests['Content-Type header is ' + defaultContentType] = postman.getResponseHeader('Content-Type').match(defaultContentTypeRegExp);",
+							"// tests['response body is a shopping cart'] = tv4.validate(shoppingCart, schema);",
+							"tests['response body contains no shopping cart items'] = shoppingCartItemList.length === 0;",
+							"tests['response body contains self link'] = selfLink === baseUrl + 'shoppingCart/';",
+							"tests['response body contains no place order link'] = _.isUndefined(shoppingCart._links[nsUri + 'placeOrder']);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{defaultAccept}}"
+					}
+				],
+				"url": {
+					"raw": "{{shoppingCartLink}}",
+					"host": [
+						"{{shoppingCartLink}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Catalog for Products",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e1f67d1d-ff74-4223-87e2-dd6f96a83e42",
+						"exec": [
+							"var schema = JSON.parse(postman.getEnvironmentVariable('productsSchema'));",
+							"var defaultContentType = postman.getEnvironmentVariable('defaultContentType');",
+							"var defaultContentTypeRegExp = postman.getEnvironmentVariable('defaultContentTypeRegExp');",
+							"var baseUrl = postman.getEnvironmentVariable('baseUrl');",
+							"var nsUri = postman.getEnvironmentVariable('nsUri');",
+							"var products = JSON.parse(responseBody);",
+							"",
+							"var selfLink = products._links.self.href;",
+							"var productList = products._embedded[nsUri + 'products'];",
+							"",
+							"tests['status code is 200 OK'] = responseCode.code === 200;",
+							"tests['Content-Type header is ' + defaultContentType] = postman.getResponseHeader('Content-Type').match(defaultContentTypeRegExp);",
+							"// tests['response body is a list of products'] = tv4.validate(products, schema);",
+							"tests['response body contains at least 2 products'] = productList.length >= 2;",
+							"tests['response body contains self link'] = selfLink === baseUrl + 'products/?queryString=pizza';",
+							"",
+							"var allProductsHaveSelfLink = true;",
+							"var allProductsHaveSCLink = true;",
+							"var allProductsHaveImageLink = true;",
+							"",
+							"var addToShoppingCartLinks = [];",
+							"",
+							"productList.forEach(function (product) {",
+							"    var productHasSelfLink = product._links.self.href.match(baseUrl + 'products/.*/');",
+							"    ",
+							"    var addToShoppingCartLink = product._links[nsUri + 'addToShoppingCart'].href;",
+							"    var productHasSCLink = addToShoppingCartLink === baseUrl + 'shoppingCart/items/';",
+							"    ",
+							"    addToShoppingCartLinks.push(addToShoppingCartLink);",
+							"    ",
+							"    var productHasImageLink = _.startsWith(product._links[nsUri + 'image'].href, 'http');",
+							"    ",
+							"    allProductsHaveSelfLink = allProductsHaveSelfLink && productHasSelfLink;",
+							"    allProductsHaveSCLink = allProductsHaveSCLink && productHasSCLink;",
+							"    allProductsHaveImageLink = allProductsHaveImageLink && productHasImageLink;",
+							"});",
+							"",
+							"tests['all products have self link'] = allProductsHaveSelfLink;",
+							"tests['all products have add to shopping cart link'] = allProductsHaveSCLink;",
+							"tests['all products have image link'] = allProductsHaveImageLink;",
+							"",
+							"postman.setEnvironmentVariable(\"addToShoppingCartLink1\", addToShoppingCartLinks[0]);",
+							"postman.setEnvironmentVariable(\"addToShoppingCartLink2\", addToShoppingCartLinks[1]);",
+							"",
+							"postman.setEnvironmentVariable(\"productUri1\", productList[0]._links.self.href);",
+							"postman.setEnvironmentVariable(\"productUri2\", productList[1]._links.self.href);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{defaultAccept}}"
+					}
+				],
+				"url": {
+					"raw": "{{searchCatalogLink}}",
+					"host": [
+						"{{searchCatalogLink}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Product to Shopping Cart #1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var baseUrl = postman.getEnvironmentVariable('baseUrl');\r",
+							"\r",
+							"tests['status code is 201 Created'] = responseCode.code === 201;\r",
+							"tests['Location header redirects to /shoppingCart'] = postman.getResponseHeader('Location') === baseUrl + 'shoppingCart/'; \r",
+							"tests['response body is empty'] = responseBody === '';\r",
+							"\r",
+							"postman.setEnvironmentVariable('shoppingCartLink', postman.getResponseHeader('Location'));\r",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{defaultAccept}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "{{defaultContentType}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"product\": \"{{productUri1}}\",\n\t\"quantity\": 1\n}"
+				},
+				"url": {
+					"raw": "{{addToShoppingCartLink1}}",
+					"host": [
+						"{{addToShoppingCartLink1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Product to Shopping Cart #2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var baseUrl = postman.getEnvironmentVariable('baseUrl');\r",
+							"\r",
+							"tests['status code is 201 Created'] = responseCode.code === 201;\r",
+							"tests['Location header redirects to /shoppingCart'] = postman.getResponseHeader('Location') === baseUrl + 'shoppingCart/'; \r",
+							"tests['response body is empty'] = responseBody === '';\r",
+							"\r",
+							"postman.setEnvironmentVariable('shoppingCartLink', postman.getResponseHeader('Location'));\r",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{defaultAccept}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "{{defaultContentType}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"product\": \"{{productUri2}}\",\n\t\"quantity\": 1\n}"
+				},
+				"url": {
+					"raw": "{{addToShoppingCartLink2}}",
+					"host": [
+						"{{addToShoppingCartLink2}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View Shopping Cart",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9df9ee35-1716-4343-91a0-da3a37fa9058",
+						"exec": [
+							"var schema = JSON.parse(postman.getEnvironmentVariable('shoppingCartSchema'));",
+							"var defaultContentType = postman.getEnvironmentVariable('defaultContentType');",
+							"var defaultContentTypeRegExp = postman.getEnvironmentVariable('defaultContentTypeRegExp');",
+							"var baseUrl = postman.getEnvironmentVariable('baseUrl');",
+							"var nsUri = postman.getEnvironmentVariable('nsUri');",
+							"var shoppingCart = JSON.parse(responseBody);",
+							"",
+							"var selfLink = shoppingCart._links.self.href;",
+							"var shoppingCartItemList = shoppingCart._embedded[nsUri + 'items'];",
+							"var placeOrderLink = shoppingCart._links[nsUri + 'placeOrder'].href;",
+							"",
+							"tests['status code is 200 OK'] = responseCode.code === 200;",
+							"tests['Content-Type header is ' + defaultContentType] = postman.getResponseHeader('Content-Type').match(defaultContentTypeRegExp);",
+							"// tests['response body is a shopping cart'] = tv4.validate(shoppingCart, schema);",
+							"tests['response body contains exactly 2 shopping cart items'] = shoppingCartItemList.length === 2;",
+							"tests['response body contains self link'] = selfLink === baseUrl + 'shoppingCart/';",
+							"tests['response body contains place order link'] = placeOrderLink.match(baseUrl + 'orders/');",
+							"",
+							"var allItemsHaveSelfLink = true;",
+							"var allItemsHaveUpdateLink = true;",
+							"var allItemsHaveRemoveLink = true;",
+							"var allItemsHaveProductLink = true;",
+							"",
+							"var updateQuantityLinks = [];",
+							"var removeLinks = [];",
+							"",
+							"shoppingCartItemList.forEach(function (item) {",
+							"    var itemHasSelfLink = item._links.self.href.match(baseUrl + 'shoppingCart/items/.*/');",
+							"    ",
+							"    var updateQuantityLink = item._links[nsUri + 'changeQuantity'].href;",
+							"    var itemHasUpdateLink = updateQuantityLink.match(baseUrl + 'shoppingCart/items/.*/');",
+							"    updateQuantityLinks.push(updateQuantityLink);",
+							"    ",
+							"    var removeLink = item._links[nsUri + 'remove'].href;",
+							"    var itemHasRemoveLink = removeLink.match(baseUrl + 'shoppingCart/items/.*/');",
+							"    removeLinks.push(removeLink);",
+							"    ",
+							"    var itemHasProductLink = item._links[nsUri + 'product'].href.match(baseUrl + 'products/.*/');",
+							"    ",
+							"    allItemsHaveSelfLink = allItemsHaveSelfLink && itemHasSelfLink;",
+							"    allItemsHaveUpdateLink = allItemsHaveUpdateLink && itemHasUpdateLink;",
+							"    allItemsHaveRemoveLink = allItemsHaveRemoveLink && itemHasRemoveLink;",
+							"    allItemsHaveProductLink = allItemsHaveProductLink && itemHasProductLink;",
+							"});",
+							"",
+							"tests['all items have self link'] = allItemsHaveSelfLink;",
+							"tests['all items have update quantity link'] = allItemsHaveUpdateLink;",
+							"tests['all items have remove link'] = allItemsHaveRemoveLink;",
+							"tests['all items have product link'] = allItemsHaveProductLink;",
+							"",
+							"postman.setEnvironmentVariable('shoppingCartItem1UpdateQuantityLink', updateQuantityLinks[0]);",
+							"postman.setEnvironmentVariable('shoppingCartItem2RemoveLink', removeLinks[1]);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{defaultAccept}}"
+					}
+				],
+				"url": {
+					"raw": "{{shoppingCartLink}}",
+					"host": [
+						"{{shoppingCartLink}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update quantity of Shopping Cart Item",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "59daa3af-0dd6-45fd-963c-5fc6e77dcc27",
+						"exec": [
+							"var schema = JSON.parse(postman.getEnvironmentVariable('shoppingCartSchema'));",
+							"var defaultContentType = postman.getEnvironmentVariable('defaultContentType');",
+							"var defaultContentTypeRegExp = postman.getEnvironmentVariable('defaultContentTypeRegExp');",
+							"var baseUrl = postman.getEnvironmentVariable('baseUrl');",
+							"var nsUri = postman.getEnvironmentVariable('nsUri');",
+							"var shoppingCart = JSON.parse(responseBody);",
+							"",
+							"var selfLink = shoppingCart._links.self.href;",
+							"var shoppingCartItemList = shoppingCart._embedded[nsUri + 'items'];",
+							"var placeOrderLink = shoppingCart._links[nsUri + 'placeOrder'].href;",
+							"",
+							"tests['status code is 200 OK'] = responseCode.code === 200;",
+							"tests['Content-Type header is ' + defaultContentType] = postman.getResponseHeader('Content-Type').match(defaultContentTypeRegExp);",
+							"// tests['response body is a shopping cart'] = tv4.validate(shoppingCart, schema);",
+							"tests['response body contains 2 shopping cart items'] = shoppingCartItemList.length === 2;",
+							"tests['first shopping cart item has a quantity of 2'] = shoppingCartItemList[0].quantity === 2;",
+							"tests['response body contains self link'] = selfLink === baseUrl + 'shoppingCart/';",
+							"tests['response body contains place order link'] = placeOrderLink.match(baseUrl + 'orders/');",
+							"",
+							"var allItemsHaveSelfLink = true;",
+							"var allItemsHaveUpdateLink = true;",
+							"var allItemsHaveRemoveLink = true;",
+							"var allItemsHaveProductLink = true;",
+							"",
+							"shoppingCartItemList.forEach(function (item) {",
+							"    var itemHasSelfLink = item._links.self.href.match(baseUrl + 'shoppingCart/items/.*/');",
+							"    var itemHasUpdateLink = item._links[nsUri + 'changeQuantity'].href.match(baseUrl + 'shoppingCart/items/.*/');",
+							"    var itemHasRemoveLink = item._links[nsUri + 'remove'].href.match(baseUrl + 'shoppingCart/items/.*/');",
+							"    ",
+							"    var itemHasProductLink = item._links[nsUri + 'product'].href.match(baseUrl + 'products/.*/');",
+							"",
+							"    allItemsHaveSelfLink = allItemsHaveSelfLink && itemHasSelfLink;",
+							"    allItemsHaveUpdateLink = allItemsHaveUpdateLink && itemHasUpdateLink;",
+							"    allItemsHaveRemoveLink = allItemsHaveRemoveLink && itemHasRemoveLink;",
+							"    allItemsHaveProductLink = allItemsHaveProductLink && itemHasProductLink;",
+							"});",
+							"",
+							"tests['all items have self link'] = allItemsHaveSelfLink;",
+							"tests['all items have update quantity link'] = allItemsHaveUpdateLink;",
+							"tests['all items have remove link'] = allItemsHaveRemoveLink;",
+							"tests['all items have product link'] = allItemsHaveProductLink;",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{defaultAccept}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "{{defaultContentType}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"quantity\": 2\n}"
+				},
+				"url": {
+					"raw": "{{shoppingCartItem1UpdateQuantityLink}}",
+					"host": [
+						"{{shoppingCartItem1UpdateQuantityLink}}"
+					]
+				},
+				"description": "\t"
+			},
+			"response": []
+		},
+		{
+			"name": "Remove Item from Shopping Cart",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "20425f46-ac4b-43d7-9553-fcb5500e3e12",
+						"exec": [
+							"var schema = JSON.parse(postman.getEnvironmentVariable('shoppingCartSchema'));",
+							"var defaultContentType = postman.getEnvironmentVariable('defaultContentType');",
+							"var defaultContentTypeRegExp = postman.getEnvironmentVariable('defaultContentTypeRegExp');",
+							"var baseUrl = postman.getEnvironmentVariable('baseUrl');",
+							"var nsUri = postman.getEnvironmentVariable('nsUri');",
+							"var shoppingCart = JSON.parse(responseBody);",
+							"",
+							"var selfLink = shoppingCart._links.self.href;",
+							"var shoppingCartItemList = shoppingCart._embedded[nsUri + 'items'];",
+							"var placeOrderLink = shoppingCart._links[nsUri + 'placeOrder'].href;",
+							"",
+							"tests['status code is 200 OK'] = responseCode.code === 200;",
+							"tests['Content-Type header is ' + defaultContentType] = postman.getResponseHeader('Content-Type').match(defaultContentTypeRegExp);",
+							"// tests['response body is a shopping cart'] = tv4.validate(shoppingCart, schema);",
+							"tests['response body contains 1 shopping cart item'] = shoppingCartItemList.length === 1;",
+							"tests['response body contains self link'] = selfLink === baseUrl + 'shoppingCart/';",
+							"tests['response body contains place order link'] = placeOrderLink.match(baseUrl + 'orders/');",
+							"",
+							"var allItemsHaveSelfLink = true;",
+							"var allItemsHaveUpdateLink = true;",
+							"var allItemsHaveRemoveLink = true;",
+							"var allItemsHaveProductLink = true;",
+							"",
+							"shoppingCartItemList.forEach(function (item) {",
+							"    var itemHasSelfLink = item._links.self.href.match(baseUrl + 'shoppingCart/items/.*/');",
+							"    var itemHasUpdateLink = item._links[nsUri + 'changeQuantity'].href.match(baseUrl + 'shoppingCart/items/.*/');",
+							"    var itemHasRemoveLink = item._links[nsUri + 'remove'].href.match(baseUrl + 'shoppingCart/items/.*/');",
+							"    ",
+							"    var itemHasProductLink = item._links[nsUri + 'product'].href.match(baseUrl + 'products/.*/');",
+							"",
+							"    allItemsHaveSelfLink = allItemsHaveSelfLink && itemHasSelfLink;",
+							"    allItemsHaveUpdateLink = allItemsHaveUpdateLink && itemHasUpdateLink;",
+							"    allItemsHaveRemoveLink = allItemsHaveRemoveLink && itemHasRemoveLink;",
+							"    allItemsHaveProductLink = allItemsHaveProductLink && itemHasProductLink;",
+							"});",
+							"",
+							"tests['all items have self link'] = allItemsHaveSelfLink;",
+							"tests['all items have update quantity link'] = allItemsHaveUpdateLink;",
+							"tests['all items have remove link'] = allItemsHaveRemoveLink;",
+							"tests['all items have product link'] = allItemsHaveProductLink;",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{defaultAccept}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\n"
+				},
+				"url": {
+					"raw": "{{shoppingCartItem2RemoveLink}}",
+					"host": [
+						"{{shoppingCartItem2RemoveLink}}"
+					]
+				},
+				"description": "\t"
+			},
+			"response": []
+		},
+		{
+			"name": "View updated Shopping Cart",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "468f1209-2298-42c7-8421-1b93830125ae",
+						"exec": [
+							"var schema = JSON.parse(postman.getEnvironmentVariable('shoppingCartSchema'));",
+							"var defaultContentType = postman.getEnvironmentVariable('defaultContentType');",
+							"var defaultContentTypeRegExp = postman.getEnvironmentVariable('defaultContentTypeRegExp');",
+							"var baseUrl = postman.getEnvironmentVariable('baseUrl');",
+							"var nsUri = postman.getEnvironmentVariable('nsUri');",
+							"var shoppingCart = JSON.parse(responseBody);",
+							"",
+							"var selfLink = shoppingCart._links.self.href;",
+							"var shoppingCartItemList = shoppingCart._embedded[nsUri + 'items'];",
+							"var placeOrderLink = shoppingCart._links[nsUri + 'placeOrder'].href;",
+							"",
+							"tests['status code is 200 OK'] = responseCode.code === 200;",
+							"tests['Content-Type header is ' + defaultContentType] = postman.getResponseHeader('Content-Type').match(defaultContentTypeRegExp);",
+							"// tests['response body is a shopping cart'] = tv4.validate(shoppingCart, schema);",
+							"tests['response body contains 1 shopping cart item'] = shoppingCartItemList.length === 1;",
+							"tests['shopping cart item has a quantity of 2'] = shoppingCartItemList[0].quantity === 2;",
+							"tests['response body contains self link'] = selfLink === baseUrl + 'shoppingCart/';",
+							"tests['response body contains place order link'] = placeOrderLink.match(baseUrl + 'orders/');",
+							"",
+							"var allItemsHaveSelfLink = true;",
+							"var allItemsHaveUpdateLink = true;",
+							"var allItemsHaveRemoveLink = true;",
+							"var allItemsHaveProductLink = true;",
+							"",
+							"shoppingCartItemList.forEach(function (item) {",
+							"    var itemHasSelfLink = item._links.self.href.match(baseUrl + 'shoppingCart/items/.*/');",
+							"    var itemHasUpdateLink = item._links[nsUri + 'changeQuantity'].href.match(baseUrl + 'shoppingCart/items/.*/');",
+							"    var itemHasRemoveLink = item._links[nsUri + 'remove'].href.match(baseUrl + 'shoppingCart/items/.*/');",
+							"    ",
+							"    var itemHasProductLink = item._links[nsUri + 'product'].href.match(baseUrl + 'products/.*/');",
+							"",
+							"    allItemsHaveSelfLink = allItemsHaveSelfLink && itemHasSelfLink;",
+							"    allItemsHaveUpdateLink = allItemsHaveUpdateLink && itemHasUpdateLink;",
+							"    allItemsHaveRemoveLink = allItemsHaveRemoveLink && itemHasRemoveLink;",
+							"    allItemsHaveProductLink = allItemsHaveProductLink && itemHasProductLink;",
+							"});",
+							"",
+							"tests['all items have self link'] = allItemsHaveSelfLink;",
+							"tests['all items have update quantity link'] = allItemsHaveUpdateLink;",
+							"tests['all items have remove link'] = allItemsHaveRemoveLink;",
+							"tests['all items have product link'] = allItemsHaveProductLink;",
+							"",
+							"postman.setEnvironmentVariable('placeOrderLink', placeOrderLink);",
+							"",
+							"postman.setEnvironmentVariable(\"lineItemUris\", JSON.stringify(shoppingCartItemList.map(function (item) {",
+							"    return item._links.self.href;",
+							"})));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{defaultAccept}}"
+					}
+				],
+				"url": {
+					"raw": "{{shoppingCartLink}}",
+					"host": [
+						"{{shoppingCartLink}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Select Billing/Shipping Address, Payment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6f840d7b-e974-4316-b5e0-009f234a38ca",
+						"exec": [
+							"var schema = JSON.parse(postman.getEnvironmentVariable('userProfileSchema'));",
+							"var defaultContentType = postman.getEnvironmentVariable('defaultContentType');",
+							"var defaultContentTypeRegExp = postman.getEnvironmentVariable('defaultContentTypeRegExp');",
+							"var baseUrl = postman.getEnvironmentVariable('baseUrl');",
+							"var nsUri = postman.getEnvironmentVariable('nsUri');",
+							"var userProfile = JSON.parse(responseBody);",
+							"",
+							"var selfLink = userProfile._links.self.href;",
+							"var addressList = userProfile._embedded[nsUri + 'addresses'];",
+							"var paymentOptionList = userProfile._embedded[nsUri + 'paymentOptions'];",
+							"",
+							"tests['status code is 200 OK'] = responseCode.code === 200;",
+							"tests['Content-Type header is ' + defaultContentType] = postman.getResponseHeader('Content-Type').match(defaultContentTypeRegExp);",
+							"// tests['response body is a user profile'] = tv4.validate(userProfile, schema);",
+							"tests['response body contains at least 2 addresses'] = addressList.length >= 2;",
+							"tests['response body contains at least 1 payment option'] = paymentOptionList.length >= 1;",
+							"tests['response body contains self link'] = selfLink === baseUrl + 'userProfile/';",
+							"",
+							"var allAddressesHaveSelfLink = true",
+							"",
+							"addressList.forEach(function (address) {",
+							"    var addressHasSelfLink = address._links.self.href.match(baseUrl + 'userProfile/addresses/.*/');",
+							"    ",
+							"    allAddressesHaveSelfLink = allAddressesHaveSelfLink && addressHasSelfLink;",
+							"});",
+							"",
+							"tests['all addresses have self link'] = allAddressesHaveSelfLink;",
+							"",
+							"var allPaymentOptionsHaveSelfLink = true",
+							"",
+							"paymentOptionList.forEach(function (paymentOption) {",
+							"    var paymentOptionHasSelfLink = paymentOption._links.self.href.match(baseUrl + 'userProfile/paymentOptions/.*/');",
+							"    ",
+							"    allPaymentOptionsHaveSelfLink = allPaymentOptionsHaveSelfLink && paymentOptionHasSelfLink;",
+							"});",
+							"",
+							"tests['all payment options have self link'] = allPaymentOptionsHaveSelfLink;",
+							"",
+							"postman.setEnvironmentVariable(\"paymentUri\", paymentOptionList[0]._links.self.href);",
+							"postman.setEnvironmentVariable(\"billingAddressUri\", addressList[0]._links.self.href);",
+							"postman.setEnvironmentVariable(\"shippingAddressUri\", addressList[1]._links.self.href);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{defaultAccept}}"
+					}
+				],
+				"url": {
+					"raw": "{{userProfileLink}}",
+					"host": [
+						"{{userProfileLink}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Place Order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "11e6135a-8576-4b62-a5c5-ee056bd7d26b",
+						"exec": [
+							"var baseUrl = postman.getEnvironmentVariable('baseUrl');",
+							"",
+							"tests['status code is 201 Created'] = responseCode.code === 201;",
+							"tests['Location header redirects to /orders/{orderId}'] = postman.getResponseHeader('Location').match(baseUrl + 'orders/.*/?');",
+							"tests['response body is empty'] = responseBody === '';",
+							"",
+							"postman.setEnvironmentVariable('orderLink', postman.getResponseHeader('Location'));",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{defaultAccept}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "{{defaultContentType}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"shoppingCartItems\": {{lineItemUris}},\n\t\"billingAddress\": \"{{billingAddressUri}}\",\n\t\"shippingAddress\": \"{{shippingAddressUri}}\",\n\t\"payment\": \"{{paymentUri}}\"\n}"
+				},
+				"url": {
+					"raw": "{{placeOrderLink}}",
+					"host": [
+						"{{placeOrderLink}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View Order status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e22fff97-e392-4553-ad2b-f5f284054387",
+						"exec": [
+							"var schema = JSON.parse(postman.getEnvironmentVariable('orderSchema'));\r",
+							"var defaultContentType = postman.getEnvironmentVariable('defaultContentType');\r",
+							"var defaultContentTypeRegExp = postman.getEnvironmentVariable('defaultContentTypeRegExp');\r",
+							"var baseUrl = postman.getEnvironmentVariable('baseUrl');\r",
+							"var nsUri = postman.getEnvironmentVariable('nsUri');\r",
+							"var order = JSON.parse(responseBody);\r",
+							"\r",
+							"var selfLink = order._links.self.href;\r",
+							"var cancelOrderLink = order._links[nsUri + 'cancel'].href;\r",
+							"\r",
+							"tests['status code is 200 OK'] = responseCode.code === 200;\r",
+							"tests['Content-Type header is ' + defaultContentType] = postman.getResponseHeader('Content-Type').match(defaultContentTypeRegExp);\r",
+							"// tests['response body is a order'] = tv4.validate(order, schema);\r",
+							"tests['response body contains 1 line item'] = order.orderItems.length === 1;\r",
+							"tests['order status is Processing'] = order.orderStatus === 'Processing';\r",
+							"tests['response body contains self link'] = selfLink.match(baseUrl + 'orders/.*/');\r",
+							"tests['response body contains cancel link'] = cancelOrderLink.match(baseUrl + 'orders/.*/');\r",
+							"\r",
+							"postman.setEnvironmentVariable('cancelOrderLink', cancelOrderLink);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{defaultAccept}}"
+					}
+				],
+				"url": {
+					"raw": "{{orderLink}}",
+					"host": [
+						"{{orderLink}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cancel Order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8a6c18b0-e2a3-410f-9cd9-c29ebb27c2f4",
+						"exec": [
+							"var schema = JSON.parse(postman.getEnvironmentVariable('orderSchema'));\r",
+							"var defaultContentType = postman.getEnvironmentVariable('defaultContentType');\r",
+							"var defaultContentTypeRegExp = postman.getEnvironmentVariable('defaultContentTypeRegExp');\r",
+							"var baseUrl = postman.getEnvironmentVariable('baseUrl');\r",
+							"var nsUri = postman.getEnvironmentVariable('nsUri');\r",
+							"var order = JSON.parse(responseBody);\r",
+							"\r",
+							"var selfLink = order._links.self.href;\r",
+							"\r",
+							"tests['status code is 200 OK'] = responseCode.code === 200;\r",
+							"tests['Content-Type header is ' + defaultContentType] = postman.getResponseHeader('Content-Type').match(defaultContentTypeRegExp);\r",
+							"// tests['response body is a order'] = tv4.validate(order, schema);\r",
+							"tests['order status is Cancelled'] = order.orderStatus === 'Cancelled';\r",
+							"tests['cancellation reason is \"meh...\"'] = order.cancellationReason === 'meh...';\r",
+							"tests['response body contains self link'] = selfLink.match(baseUrl + 'orders/.*/');\r",
+							"tests['response body contains no cancel link'] = _.isUndefined(order._links[nsUri + 'cancel']);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{defaultAccept}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"cancellationReason\": \"meh...\"\n}"
+				},
+				"url": {
+					"raw": "{{cancelOrderLink}}",
+					"host": [
+						"{{cancelOrderLink}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View updated Order status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c494a74b-0eff-499d-98c4-b3bc7d5d29b5",
+						"exec": [
+							"var schema = JSON.parse(postman.getEnvironmentVariable('orderSchema'));\r",
+							"var defaultContentType = postman.getEnvironmentVariable('defaultContentType');\r",
+							"var defaultContentTypeRegExp = postman.getEnvironmentVariable('defaultContentTypeRegExp');\r",
+							"var baseUrl = postman.getEnvironmentVariable('baseUrl');\r",
+							"var nsUri = postman.getEnvironmentVariable('nsUri');\r",
+							"var order = JSON.parse(responseBody);\r",
+							"\r",
+							"var selfLink = order._links.self.href;\r",
+							"\r",
+							"tests['status code is 200 OK'] = responseCode.code === 200;\r",
+							"tests['Content-Type header is ' + defaultContentType] = postman.getResponseHeader('Content-Type').match(defaultContentTypeRegExp);\r",
+							"// tests['response body is a order'] = tv4.validate(order, schema);\r",
+							"tests['order status is Cancelled'] = order.orderStatus === 'Cancelled';\r",
+							"tests['response body contains self link'] = selfLink.match(baseUrl + 'orders/.*/');\r",
+							"tests['response body contains no cancel link'] = _.isUndefined(order._links[nsUri + 'cancel']);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{defaultAccept}}"
+					}
+				],
+				"url": {
+					"raw": "{{orderLink}}",
+					"host": [
+						"{{orderLink}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View Orders",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "28235035-3bbb-48c9-97f2-9824bbef0e69",
+						"exec": [
+							"var schema = JSON.parse(postman.getEnvironmentVariable('ordersSchema'));",
+							"var defaultContentType = postman.getEnvironmentVariable('defaultContentType');",
+							"var defaultContentTypeRegExp = postman.getEnvironmentVariable('defaultContentTypeRegExp');",
+							"var baseUrl = postman.getEnvironmentVariable('baseUrl');",
+							"var nsUri = postman.getEnvironmentVariable('nsUri');",
+							"var orders = JSON.parse(responseBody);",
+							"",
+							"var selfLink = orders._links.self.href;",
+							"var orderList = orders._embedded[nsUri + 'orders'];",
+							"",
+							"tests['status code is 200 OK'] = responseCode.code === 200;",
+							"tests['Content-Type header is ' + defaultContentType] = postman.getResponseHeader('Content-Type').match(defaultContentTypeRegExp);",
+							"// tests['response body is a list of orders'] = tv4.validate(orders, schema);",
+							"tests['response body contains at least 1 order'] = orderList.length >= 1;",
+							"tests['response body contains self link'] = selfLink.match(baseUrl + 'orders/');",
+							"",
+							"var allOrdersHaveSelfLink = true;",
+							"var allOpenOrdersHaveCancelLink = true;",
+							"",
+							"orderList.forEach(function (order) {",
+							"    var orderHasSelfLink = order._links.self.href.match(baseUrl + 'orders/.*/');",
+							"    allOrdersHaveSelfLink = allOrdersHaveSelfLink && orderHasSelfLink;",
+							"    ",
+							"    if (['PaymentDue', 'Processing'].includes(order.status)) {",
+							"        var orderHasCancelLink = order._links[nsUri + 'cancel'].href.match(baseUrl + 'orders/.*/');",
+							"        allOpenOrdersHaveCancelLink = allOpenOrdersHaveCancelLink && orderHasCancelLink;",
+							"    }",
+							"    ",
+							"});",
+							"",
+							"tests['all orders have self link'] = allOrdersHaveSelfLink;",
+							"tests['all open orders have cancel link'] = allOpenOrdersHaveCancelLink;",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{defaultAccept}}"
+					}
+				],
+				"url": {
+					"raw": "{{ordersLink}}",
+					"host": [
+						"{{ordersLink}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
