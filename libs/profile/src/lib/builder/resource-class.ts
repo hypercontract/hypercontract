@@ -5,11 +5,11 @@ import { concept, Concept } from './concept';
 import { toQuads } from './quad';
 import { InstanceSchema, instanceSchema } from './schema';
 
-export interface RepresentationClass extends Concept {
+export interface ResourceClass extends Concept {
     schemas?: InstanceSchema[];
 }
 
-export const representationClass = (uri: string, definition: RepresentationClass) => [
+export const resourceClass = (uri: string, definition: ResourceClass) => [
     ...concept(uri, definition),
     ...getInstanceSchemaStatements(uri, definition),
     ...toQuads(
@@ -17,7 +17,7 @@ export const representationClass = (uri: string, definition: RepresentationClass
     )
 ];
 
-function getInstanceSchemaStatements(uri: string, { schemas }: RepresentationClass) {
+function getInstanceSchemaStatements(uri: string, { schemas }: ResourceClass) {
     if (isEmpty(schemas)) {
         return []
     }
