@@ -34,7 +34,7 @@ function getAcceptableProfiles(request: Request) {
 function parseAcceptableProfiles(acceptableProfiles: string): string[] {
     return defaultTo(
         acceptableProfiles.match(/<(.*?)>/g),
-        []
+        [] as string[]
     )
         .map(profileUri => profileUri.replace(/^<(.*?)>$/, '$1'));
 }

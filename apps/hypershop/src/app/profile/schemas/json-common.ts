@@ -29,7 +29,6 @@ export const jsonCommonSchemas: Schema[] = flatten(jsonMediaTypes.map(targetType
         string('productDescription'),
         string('productName'),
         integer('quantity', { minimum: 1 }),
-        string('queryString'),
         empty('shippingAddress', refSchema('ShippingAddress')),
         array('shoppingCartItems', refSchema('ShoppingCartItem'), { minItems: 1 }),
         string('street'),
@@ -43,7 +42,6 @@ export const jsonCommonSchemas: Schema[] = flatten(jsonMediaTypes.map(targetType
         objectWith('OrderItem', ['price', 'productDescription', 'productName', 'quantity']),
         objectWith('Payment', ['accountOwner', 'bic', 'iban']),
         objectWith('QuantityChange', ['quantity']),
-        objectWith('SearchQuery', ['queryString']),
         objectWith('ShippingAddress', ['city', 'country', 'name', 'street', 'zipCode']),
     ];
 }));
