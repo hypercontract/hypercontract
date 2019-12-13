@@ -30,17 +30,17 @@ function toSearchResults(products: Product[]): SearchResults {
 }
 
 function getQueryMatcher(rawQuery: string) {
-    const query = defaultTo(rawQuery, '').toLowerCase();
+    const queryString = defaultTo(rawQuery, '').toLowerCase();
 
     return {
         $where: function (): boolean {
             return (
                 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
                 // @ts-ignore
-                this['productName'].toLowerCase().indexOf(query) > -1 ||
+                this['productName'].toLowerCase().indexOf(queryString) > -1 ||
                 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
                 // @ts-ignore
-                this['productDescription'].toLowerCase().indexOf(query) > -1
+                this['productDescription'].toLowerCase().indexOf(queryString) > -1
             );
         }
     }

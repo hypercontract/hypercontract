@@ -19,18 +19,18 @@ export function getProductsRootUri() {
     return getProductsBaseUri() + getProductsRootPath();
 }
 
-export function getCatalogSearchUri(query?: string) {
+export function getCatalogSearchUri(queryString?: string) {
     const url = new URL(getProductsRootUri());
 
-    if (!isUndefined(query)) {
-        url.searchParams.append('query', query);
+    if (!isUndefined(queryString)) {
+        url.searchParams.append('queryString', queryString);
     }
 
     return url.toString();
 }
 
 export function getCatalogSearchUriTemplate() {
-    return getProductsRootUri() + '{?query}';
+    return getProductsRootUri() + '{?queryString}';
 }
 
 export function getProductPath(id: EntityId | null = null) {
