@@ -1,10 +1,11 @@
 import { Profile } from '@hypercontract/profile';
 import { RequestHandler } from 'express';
+import { negotiateProfile } from './content-negotiation';
 import { getProfileStore } from './profile-store';
 import { handleConceptRequest, handleProfileRequest, isConceptRequest, isProfileRequest } from './profile/profile';
 import { handleSchemaRequest, isSchemaRequest } from './schema';
 
-export function hypercontract(profile: Profile): RequestHandler {
+export function hypercontract(profile: Profile, supportedMediaTypes: string[]): RequestHandler {
     return (request, response, next) => {
         const profileStore = getProfileStore(profile);
 
@@ -20,6 +21,6 @@ export function hypercontract(profile: Profile): RequestHandler {
             return handleConceptRequest(request, response, profileStore);
         }
 
-        next();
+        return negotiateProfile(request, response, next, profileStore, supportedMediaTypes);
     }
 }

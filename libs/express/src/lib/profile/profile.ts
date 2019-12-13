@@ -23,23 +23,31 @@ export function isConceptRequest(request: Request, profileStore: ProfileStore) {
 }
 
 export function handleProfileRequest(request: Request, response: Response, profileStore: ProfileStore) {
-    return handleRequest(response, toRdfDocument(
-        profileStore.profileUri,
-        profileStore.getAll(),
-        profileStore
-        ));
-    }
+    return handleRequest(
+        response,
+        toRdfDocument(
+            profileStore.profileUri,
+            profileStore.getAll(),
+            profileStore
+        ),
+        profileStore.profileUri
+    );
+}
 
 export function handleConceptRequest(request: Request, response: Response, profileStore: ProfileStore) {
     const requestUri = getRequestUri(request, profileStore);
-    return handleRequest(response, toRdfDocument(
-        requestUri,
-        profileStore.getAllAbout(requestUri),
-        profileStore
-    ));
+    return handleRequest(
+        response,
+        toRdfDocument(
+            requestUri,
+            profileStore.getAllAbout(requestUri),
+            profileStore
+        ),
+        profileStore.profileUri
+    );
 }
 
-function handleRequest(response: Response, rdfDocument: RdfDocument) {
+function handleRequest(response: Response, rdfDocument: RdfDocument, profileUri: string) {
     if (isEmpty(rdfDocument.graph)) {
         return handleNotFound(response);
     }
@@ -51,7 +59,7 @@ function handleRequest(response: Response, rdfDocument: RdfDocument) {
         [MediaType.NTriples]: () => toNTriples(response, rdfDocument),
         [MediaType.NQuads]: () => toNQuads(response, rdfDocument),
         [MediaType.TriG]: () => toTriG(response, rdfDocument),
-        default: () => handleNotAcceptable(response, values(MediaType))
+        default: () => handleNotAcceptable(response, values(MediaType), [profileUri])
     });
 }
 

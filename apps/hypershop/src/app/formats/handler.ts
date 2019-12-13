@@ -1,6 +1,7 @@
-import { HttpStatus } from '@nestjs/common';
+import { handleNotAcceptable } from '@hypercontract/express';
 import { Response } from 'express';
 import { mapValues, values } from 'lodash';
+import { profile } from '../profile';
 import { handleHtmlResponse } from './html/html-handler';
 import { handleJsonHalResponse } from './json-hal/json-hal-handler';
 import { handleJsonLdResponse } from './json-ld/json-ld-handler';
@@ -27,9 +28,6 @@ export function sendResponse(response: Response, responseBodies: { [key: string]
                 responseBodies,
                 (responseBody, mediaType) => () => handlerMapping[mediaType](response, responseBody)
             ),
-            default: () => response
-                .status(HttpStatus.NOT_ACCEPTABLE)
-                .header('Content-Type', values(MediaType).join(', '))
-                .send()
+            default: () => handleNotAcceptable(response, values(MediaType), [profile.uri])
         });
 }

@@ -4,11 +4,12 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import * as bodyParser from 'body-parser';
 import cors from 'cors';
 import { Request } from 'express';
-import { get, isUndefined } from 'lodash';
+import { get, isUndefined, values } from 'lodash';
 import methodOverride from 'method-override';
 import morgan from 'morgan';
 import { join } from 'path';
 import { AppModule } from './app/app.module';
+import { MediaType } from './app/formats/media-type';
 import { profile } from './app/profile';
 
 async function bootstrap() {
@@ -28,8 +29,8 @@ async function bootstrap() {
         extended: true
     }));
     app.use(bodyParser.json());
-    app.use(bodyParser.json({ type: 'application/hal+json' }));
-    app.use(bodyParser.json({ type: 'application/ld+json' }));
+    app.use(bodyParser.json({ type: MediaType.JsonHal }));
+    app.use(bodyParser.json({ type: MediaType.JsonLd }));
 
     app.use(methodOverride((request: Request) => {
         const method = get(request, 'body._method');
@@ -39,7 +40,7 @@ async function bootstrap() {
         return method;
     }));
 
-    app.use(hypercontract(profile));
+    app.use(hypercontract(profile, values(MediaType)));
 
     await app.listen(port, () => console.log(`Listening at http://localhost:${port}`));
 }

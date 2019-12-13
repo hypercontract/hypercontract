@@ -1,7 +1,7 @@
 import { RdfDocument } from '@hypercontract/profile';
-import { HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
 import { Writer } from 'n3';
+import { handleInternalServerError } from '../error';
 import { Handler } from './handler';
 
 function createN3Writer(format: string): Handler {
@@ -13,9 +13,7 @@ function createN3Writer(format: string): Handler {
         writer.addQuads(graph);
         writer.end(error => {
             if (error) {
-                response
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .send(error);
+                handleInternalServerError(response);
             }
         });
     };

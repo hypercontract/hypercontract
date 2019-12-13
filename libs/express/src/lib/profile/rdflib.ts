@@ -1,10 +1,10 @@
 import { RdfDocument } from '@hypercontract/profile';
-import { HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
 import { BlankNode, DefaultGraph, Literal, NamedNode, Quad, Variable } from 'rdf-js';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore @types/rdflib contains invalid types
 import { blankNode, defaultGraph, graph as rdfLibGraph, lit, namedNode, serialize, Statement, variable } from 'rdflib';
+import { handleInternalServerError } from '../error';
 import { Handler } from './handler';
 
 export const toRdfXml: Handler = (
@@ -22,9 +22,7 @@ export const toRdfXml: Handler = (
     // target, kb, base, contentType, callback, options
     serialize(undefined, store, defaultNamespace, 'application/rdf+xml', (error: any, document: string) => {
         if (error) {
-            response
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .send(error);
+            handleInternalServerError(response);
         }
 
         response.send(
