@@ -1,8 +1,8 @@
-import { Cardinality, hyper, jsonLdContext, owl, prefixes, RdfDocument, rdfs, resourceClass, ResourceClass, resourceProperty, ResourceProperty, xsd } from '@hypercontract/profile';
+import { Cardinality, conceptClass, ConceptClass, conceptProperty, ConceptProperty, hyper, jsonLdContext, owl, prefixes, RdfDocument, rdfs, xsd } from '@hypercontract/profile';
 import { flatten, trimEnd } from 'lodash';
 
-const hyperClass = (name: string, definition: ResourceClass) => resourceClass(hyper(name), definition);
-const hyperProperty = (name: string, definition: ResourceProperty) => resourceProperty(hyper(name), definition);
+const hyperClass = (name: string, definition: ConceptClass) => conceptClass(hyper(name), definition);
+const hyperProperty = (name: string, definition: ConceptProperty) => conceptProperty(hyper(name), definition);
 
 export const vocabulary: RdfDocument = {
     uri: trimEnd(hyper(''), '/'),

@@ -4,11 +4,11 @@ import { owl, prefixes, rdf } from '../namespaces';
 import { descriptor, Descriptor } from './descriptor';
 import { toQuads } from './quad';
 
-export interface ResourceProperty extends Descriptor {
+export interface ConceptProperty extends Descriptor {
     type?: string;
 }
 
-export const resourceProperty = (uri: string, definition: ResourceProperty) => {
+export const conceptProperty = (uri: string, definition: ConceptProperty) => {
     const propertyType = getPropertyType(definition);
     return [
         ...descriptor(uri, definition),
@@ -18,7 +18,7 @@ export const resourceProperty = (uri: string, definition: ResourceProperty) => {
     ];
 }
 
-function getPropertyType({ type, range }: ResourceProperty): string {
+function getPropertyType({ type, range }: ConceptProperty): string {
     if (!isUndefined(type)) {
         return type;
     }
