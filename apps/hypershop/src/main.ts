@@ -1,3 +1,4 @@
+import { hypercontract } from '@hypercontract/express';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import * as bodyParser from 'body-parser';
@@ -8,6 +9,7 @@ import methodOverride from 'method-override';
 import morgan from 'morgan';
 import { join } from 'path';
 import { AppModule } from './app/app.module';
+import { profile } from './app/profile';
 
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -36,6 +38,8 @@ async function bootstrap() {
         }
         return method;
     }));
+
+    app.use(hypercontract(profile));
 
     await app.listen(port, () => console.log(`Listening at http://localhost:${port}`));
 }
