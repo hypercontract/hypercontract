@@ -3,7 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import * as bodyParser from 'body-parser';
 import cors from 'cors';
-import { Request } from 'express';
+import { Request, static as serveStatic } from 'express';
 import { get, isUndefined, values } from 'lodash';
 import methodOverride from 'method-override';
 import morgan from 'morgan';
@@ -41,6 +41,8 @@ async function bootstrap() {
     }));
 
     app.use(hypercontract(profile, values(MediaType)));
+
+    app.use('/assets', serveStatic(join(__dirname, 'assets')));
 
     await app.listen(port, () => console.log(`Listening at http://localhost:${port}`));
 }
