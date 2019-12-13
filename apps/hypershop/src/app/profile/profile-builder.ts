@@ -1,8 +1,13 @@
-import { EntryPoint, entryPoint, operation, Operation, Precondition, precondition, ResourceClass, resourceClass, resourceProperty, ResourceProperty, StateTransition, stateTransition } from '@hypercontract/profile';
+import { EntryPoint, entryPoint, operation, Operation, Precondition, precondition, profileMeta, ResourceClass, resourceClass, resourceProperty, ResourceProperty, StateTransition, stateTransition } from '@hypercontract/profile';
 import { shop } from './namespaces';
 import { schemas } from './schemas';
 
 export const shopSchemas = (name: string) => schemas.get(shop(name));
+
+export const shopProfile = (profileUri: string, definition: EntryPoint) => profileMeta(
+    profileUri,
+    definition
+);
 
 export const shopEntryPoint = (entryPointUrl: string, type: string, definition: EntryPoint) => entryPoint(
     entryPointUrl,

@@ -2,21 +2,27 @@ import { Cardinality, HttpMethod, jsonLdHyperContext, Profile, valueSchema, xsd 
 import { flatten, trimEnd } from 'lodash';
 import { getApiRootBaseUri } from '../routing';
 import { prefixes, shop } from './namespaces';
-import { shopClass, shopEntryPoint, shopOperation, shopPrecondition, shopProperty, shopSchemas, shopStateTransition } from './profile-builder';
+import { shopClass, shopEntryPoint, shopOperation, shopPrecondition, shopProfile, shopProperty, shopSchemas, shopStateTransition } from './profile-builder';
+
+const profileUri = trimEnd(shop(''), '/');
 
 export const profile: Profile = {
-    uri: trimEnd(shop(''), '/'),
+    uri: profileUri,
     defaultNamespace: shop(''),
     prefixes,
     jsonLdContext: jsonLdHyperContext,
     graph: flatten([
+        shopProfile(profileUri, {
+            label: 'hypershop API',
+            description: 'This an example of how to describe a RESTful Web API with RDF and hypercontract.'
+        }),
         shopEntryPoint(getApiRootBaseUri(), 'ApiRoot', {
             label: 'hypershop',
             description: 'The REST API for hypershop.'
         }),
         shopClass('ApiRoot', {
             label: 'API Root',
-            description: 'The entry point for the hypershop REST API.'
+            description: 'The entry point for the hypershop API.'
         }),
         shopClass('AdditionToShoppingCart', {
             label: 'Addition to Shopping Cart',

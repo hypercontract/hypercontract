@@ -10,6 +10,10 @@ export const vocabulary: RdfDocument = {
     prefixes,
     jsonLdContext,
     graph: flatten([
+        hyperClass('Profile', {
+            label: 'Profile',
+            description: 'A profile describing a RESTful Web API using RDF and hypercontract.'
+        }),
         hyperClass('EntryPoint', {
             label: 'Entry Point',
             description: 'Instances of this class serve as entry points to the API. The URI of the instance is also the URL of the resource.'
