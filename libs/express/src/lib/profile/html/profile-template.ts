@@ -74,7 +74,8 @@ export const template = `<!DOCTYPE html>
                     </ul>
 
                     <% representationClasses.forEach(({ uri, localName, description, properties, stateTransitions, operations, schemas }) => { %>
-                        <h3 class="h4 mt-5" title="<%= uri %>" id="<%= localName %>">
+                        <span id="<%= localName %>" style="position: relative; top: -50px"></span>
+                        <h3 class="h4 mt-5" title="<%= uri %>">
                             <a href="#<%= localName %>" class="text-secondary" style="margin-left: -25px">#</a>
                             <%= localName %>
                         </h3>
@@ -221,7 +222,8 @@ export const template = `<!DOCTYPE html>
                     </ul>
 
                     <% representationProperties.forEach(({ uri, localName, description, domain, range, schemas }) => { %>
-                        <h3 class="h4 mt-5" title="<%= uri %>" id="<%= localName %>">
+                        <span id="<%= localName %>" style="position: relative; top: -20px"></span>
+                        <h3 class="h4 mt-5" title="<%= uri %>">
                             <a href="#<%= localName %>" class="text-secondary" style="margin-left: -25px">#</a>
                             <%= localName %>
                         </h3>
@@ -314,7 +316,8 @@ export const template = `<!DOCTYPE html>
                     </ul>
 
                     <% stateTransitions.forEach(({ uri, localName, description, domain, range, schemas }) => { %>
-                        <h3 class="h4 mt-5" title="<%= uri %>" id="<%= localName %>">
+                        <span id="<%= localName %>" style="position: relative; top: -20px"></span>
+                        <h3 class="h4 mt-5" title="<%= uri %>">
                             <a href="#<%= localName %>" class="text-secondary" style="margin-left: -25px">#</a>
                             <%= localName %>
                         </h3>
@@ -407,7 +410,8 @@ export const template = `<!DOCTYPE html>
                     </ul>
 
                     <% operations.forEach(({ uri, localName, description, domain, range, method, expectedBody, expectedQueryParams, constraints, returnedType, schemas }) => { %>
-                        <h3 class="h4 mt-5" title="<%= uri %>" id="<%= localName %>">
+                        <span id="<%= localName %>" style="position: relative; top: -20px"></span>
+                        <h3 class="h4 mt-5" title="<%= uri %>">
                             <a href="#<%= localName %>" class="text-secondary" style="margin-left: -25px">#</a>
                             <%= localName %>
                         </h3>
