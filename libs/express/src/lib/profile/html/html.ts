@@ -35,8 +35,14 @@ export const toHtml = async (
         representationClasses,
         representationProperties,
         stateTransitions,
-        operations
+        operations,
+        toHtmlId
     });
 
     return response.send(document);
+}
+
+function toHtmlId(name: string) {
+    return name
+        .replace(/[/+]/g, '-');
 }

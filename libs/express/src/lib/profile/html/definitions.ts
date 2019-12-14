@@ -30,11 +30,13 @@ interface ClassDefinition extends ConceptDefinition {
 interface PropertyDefinition extends ConceptDefinition {
     domain: Domain[];
     range: Range[];
+    schemas: SchemaDefinition[];
 }
 
 interface StateTransitionDefinition extends ConceptDefinition {
     domain: Domain[];
     range: Range[];
+    schemas: SchemaDefinition[];
 }
 
 interface OperationDefinition extends ConceptDefinition {
@@ -45,6 +47,7 @@ interface OperationDefinition extends ConceptDefinition {
     expectedQueryParams: string[];
     constraints: PreconditionDefinition[];
     returnedType: Range[];
+    schemas: SchemaDefinition[];
 }
 
 interface PreconditionDefinition extends ConceptDefinition {
@@ -153,46 +156,54 @@ export async function getDefinitions(profileStore: ProfileStore) {
             getConceptDefinitions(null, rdf('type'), owl('ObjectProperty')),
             getConceptDefinitions(null, rdf('type'), rdf('Property'))
         ]);
-        return toPropertyDefinitions(flatten(conceptDefinitions));
+        return Promise.all(toPropertyDefinitions(flatten(conceptDefinitions)));
     }
 
     async function getPropertiesForClass(classUri: string): Promise<PropertyDefinition[]> {
         const conceptDefinitions = await getConceptDefinitions(null, rdfs('domain'), classUri)
-        return toPropertyDefinitions(conceptDefinitions);
+        return Promise.all(toPropertyDefinitions(conceptDefinitions));
     }
 
-    function toPropertyDefinitions(conceptDefinitions: ConceptDefinition[]): PropertyDefinition[] {
+    function toPropertyDefinitions(conceptDefinitions: ConceptDefinition[]): Promise<PropertyDefinition>[] {
         return conceptDefinitions
             .filter(definition => !getTypes(definition).includes('hyper:StateTransition'))
-            .map(definition => ({
-                ...definition,
-                domain: getDomain(definition),
-                range: getRange(definition)
-            }));
+            .map(async definition => {
+                const schemas = await getValueSchemasFor(definition.uri);
+                return {
+                    ...definition,
+                    domain: getDomain(definition),
+                    range: getRange(definition),
+                    schemas
+                };
+            });
     }
 
 
     async function getStateTransitions(): Promise<StateTransitionDefinition[]> {
         const conceptDefinitions = await getConceptDefinitions(null, rdf('type'), hyper('StateTransition'));
-        return toStateTransitionDefinitions(conceptDefinitions);
+        return Promise.all(toStateTransitionDefinitions(conceptDefinitions));
     }
 
     async function getStateTransitionsForClass(classUri: string): Promise<StateTransitionDefinition[]> {
         const conceptDefinitions = await getConceptDefinitions(null, rdfs('domain'), classUri)
-        return toStateTransitionDefinitions(conceptDefinitions);
+        return Promise.all(toStateTransitionDefinitions(conceptDefinitions));
     }
 
-    function toStateTransitionDefinitions(conceptDefinitions: ConceptDefinition[]): StateTransitionDefinition[] {
+    function toStateTransitionDefinitions(conceptDefinitions: ConceptDefinition[]): Promise<StateTransitionDefinition>[] {
         return conceptDefinitions
             .filter(definition => (
                 getTypes(definition).includes('hyper:StateTransition') &&
                 !getTypes(definition).includes('hyper:Operation')
             ))
-            .map(definition => ({
-                ...definition,
-                domain: getDomain(definition),
-                range: getRange(definition)
-            }));
+            .map(async definition => {
+                const schemas = await getValueSchemasFor(definition.uri);
+                return {
+                    ...definition,
+                    domain: getDomain(definition),
+                    range: getRange(definition),
+                    schemas
+                }
+            });
     }
 
     async function getOperations(): Promise<OperationDefinition[]> {
@@ -210,6 +221,7 @@ export async function getDefinitions(profileStore: ProfileStore) {
             .filter(definition => (getTypes(definition).includes('hyper:Operation')))
             .map(async definition => {
                 const constraints = await getPreconditionsForClass(definition.uri);
+                const schemas = await getValueSchemasFor(definition.uri);
                 return {
                     ...definition,
                     domain: getDomain(definition),
@@ -218,7 +230,8 @@ export async function getDefinitions(profileStore: ProfileStore) {
                     method: definition.definition['hyper:method'],
                     expectedBody: getExpectedBody(definition),
                     expectedQueryParams: getExpectedQueryParams(definition),
-                    constraints
+                    constraints,
+                    schemas
                 };
             });
     }
@@ -312,7 +325,7 @@ export async function getDefinitions(profileStore: ProfileStore) {
     }
 
     async function getValueSchemasFor(uri: string) {
-        return getSchemasFor(uri, 'valueSchemas');
+        return getSchemasFor(uri, 'valueSchema');
     }
 
     async function getAllSchemas() {
@@ -326,7 +339,7 @@ export async function getDefinitions(profileStore: ProfileStore) {
         );
     }
 
-    async function getSchemasFor(uri: string, type: 'instanceSchema' | 'valueSchemas') {
+    async function getSchemasFor(uri: string, type: 'instanceSchema' | 'valueSchema') {
         const conceptDefinitions = await getConceptDefinitions(uri, hyper(type), null);
         return Promise.all(toSchemas(conceptDefinitions));
     }
@@ -370,7 +383,7 @@ export async function getDefinitions(profileStore: ProfileStore) {
         );
         return JSON.stringify(
             omitDeep(dereferencedSchemaDefinition, ['$id', '$schema']),
-            undefined, 4
+            undefined, 2
         );
     }
 

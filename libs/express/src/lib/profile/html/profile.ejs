@@ -2,13 +2,14 @@
 <html>
     <head>
         <title><%= title %></title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/themes/prism.css" />
         <style>
         body {  overflow-y: overlay; }
         </style>
     </head>
     <body class="pb-5">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-5">
+        <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary mb-5">
             <div class="container">
                 <a class="navbar-brand" href=""><%= title %></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#--navbar" aria-controls="--navbar" aria-expanded="false" aria-label="Toggle Navigation">
@@ -33,7 +34,7 @@
             </div>
         </nav>
 
-        <main class="container">
+        <main class="container" style="padding-top: 150px;">
             <header class="mb-5">
                 <h1 class="mb-3"><%= title %></h1>
 
@@ -61,18 +62,26 @@
             </header>
 
             <% if (representationClasses.length > 0) { %>
-                <section style="margin-top: 100px" id="--representation-classes">
+                <section style="padding-top: 100px" id="--representation-classes">
                     <h2 class="mb-4">Representation Classes</h2>
 
+                    <ul class="nav nav-pills row">
+                        <% representationClasses.forEach(({ uri, localName }) => { %>
+                        <li class="nav-item" title="<%= uri %>">
+                            <a class="nav-link" href="#<%= localName %>"><%= localName %></a>
+                        </li>
+                        <% }) %>
+                    </ul>
+
                     <% representationClasses.forEach(({ uri, localName, description, properties, stateTransitions, operations, schemas }) => { %>
-                        <h3 class="mt-5" title="<%= uri %>" id="<%= localName %>">
+                        <h3 class="h4 mt-5" title="<%= uri %>" id="<%= localName %>">
                             <a href="#<%= localName %>" class="text-secondary" style="margin-left: -25px">#</a>
                             <%= localName %>
                         </h3>
                         <p class="lead"><%= description %></p>
 
                         <% if (properties.length > 0) { %>
-                        <h4 class="mb-3">Properties</h4>
+                        <h4 class="h5 mb-3">Properties</h4>
 
                         <table class="table mb-4">
                             <tbody>
@@ -99,7 +108,7 @@
                         <% } %>
 
                         <% if (stateTransitions.length > 0) { %>
-                        <h4 class="mb-3">Links</h4>
+                        <h4 class="h5 mb-3">Links</h4>
 
                         <table class="table mb-4">
                             <tbody>
@@ -126,7 +135,7 @@
                         <% } %>
 
                         <% if (operations.length > 0) { %>
-                        <h4 class="mb-3">Operations</h4>
+                        <h4 class="h5 mb-3">Operations</h4>
 
                         <table class="table mb-4">
                             <tbody>
@@ -153,12 +162,46 @@
                         <% } %>
 
                         <% if (schemas.length > 0) { %>
-                        <h4 class="mb-3">Schemas</h4>
+                        <h4 class="h5 mb-3">Schemas</h4>
 
-                        <% schemas.forEach(({ uri: schemaUri, localName: schemaName, schemaType, targetType, schemaDefinition }) => { %>
-                            <code><%= schemaUri %></code>
-                            <pre><%= schemaDefinition %></pre>
-                        <% }) %>
+                        <div class="card">
+                            <div class="card-header">
+                                <ul class="nav nav-tabs card-header-tabs">
+                                    <% schemas.forEach(({ localName: schemaName, targetType }, index) => { %>
+                                    <li class="nav-item">
+                                        <a class="nav-link<%= (index === 0) ? ' active' : '' %>" id="tab-<%= toHtmlId(schemaName) %>" data-toggle="tab" href="#<%= toHtmlId(schemaName) %>" role="tab" aria-controls="schemaName" aria-selected="true">
+                                            <%= targetType %>
+                                        </a>
+                                    </li>
+                                    <% }) %>
+                                </ul>
+                            </div>
+                            <div class="tab-content">
+                                <% schemas.forEach(({ localName: schemaName, uri: schemaUri, schemaType, targetType, schemaDefinition }, index) => { %>
+                                <div class="tab-pane <%= (index === 0) ? ' show active' : '' %>" id="<%= toHtmlId(schemaName) %>" role="tabpanel" aria-labelledby="tab-<%= toHtmlId(schemaName) %>">
+                                    <div class="card-body">
+                                        <dl class="row mb-0">
+                                            <dt class="col-2">Schema ID</dt>
+                                            <dd class="col-10"><code class="text-dark"><%= schemaUri %></code></dd>
+                                            <dt class="col-2">Schema Type</dt>
+                                            <dd class="col-10 mb-0"><code class="text-dark"><%= schemaType %></code></dd>
+                                        </dl>
+                                    </div>
+                                    <div class="border-top" style="height: 200px; overflow-y: auto; resize: vertical">
+                                        <% if (schemaType.includes('json')) { %>
+                                            <pre class="mb-0" style="background-color: white !important; overflow: visible"><code class="language-json"><%= schemaDefinition %></code></pre>
+                                        <% } %>
+                                        <% if (schemaType.includes('xml')) { %>
+                                            <pre class="mb-0" style="background-color: white !important; overflow: visible"><code class="language-xml"><%= schemaDefinition %></code></pre>
+                                        <% } %>
+                                        <% if (!schemaType.includes('json') && !schemaType.includes('xml')) { %>
+                                            <pre class="mb-0" style="background-color: white !important; overflow: visible"><code><%= schemaDefinition %></code></pre>
+                                        <% } %>
+                                    </div>
+                                </div>
+                                <% }) %>
+                            </div>
+                        </div>
                         <% } %>
 
                     <% }) %>
@@ -166,10 +209,19 @@
             <% } %>
 
             <% if (representationProperties.length > 0) { %>
-                <section style="margin-top: 100px" id="--representation-properties">
+                <section style="padding-top: 100px" id="--representation-properties">
                     <h2 class="mb-4">Representation Properties</h2>
-                    <% representationProperties.forEach(({ uri, localName, description, domain, range }) => { %>
-                        <h3 class="mt-5" title="<%= uri %>" id="<%= localName %>">
+
+                    <ul class="nav nav-pills row">
+                        <% representationProperties.forEach(({ uri, localName }) => { %>
+                        <li class="nav-item" title="<%= uri %>">
+                            <a class="nav-link" href="#<%= localName %>"><%= localName %></a>
+                        </li>
+                        <% }) %>
+                    </ul>
+
+                    <% representationProperties.forEach(({ uri, localName, description, domain, range, schemas }) => { %>
+                        <h3 class="h4 mt-5" title="<%= uri %>" id="<%= localName %>">
                             <a href="#<%= localName %>" class="text-secondary" style="margin-left: -25px">#</a>
                             <%= localName %>
                         </h3>
@@ -199,15 +251,70 @@
                                 <% }) %>
                             </dd>
                         </dl>
+
+                        <% if (schemas.length > 0) { %>
+                        <a class="btn btn-outline-secondary btn-sm" data-toggle="collapse" href="#<%= toHtmlId(localName) %>-schemas" aria-expanded="false" aria-controls="<%= toHtmlId(localName) %>-schemas">
+                            Show/Hide Schemas
+                        </a>
+                        <div class="collapse mt-4" id="<%= toHtmlId(localName) %>-schemas">
+                            <div class="card">
+                                <div class="card-header">
+                                    <ul class="nav nav-tabs card-header-tabs">
+                                        <% schemas.forEach(({ localName: schemaName, targetType }, index) => { %>
+                                        <li class="nav-item">
+                                            <a class="nav-link<%= (index === 0) ? ' active' : '' %>" id="tab-<%= toHtmlId(schemaName) %>" data-toggle="tab" href="#<%= toHtmlId(schemaName) %>" role="tab" aria-controls="schemaName" aria-selected="true">
+                                                <%= targetType %>
+                                            </a>
+                                        </li>
+                                        <% }) %>
+                                    </ul>
+                                </div>
+                                <div class="tab-content">
+                                    <% schemas.forEach(({ localName: schemaName, uri: schemaUri, schemaType, targetType, schemaDefinition }, index) => { %>
+                                    <div class="tab-pane <%= (index === 0) ? ' show active' : '' %>" id="<%= toHtmlId(schemaName) %>" role="tabpanel" aria-labelledby="tab-<%= toHtmlId(schemaName) %>">
+                                        <div class="card-body">
+                                            <dl class="row mb-0">
+                                                <dt class="col-2">Schema ID</dt>
+                                                <dd class="col-10"><code class="text-dark"><%= schemaUri %></code></dd>
+                                                <dt class="col-2">Schema Type</dt>
+                                                <dd class="col-10 mb-0"><code class="text-dark"><%= schemaType %></code></dd>
+                                            </dl>
+                                        </div>
+                                        <div class="border-top" style="height: 120px; overflow-y: auto; resize: vertical">
+                                            <% if (schemaType.includes('json')) { %>
+                                                <pre class="mb-0" style="background-color: white !important; overflow: visible"><code class="language-json"><%= schemaDefinition %></code></pre>
+                                            <% } %>
+                                            <% if (schemaType.includes('xml')) { %>
+                                                <pre class="mb-0" style="background-color: white !important; overflow: visible"><code class="language-xml"><%= schemaDefinition %></code></pre>
+                                            <% } %>
+                                            <% if (!schemaType.includes('json') && !schemaType.includes('xml')) { %>
+                                                <pre class="mb-0" style="background-color: white !important; overflow: visible"><code><%= schemaDefinition %></code></pre>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                    <% }) %>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
                     <% }) %>
                 </section>
             <% } %>
 
             <% if (stateTransitions.length > 0) { %>
-                <section style="margin-top: 100px" id="--state-transitions">
+                <section style="padding-top: 100px" id="--state-transitions">
                     <h2 class="mb-4">Link Relation Types</h2>
-                    <% stateTransitions.forEach(({ uri, localName, description, domain, range }) => { %>
-                        <h3 class="mt-5" title="<%= uri %>" id="<%= localName %>">
+
+                    <ul class="nav nav-pills row">
+                        <% stateTransitions.forEach(({ uri, localName }) => { %>
+                        <li class="nav-item" title="<%= uri %>">
+                            <a class="nav-link" href="#<%= localName %>"><%= localName %></a>
+                        </li>
+                        <% }) %>
+                    </ul>
+
+                    <% stateTransitions.forEach(({ uri, localName, description, domain, range, schemas }) => { %>
+                        <h3 class="h4 mt-5" title="<%= uri %>" id="<%= localName %>">
                             <a href="#<%= localName %>" class="text-secondary" style="margin-left: -25px">#</a>
                             <%= localName %>
                         </h3>
@@ -237,15 +344,70 @@
                                 <% }) %>
                             </dd>
                         </dl>
+
+                        <% if (schemas.length > 0) { %>
+                        <a class="btn btn-outline-secondary btn-sm" data-toggle="collapse" href="#<%= toHtmlId(localName) %>-schemas" aria-expanded="false" aria-controls="<%= toHtmlId(localName) %>-schemas">
+                            Show/Hide Schemas
+                        </a>
+                        <div class="collapse mt-4" id="<%= toHtmlId(localName) %>-schemas">
+                            <div class="card">
+                                <div class="card-header">
+                                    <ul class="nav nav-tabs card-header-tabs">
+                                        <% schemas.forEach(({ localName: schemaName, targetType }, index) => { %>
+                                        <li class="nav-item">
+                                            <a class="nav-link<%= (index === 0) ? ' active' : '' %>" id="tab-<%= toHtmlId(schemaName) %>" data-toggle="tab" href="#<%= toHtmlId(schemaName) %>" role="tab" aria-controls="schemaName" aria-selected="true">
+                                                <%= targetType %>
+                                            </a>
+                                        </li>
+                                        <% }) %>
+                                    </ul>
+                                </div>
+                                <div class="tab-content">
+                                    <% schemas.forEach(({ localName: schemaName, uri: schemaUri, schemaType, targetType, schemaDefinition }, index) => { %>
+                                    <div class="tab-pane <%= (index === 0) ? ' show active' : '' %>" id="<%= toHtmlId(schemaName) %>" role="tabpanel" aria-labelledby="tab-<%= toHtmlId(schemaName) %>">
+                                        <div class="card-body">
+                                            <dl class="row mb-0">
+                                                <dt class="col-2">Schema ID</dt>
+                                                <dd class="col-10"><code class="text-dark"><%= schemaUri %></code></dd>
+                                                <dt class="col-2">Schema Type</dt>
+                                                <dd class="col-10 mb-0"><code class="text-dark"><%= schemaType %></code></dd>
+                                            </dl>
+                                        </div>
+                                        <div class="border-top" style="height: 120px; overflow-y: auto; resize: vertical">
+                                            <% if (schemaType.includes('json')) { %>
+                                                <pre class="mb-0" style="background-color: white !important; overflow: visible"><code class="language-json"><%= schemaDefinition %></code></pre>
+                                            <% } %>
+                                            <% if (schemaType.includes('xml')) { %>
+                                                <pre class="mb-0" style="background-color: white !important; overflow: visible"><code class="language-xml"><%= schemaDefinition %></code></pre>
+                                            <% } %>
+                                            <% if (!schemaType.includes('json') && !schemaType.includes('xml')) { %>
+                                                <pre class="mb-0" style="background-color: white !important; overflow: visible"><code><%= schemaDefinition %></code></pre>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                    <% }) %>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
                     <% }) %>
                 </section>
             <% } %>
 
             <% if (operations.length > 0) { %>
-                <section style="margin-top: 100px" id="--operations">
+                <section style="padding-top: 100px" id="--operations">
                     <h2 class="mb-4">Operations</h2>
-                    <% operations.forEach(({ uri, localName, description, domain, range, method, expectedBody, expectedQueryParams, constraints, returnedType }) => { %>
-                        <h3 class="mt-5" title="<%= uri %>" id="<%= localName %>">
+
+                    <ul class="nav nav-pills row">
+                        <% operations.forEach(({ uri, localName }) => { %>
+                        <li class="nav-item" title="<%= uri %>">
+                            <a class="nav-link" href="#<%= localName %>"><%= localName %></a>
+                        </li>
+                        <% }) %>
+                    </ul>
+
+                    <% operations.forEach(({ uri, localName, description, domain, range, method, expectedBody, expectedQueryParams, constraints, returnedType, schemas }) => { %>
+                        <h3 class="h4 mt-5" title="<%= uri %>" id="<%= localName %>">
                             <a href="#<%= localName %>" class="text-secondary" style="margin-left: -25px">#</a>
                             <%= localName %>
                         </h3>
@@ -316,12 +478,59 @@
                                 <% } %>
                             </dd>
                         </dl>
+
+                        <% if (schemas.length > 0) { %>
+                        <a class="btn btn-outline-secondary btn-sm" data-toggle="collapse" href="#<%= toHtmlId(localName) %>-schemas" aria-expanded="false" aria-controls="<%= toHtmlId(localName) %>-schemas">
+                            Show/Hide Schemas
+                        </a>
+                        <div class="collapse mt-4" id="<%= toHtmlId(localName) %>-schemas">
+                            <div class="card">
+                                <div class="card-header">
+                                    <ul class="nav nav-tabs card-header-tabs">
+                                        <% schemas.forEach(({ localName: schemaName, targetType }, index) => { %>
+                                        <li class="nav-item">
+                                            <a class="nav-link<%= (index === 0) ? ' active' : '' %>" id="tab-<%= toHtmlId(schemaName) %>" data-toggle="tab" href="#<%= toHtmlId(schemaName) %>" role="tab" aria-controls="schemaName" aria-selected="true">
+                                                <%= targetType %>
+                                            </a>
+                                        </li>
+                                        <% }) %>
+                                    </ul>
+                                </div>
+                                <div class="tab-content">
+                                    <% schemas.forEach(({ localName: schemaName, uri: schemaUri, schemaType, targetType, schemaDefinition }, index) => { %>
+                                    <div class="tab-pane <%= (index === 0) ? ' show active' : '' %>" id="<%= toHtmlId(schemaName) %>" role="tabpanel" aria-labelledby="tab-<%= toHtmlId(schemaName) %>">
+                                        <div class="card-body">
+                                            <dl class="row mb-0">
+                                                <dt class="col-2">Schema ID</dt>
+                                                <dd class="col-10"><code class="text-dark"><%= schemaUri %></code></dd>
+                                                <dt class="col-2">Schema Type</dt>
+                                                <dd class="col-10 mb-0"><code class="text-dark"><%= schemaType %></code></dd>
+                                            </dl>
+                                        </div>
+                                        <div class="border-top" style="height: 120px; overflow-y: auto; resize: vertical">
+                                            <% if (schemaType.includes('json')) { %>
+                                                <pre class="mb-0" style="background-color: white !important; overflow: visible"><code class="language-json"><%= schemaDefinition %></code></pre>
+                                            <% } %>
+                                            <% if (schemaType.includes('xml')) { %>
+                                                <pre class="mb-0" style="background-color: white !important; overflow: visible"><code class="language-xml"><%= schemaDefinition %></code></pre>
+                                            <% } %>
+                                            <% if (!schemaType.includes('json') && !schemaType.includes('xml')) { %>
+                                                <pre class="mb-0" style="background-color: white !important; overflow: visible"><code><%= schemaDefinition %></code></pre>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                    <% }) %>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
                     <% }) %>
                 </section>
             <% } %>
         </main>
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-core.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/plugins/autoloader/prism-autoloader.min.js"></script>
     </body>
 </html>
