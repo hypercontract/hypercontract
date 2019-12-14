@@ -11,6 +11,7 @@ export function negotiateProfile(
     supportedMediaTypes: string[]
 ) {
     response.setHeader('Content-Profile', `<${profileStore.profileUri}>`)
+    response.setHeader('Link', `<${profileStore.profileUri}>; rel="profile"`)
 
     const acceptableProfiles = getAcceptableProfiles(request);
 
