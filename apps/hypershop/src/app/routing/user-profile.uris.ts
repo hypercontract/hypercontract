@@ -33,7 +33,7 @@ export function getAddressUri(id: EntityId) {
 }
 
 export function getPaymentOptionPath(id: EntityId | null) {
-    const pathTemplate = getUserProfileRootPath() + 'paymentOptions/:paymentOptionId/';
+    const pathTemplate = getUserProfileRootPath() + 'paymentOptions/:paymentOptionId';
 
     if (!isNull(id)) {
         return pathTemplate.replace(':paymentOptionId', id);

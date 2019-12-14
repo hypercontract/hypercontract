@@ -19,7 +19,7 @@ export function getOrdersRootUri() {
 }
 
 export function getOrderPath(id: EntityId | null = null) {
-    const pathTemplate = getOrdersRootPath() + ':orderId/';
+    const pathTemplate = getOrdersRootPath() + ':orderId';
 
     if (!isNull(id)) {
         return pathTemplate.replace(':orderId', id!);

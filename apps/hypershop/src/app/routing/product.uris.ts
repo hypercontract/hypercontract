@@ -34,7 +34,7 @@ export function getCatalogSearchUriTemplate() {
 }
 
 export function getProductPath(id: EntityId | null = null) {
-    const pathTemplate = getProductsRootPath() + ':productId/';
+    const pathTemplate = getProductsRootPath() + ':productId';
 
     if (!isNull(id)) {
         return pathTemplate.replace(':productId', id);

@@ -27,7 +27,7 @@ export function getShoppingCartItemsUri() {
 }
 
 export function getShoppingCartItemPath(id: EntityId | null = null) {
-    const pathTemplate = getShoppingCartItemsPath() + ':shoppingCartItemId/';
+    const pathTemplate = getShoppingCartItemsPath() + ':shoppingCartItemId';
 
     if (!isNull(id)) {
         return pathTemplate.replace(':shoppingCartItemId', id);

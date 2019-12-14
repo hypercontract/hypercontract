@@ -804,7 +804,7 @@
 							"var baseUrl = postman.getEnvironmentVariable('baseUrl');",
 							"",
 							"tests['status code is 201 Created'] = responseCode.code === 201;",
-							"tests['Location header redirects to /orders/{orderId}'] = postman.getResponseHeader('Location').match(baseUrl + 'orders/.*/?');",
+							"tests['Location header redirects to /orders/{orderId}'] = postman.getResponseHeader('Location').match(baseUrl + 'orders/.*?');",
 							"tests['response body is empty'] = responseBody === '';",
 							"",
 							"postman.setEnvironmentVariable('orderUrl', postman.getResponseHeader('Location'));",
