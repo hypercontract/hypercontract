@@ -60,7 +60,7 @@ function handleRequest(response: Response, rdfDocument: RdfDocument, profileStor
         [MediaType.NTriples]: () => toNTriples(response, rdfDocument),
         [MediaType.NQuads]: () => toNQuads(response, rdfDocument),
         [MediaType.TriG]: () => toTriG(response, rdfDocument),
-        html: () => toHtml(response, profileStore),
+        html: () => toHtml(response, rdfDocument, profileStore),
         default: () => handleNotAcceptable(response, values(MediaType), [profileStore.profileUri])
     });
 }

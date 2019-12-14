@@ -1,3 +1,5 @@
+import { RdfDocument } from '@hypercontract/profile';
+import { HttpStatus } from '@nestjs/common';
 import { render } from 'ejs';
 import { Response } from 'express';
 import { ProfileStore } from '../../profile-store';
@@ -6,8 +8,13 @@ import { template } from './profile-template';
 
 export const toHtml = async (
     response: Response,
+    rdfDocument: RdfDocument,
     profileStore: ProfileStore
 ) => {
+    if (isConceptRequest(rdfDocument, profileStore)) {
+        return redirectToConcept(rdfDocument, profileStore, response);
+    }
+
     const {
         title,
         entryPoints,
@@ -31,6 +38,15 @@ export const toHtml = async (
     });
 
     return response.send(document);
+}
+
+function redirectToConcept(rdfDocument: RdfDocument, profileStore: ProfileStore, response: Response) {
+    const redirectUrl = rdfDocument.uri.replace(profileStore.defaultNamespace, `${profileStore.profileUri}#`);
+    return response.redirect(HttpStatus.SEE_OTHER, redirectUrl);
+}
+
+function isConceptRequest(rdfDocument: RdfDocument, profileStore: ProfileStore) {
+    return rdfDocument.uri !== profileStore.profileUri;
 }
 
 function toHtmlId(name: string) {
