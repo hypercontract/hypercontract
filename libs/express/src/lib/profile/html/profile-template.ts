@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+export const template = `<!DOCTYPE html>
 <html>
     <head>
         <title><%= title %></title>
@@ -533,4 +533,4 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-core.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/plugins/autoloader/prism-autoloader.min.js"></script>
     </body>
-</html>
+</html>`
