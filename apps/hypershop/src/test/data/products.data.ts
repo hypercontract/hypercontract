@@ -31,11 +31,11 @@ export const productMocks: Product[] = [
         image: `${getBaseUri()}/assets/product-232fd964-4ad0-4f8b-a843-1c4e4326afca.jpg`
     },
     {
-        _id: '0a30fd27-f0b4-4be1-b34b-304fe0308676',
-        productName: 'Tasty Rubber Tuna',
-        productDescription: 'Fuga assumenda iusto provident sapiente atque sed soluta. Est illum sint tempore omnis vitae ut vero quia est. Eum delectus atque excepturi modi tenetur.',
-        price: 65.05,
-        image: `${getBaseUri()}/assets/product-0a30fd27-f0b4-4be1-b34b-304fe0308676.jpg`
+        _id: '01c31228-d5ba-44b3-84b1-7cccc7b9f707',
+        productName: 'Handcrafted Steel Mouse',
+        productDescription: 'Deserunt accusamus vitae natus quia. Ullam repellat dolorem hic assumenda et adipisci. Et autem tempore maiores laborum quisquam corrupti ipsa illum. Earum doloremque voluptatem quae fugiat ab. Illo nemo eos. Dolores voluptatibus assumenda exercitationem commodi expedita.',
+        price: 66.07,
+        image: `${getBaseUri()}/assets/product-01c31228-d5ba-44b3-84b1-7cccc7b9f707.jpg`
     },
     {
         _id: '2e256276-e0ba-486a-b58b-224060ea5749',
