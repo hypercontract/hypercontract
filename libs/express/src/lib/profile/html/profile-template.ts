@@ -63,7 +63,7 @@ export const template = `<!DOCTYPE html>
 
             <% if (representationClasses.length > 0) { %>
                 <section style="padding-top: 100px" id="--representation-classes">
-                    <h2 class="mb-4">Representation Classes</h2>
+                    <h2 class="mb-4">Classes</h2>
 
                     <ul class="nav nav-pills row">
                         <% representationClasses.forEach(({ uri, localName }) => { %>
@@ -211,7 +211,7 @@ export const template = `<!DOCTYPE html>
 
             <% if (representationProperties.length > 0) { %>
                 <section style="padding-top: 100px" id="--representation-properties">
-                    <h2 class="mb-4">Representation Properties</h2>
+                    <h2 class="mb-4">Properties</h2>
 
                     <ul class="nav nav-pills row">
                         <% representationProperties.forEach(({ uri, localName }) => { %>
