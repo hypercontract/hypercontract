@@ -1,15 +1,21 @@
-import { Cardinality, conceptClass, ConceptClass, conceptProperty, ConceptProperty, hyper, jsonLdContext, owl, prefixes, RdfDocument, rdfs, xsd } from '@hypercontract/profile';
+import { Cardinality, concept, conceptClass, ConceptClass, conceptProperty, ConceptProperty, hyper, jsonLdContext, owl, prefixes, RdfDocument, rdfs, xsd } from '@hypercontract/profile';
 import { flatten, trimEnd } from 'lodash';
 
 const hyperClass = (name: string, definition: ConceptClass) => conceptClass(hyper(name), definition);
 const hyperProperty = (name: string, definition: ConceptProperty) => conceptProperty(hyper(name), definition);
 
+const vocabularyUri = trimEnd(hyper(''), '/');
+
 export const vocabulary: RdfDocument = {
-    uri: trimEnd(hyper(''), '/'),
+    uri: vocabularyUri,
     defaultNamespace: hyper(''),
     prefixes,
     jsonLdContext,
     graph: flatten([
+        concept(vocabularyUri, {
+            label: 'hypercontract',
+            description: 'Describing RESTful Web APIs with RDF-based profiles.'
+        }),
         hyperClass('Profile', {
             label: 'Profile',
             description: 'A profile describing a RESTful Web API using RDF and hypercontract.'
