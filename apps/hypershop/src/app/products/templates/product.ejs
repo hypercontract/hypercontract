@@ -1,32 +1,35 @@
 <%- include('../../formats/html/head') %>
 
-<h1 class="mb-5"><%= product.productName %></h1>
+<main class="container" itemscope itemtype="<%= shop('Product') %>" itemid="<%= links.self %>">
+    <h1 class="mb-5" itemprop="productName"><%= product.productName %></h1>
 
-<div class="row align-items-start">
+    <div class="row align-items-start">
 
-    <div class="col-4">
-        <figure class="figure">
-            <img src="<%= product.image %>" class="figure-img img-fluid rounded" alt="Product Image of <%= product.productName %>" />
-        </figure>
-    </div>
+        <div class="col-4">
+            <figure class="figure">
+                <img itemprop="image" src="<%= product.image %>" class="figure-img img-fluid rounded" alt="Product Image of <%= product.productName %>" />
+            </figure>
+        </div>
 
-    <div class="col-8 row align-items-center">
-        <p class="col-8 mb-0"><strong>Price: <%= product.price %></strong></p>
+        <div class="col-8 row align-items-center">
+            <p class="col-8 mb-0"><strong itemprop="price">Price: <%= product.price %></strong></p>
 
-        <form action="<%= links.addToShoppingCart %>" method="POST" class="form-inline col-4">
-            <input type="hidden" name="product" value="<%= product._id %>" />
+            <form action="<%= links.addToShoppingCart %>" method="POST" class="form-inline col-4" rel="<%= shop('addToShoppingCart') %>"
+                itemscope itemtype="<%= shop('AdditionToShoppingCart') %>">
+                <input type="hidden" name="product" value="<%= product._id %>" itemprop="product" />
 
-            <div class="input-group float-right">
-                <label for="quantity" class="sr-only">Quantity</label>
-                <input type="number" name="quantity" title="Quantity" value="1" class="form-control text-right">
-                <div class="input-group-append">
-                    <button type="submit" class="btn btn-primary" title="Add to Shopping Cart">Add</button>
+                <div class="input-group float-right">
+                    <label for="quantity" class="sr-only">Quantity</label>
+                    <input type="number" name="quantity" title="Quantity" value="1" class="form-control text-right" itemprop="quantity" />
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary" title="Add to Shopping Cart">Add</button>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
 
-        <p class="col mt-5"><%= product.productDescription %></p>
+            <p class="col mt-5" itemprop="productDescription"><%= product.productDescription %></p>
+        </div>
     </div>
-</div>
+</main>
 
 <%- include('../../formats/html/foot') %>

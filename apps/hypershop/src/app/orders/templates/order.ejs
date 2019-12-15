@@ -1,86 +1,92 @@
 <%- include('../../formats/html/head') %>
 
-<h1 class="mb-5">Order <%= formatDate(order.orderDate) %></h1>
+<main class="container" itemscope itemtype="<%= shop('Order') %>" itemid="<%= links.self %>">
+    <h1 class="mb-5">Order <span itemprop="orderDate"><%= formatDate(order.orderDate) %></span></h1>
 
-<% if (links.cancel) { %>
-<form action="<%= links.cancel %>" method="POST" class="row mb-5">
-    <input type="hidden" name="_method" value="PATCH" />
+    <% if (links.cancel) { %>
+    <form action="<%= links.cancel %>" method="POST" class="row mb-5" rel="<%= shop('cancel') %>"
+        itemscope itemtype="<%= shop('OrderCancellation') %>">
+        <input type="hidden" name="_method" value="PATCH" />
 
-    <div class="input-group mb-2 col-4 offset-md-8">
-        <input type="text" class="form-control" name="cancellationReason" placeholder="cancellation reason..." />
-        <div class="input-group-append">
-            <button type="submit" class="btn btn-danger btn-small" title="Cancel Order">Cancel</button>
+        <div class="input-group mb-2 col-4 offset-md-8">
+            <input type="text" class="form-control" name="cancellationReason" placeholder="cancellation reason..." itemprop="cancellationReason" />
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-danger btn-small" title="Cancel Order">Cancel</button>
+            </div>
+        </div>
+    </form>
+    <% } %>
+
+    <% if (order.orderStatus === 'Delivered') { %>
+    <div class="alert alert-success mb-5" role="alert">
+        <strong>Order <span itemprop="orderStatus">delivered</span></strong>
+    </div>
+    <% } %>
+
+    <% if (order.orderStatus === 'Cancelled') { %>
+    <div class="alert alert-danger mb-5" role="alert">
+        <strong>Order <span itemprop="orderStatus">cancelled</span></strong>
+        <p class="mb-0" itemprop="cancellationReason"><%= order.cancellationReason %></p>
+    </div>
+    <% } %>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <% order.orderItems.forEach(function (orderItem, index) { %>
+            <tr itemprop="orderItems" itemscope itemtype="<%= shop('OrderItem') %>">
+                <td>
+                    <span itemprop="productName"><%= orderItem.productName %></span><br />
+                    <small itemprop="productDescription"><%= orderItem.productDescription %></small>
+                </td>
+                <td itemprop="price" class="text-right"><%= orderItem.price.toFixed(2) %></td>
+                <td itemprop="quantity" class="text-right"><%= orderItem.quantity %></td>
+            </tr>
+            <% }) %>
+        </tbody>
+    </table>
+
+    <div class="col-12 mt-5 row">
+        <address class="col-3" itemprop="billingAddress"
+            itemscope itemtype="<%= shop('BillingAddress') %>">
+            <h3 class="h6">Billing Address</h3>
+            <em itemprop="name"><%= order.billingAddress.name %></em><br />
+            <small>
+                <span itemprop="street"><%= order.billingAddress.street %></span><br />
+                <span itemprop="zipCode"><%= order.billingAddress.zipCode %></span>
+                <span itemprop="city"><%= order.billingAddress.city %></span><br />
+                <span itemprop="country"><%= order.billingAddress.country %></span>
+            </small>
+        </address>
+        <address class="col-3" itemprop="shippingAddress"
+            itemscope itemtype="<%= shop('ShippingAddress') %>">
+            <h3 class="h6">Shipping Address</h3>
+            <em itemprop="name"><%= order.shippingAddress.name %></em><br />
+            <small>
+                <span itemprop="street"><%= order.shippingAddress.street %></span><br />
+                <span itemprop="zipCode"><%= order.shippingAddress.zipCode %></span>
+                <span itemprop="city"><%= order.shippingAddress.city %></span><br />
+                <span itemprop="country"><%= order.shippingAddress.country %></span>
+            </small>
+        </address>
+        <div class="payment col-3" itemprop="payment"
+            itemscope itemtype="<%= shop('Payment') %>">
+            <h3 class="h6">Payment</h3>
+            <em itemprop="accountOwner"><%= order.payment.accountOwner %></em><br />
+            <small>
+                <span itemprop="iban"><%= order.payment.iban %></span><br />
+                <span itemprop="bic"><%= order.payment.bic %></span>
+            </small>
         </div>
     </div>
-</form>
-<% } %>
-
-<% if (order.orderStatus === 'Delivered') { %>
-<div class="alert alert-success mb-5" role="alert">
-    <strong>Order delivered</strong>
-</div>
-<% } %>
-
-<% if (order.orderStatus === 'Cancelled') { %>
-<div class="alert alert-danger mb-5" role="alert">
-    <strong>Order cancelled</strong>
-    <p class="mb-0"><%= order.cancellationReason %></p>
-</div>
-<% } %>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Item</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <% order.orderItems.forEach(function (orderItem, index) { %>
-        <tr>
-            <td>
-                <%= orderItem.productName %><br />
-                <small><%= orderItem.productDescription %></small>
-            </td>
-            <td class="text-right"><%= orderItem.price.toFixed(2) %></td>
-            <td class="text-right"><%= orderItem.quantity %></td>
-        </tr>
-        <% }) %>
-    </tbody>
-</table>
-
-<div class="col-12 mt-5 row">
-    <address class="col-3">
-        <h3 class="h6">Billing Address</h3>
-        <em><%= order.billingAddress.name %></em><br />
-        <small>
-            <%= order.billingAddress.street %><br />
-            <%= order.billingAddress.zipCode %>
-            <%= order.billingAddress.city %><br />
-            <%= order.billingAddress.country %>
-        </small>
-    </address>
-    <address class="col-3">
-        <h3 class="h6">Shipping Address</h3>
-        <em><%= order.shippingAddress.name %></em><br />
-        <small>
-            <%= order.shippingAddress.street %><br />
-            <%= order.shippingAddress.zipCode %>
-            <%= order.shippingAddress.city %><br />
-            <%= order.shippingAddress.country %>
-        </small>
-    </address>
-    <div class="payment col-3">
-        <h3 class="h6">Payment</h3>
-        <em><%= order.payment.accountOwner %></em><br />
-        <small>
-            <%= order.payment.iban %><br />
-            <%= order.payment.bic %>
-        </small>
-    </div>
-</div>
 
 
-<%- include('../../formats/html/foot') %>
+    <%- include('../../formats/html/foot') %>
+</main>

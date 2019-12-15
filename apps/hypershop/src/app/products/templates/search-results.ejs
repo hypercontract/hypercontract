@@ -1,45 +1,49 @@
 <%- include('../../formats/html/head') %>
 
-<h1 class="mb-5">Search Results</h1>
+<main class="container" itemscope itemtype="<%= shop('SearchResults') %>" itemid="<%= links.self %>">
+    <h1 class="mb-5">Search Results</h1>
 
-<% if (searchResults.totalResults > 0) { %>
-<p class="mb-5"><%= searchResults.totalResults %> matching Products.</p>
+    <% if (searchResults.totalResults > 0) { %>
+    <p class="mb-5"><span itemprop="totalResults"><%= searchResults.totalResults %></span> matching Products.</p>
 
-<ul class="list-unstyled">
-    <% searchResults.products.forEach(function (product, index) { %>
-    <li class="row align-items-center mb-5">
-        <figure class="figure col-2">
-            <img src="<%= product.image %>" class="figure-img img-fluid rounded" alt="Product Image of <%= product.name %>">
-        </figure>
+    <ul class="list-unstyled">
+        <% searchResults.products.forEach(function (product, index) { %>
+        <li class="row align-items-center mb-5" itemprop="products"
+            itemscope itemtype="<%= shop('Product') %>" itemid="<%= links.product[index] %>">
+            <figure class="figure col-2">
+                <img itemprop="image" src="<%= product.image %>" class="figure-img img-fluid rounded" alt="Product Image of <%= product.name %>">
+            </figure>
 
-        <div class="col-8">
-            <h2 class="h5 mb-1"><a href="<%= links.product[index] %>"><%= product.productName %></a></h2>
-            <p class="mb-1"><small><%= product.productDescription %></small></p>
-            <p><strong><%= product.price.toFixed(2) %></strong></p>
-        </div>
+            <div class="col-8">
+                <h2 class="h5 mb-1" itemprop="productName"><a href="<%= links.product[index] %>" rel="<%= shop('products') %>"><%= product.productName %></a></h2>
+                <p class="mb-1"><small itemprop="productDescription"><%= product.productDescription %></small></p>
+                <p><strong itemprop="productPrice"><%= product.price.toFixed(2) %></strong></p>
+            </div>
 
-        <div class="col-2">
-            <form action="<%= links.addToShoppingCart[index] %>" method="POST" class="form-inline">
-                <input type="hidden" name="product" value="<%= product._id %>" />
+            <div class="col-2">
+                <form action="<%= links.addToShoppingCart[index] %>" method="POST" class="form-inline" rel="<%= shop('addToShoppingCart') %>"
+                    itemscope itemtype="<%= shop('AdditionToShoppingCart') %>">
+                    <input type="hidden" name="product" value="<%= product._id %>" itemprop="product" />
 
-                <div class="input-group">
-                    <label for="quantity" class="sr-only">Quantity</label>
-                    <input type="number" name="quantity" title="Quantity" value="1" class="form-control text-right">
-                    <div class="input-group-append">
-                        <button type="submit" class="btn btn-primary" title="Add to Shopping Cart">Add</button>
+                    <div class="input-group">
+                        <label for="quantity" class="sr-only">Quantity</label>
+                        <input type="number" name="quantity" title="Quantity" value="1" class="form-control text-right" itemprop="quantity" />
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary" title="Add to Shopping Cart">Add</button>
+                        </div>
                     </div>
-                </div>
-            </form>
-        </div>
-    </li>
-    <% }) %>
-</ul>
-<% } %>
+                </form>
+            </div>
+        </li>
+        <% }) %>
+    </ul>
+    <% } %>
 
-<% if (searchResults.totalResults === 0) { %>
-<div class="alert alert-warning" role="alert">
-    No products found.
-</div>
-<% } %>
+    <% if (searchResults.totalResults === 0) { %>
+    <div class="alert alert-warning" role="alert">
+        No products found.
+    </div>
+    <% } %>
+</main>
 
 <%- include('../../formats/html/foot') %>

@@ -1,37 +1,41 @@
 <%- include('../../formats/html/head') %>
 
-<h1 class="mb-5">User Profile</h1>
+<main class="container" itemscope itemtype="<%= shop('UserProfile') %>" itemid="<%= links.self %>">
+    <h1 class="mb-5">User Profile</h1>
 
-<div class="row">
-    <section class="mb-5 col-4">
-        <h2 class="h5 mb-3">Addresses</h2>
+    <div class="row">
+        <section class="mb-5 col-4">
+            <h2 class="h5 mb-3">Addresses</h2>
 
-        <ul class="list-unstyled">
-            <% userProfile.addresses.forEach(function (address, index) { %>
-            <li class="mb-3">
-                <address class="mb-0">
-                    <%= address.name %><br />
-                    <small>
-                        <%= address.street %>, <%= address.city %>
-                    </small>
-                </address>
-            </li>
-            <% }) %>
-        </ul>
-    </section>
+            <ul class="list-unstyled">
+                <% userProfile.addresses.forEach(function (address, index) { %>
+                <li class="mb-3" itemprop="addresses"
+                    itemscope itemtype="<%= shop('Address') %>" itemid="<%= links.addresses[index] %>">
+                    <address class="mb-0">
+                        <span itemprop="name"><%= address.name %></span><br />
+                        <small>
+                            <span itemprop="street"><%= address.street %></span>, <span itemprop="city"><%= address.city %></span>
+                        </small>
+                    </address>
+                </li>
+                <% }) %>
+            </ul>
+        </section>
 
-    <section class="mb-5 col-4">
-        <h2 class="h5 mb-3">Payment Options</h2>
+        <section class="mb-5 col-4">
+            <h2 class="h5 mb-3">Payment Options</h2>
 
-        <ul class="list-unstyled">
-            <% userProfile.paymentOptions.forEach(function (paymentOption, index) { %>
-            <li class="mb-3">
-                <%= paymentOption.accountOwner %><br />
-                <small><%= paymentOption.iban %></small>
-            </li>
-            <% }) %>
-        </ul>
-    </section>
-</div>
+            <ul class="list-unstyled">
+                <% userProfile.paymentOptions.forEach(function (paymentOption, index) { %>
+                <li class="mb-3" itemprop="paymentOptions"
+                    itemscope itemtype="<%= shop('PaymentOption') %>" itemid="<%= links.paymentOptions[index] %>">
+                    <span itemprop="accountOwner"><%= paymentOption.accountOwner %></span><br />
+                    <small itemid="iban"><%= paymentOption.iban %></small>
+                </li>
+                <% }) %>
+            </ul>
+        </section>
+    </div>
+</main>
 
 <%- include('../../formats/html/foot') %>

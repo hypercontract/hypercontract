@@ -1,126 +1,134 @@
 <%- include('../../formats/html/head') %>
 
-<h1 class="mb-5">Shopping Cart</h1>
+<main class="container" itemscope itemtype="<%= shop('ShoppingCart') %>" itemid="<%= links.self %>">
+    <h1 class="mb-5">Shopping Cart</h1>
 
-<% if (shoppingCart.items.length > 0) { %>
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>Item</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
+    <% if (shoppingCart.items.length > 0) { %>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <% shoppingCart.items.forEach(function (shoppingCartItem, index) { %>
+            <tr id="shoppingCartItem-<%= index %>" itemprop="items"
+                itemscope itemtype="<%= shop('ShoppingCartItem') %>" itemid="<%= links.shoppingCartItem[index] %>">
+                <td>
+                    <a href="<%= links.product[index] %>" rel="<%= shop('product') %>">
+                        <span itemprop="productName"><%= shoppingCartItem.productName %></span>
+                    </a><br />
+                    <small itemprop="productDescription"><%= shoppingCartItem.productDescription %></small>
+                </td>
+                <td class="text-right" itemprop="price"><%= shoppingCartItem.price.toFixed(2) %></td>
+                <td style="width: 15%">
+                    <span class="sr-only" itemprop="quantity"><%= shoppingCartItem.quantity %></span>
+                    <form action="<%= links.changeQuantity[index] %>" method="POST" class="input-group" rel="<%= shop('changeQuantity') %>"
+                        itemscope itemtype="<%= shop('QuantityChange') %>">
+                        <input type="hidden" name="_method" value="PATCH" />
+                        <label for="quantity" class="sr-only">Quantity</label>
+                        <input type="number" name="quantity" title="Quantity" value="<%= shoppingCartItem.quantity %>" class="form-control text-right" itemprop="quantity">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary" title="Update Quantity">Change</button>
+                        </div>
+                    </form>
+                </td>
+                <td>
+                    <form action="<%= links.remove[index] %>" method="POST" rel="<%= shop('remove') %>">
+                        <input type="hidden" name="_method" value="DELETE" />
+                        <button type="submit" class="btn btn-danger" title="Remove from Shopping Cart">Remove</button>
+                    </form>
+                </td>
+            </tr>
+            <% }) %>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2" class="text-right" itemprop="totalPrice"><%= shoppingCart.totalPrice.toFixed(2) %></td>
+                <td colspan="2"></td>
+            </tr>
+        </tfoot>
+    </table>
+    <% } %>
+
+
+    <% if (shoppingCart.items.length === 0) { %>
+    <div class="alert alert-warning" role="alert">
+        You have not yet added any items to your Shopping Cart.
+    </div>
+    <% } %>
+
+
+    <% if (links.placeOrder) { %>
+    <form action="<%= links.placeOrder %>" method="POST" class="mt-5 row align-items-start" rel="<%= shop('placeOrder') %>"
+        itemscope itemtype="<%= shop('NewOrder') %>">
+        <h2 class="col-12 h3 mb-4">Place Order</h2>
+
         <% shoppingCart.items.forEach(function (shoppingCartItem, index) { %>
-        <tr>
-            <td>
-                <a href="<%= links.product[index] %>"><%= shoppingCartItem.productName %></a><br />
-                <small><%= shoppingCartItem.productDescription %></small>
-            </td>
-            <td class="text-right"><%= shoppingCartItem.price.toFixed(2) %></td>
-            <td style="width: 15%">
-                <form action="<%= links.changeQuantity[index] %>" method="POST" class="input-group">
-                    <input type="hidden" name="_method" value="PATCH" />
-                    <label for="quantity" class="sr-only">Quantity</label>
-                    <input type="number" name="quantity" title="Quantity" value="<%= shoppingCartItem.quantity %>" class="form-control text-right">
-                    <div class="input-group-append">
-                        <button type="submit" class="btn btn-primary" title="Update Quantity">Change</button>
-                    </div>
-                </form>
-            </td>
-            <td>
-                <form action="<%= links.remove[index] %>" method="POST">
-                    <input type="hidden" name="_method" value="DELETE" />
-                    <button type="submit" class="btn btn-danger" title="Remove from Shopping Cart">Remove</button>
-                </form>
-            </td>
-        </tr>
+            <input type="hidden" name="shoppingCartItems[]" value="<%= shoppingCartItem._id %>" itemprop="shoppingCartItems" />
         <% }) %>
-    </tbody>
-    <tfoot>
-        <tr>
-            <td colspan="2" class="text-right"><%= shoppingCart.totalPrice.toFixed(2) %></td>
-            <td colspan="2"></td>
-        </tr>
-    </tfoot>
-</table>
-<% } %>
 
+        <div class="form-group col-4" itemprop="billingAddress">
+            <label class="form-control-label h6 mb-3" for="billingAddress">Billing Address</label>
 
-<% if (shoppingCart.items.length === 0) { %>
-<div class="alert alert-warning" role="alert">
-    You have not yet added any items to your Shopping Cart.
-</div>
-<% } %>
+            <% userProfile.addresses.forEach(function (address, index) { %>
+            <div class="form-check mb-3" itemscope itemtype="<%= shop('Address') %>" itemid="<%= links.addresses[index] %>">
+                <input class="form-check-input" type="radio" name="billingAddress" id="billingAddress-<%= index %>" value="<%= links.addresses[index] %>" <%= (index === 0) ? ' checked' : '' %> />
+                <label class="form-check-label" for="billingAddress-<%= index %>">
+                    <address class="mb-0">
+                        <em itemprop="name"><%= address.name %></em><br />
+                        <small>
+                            <span itemprop="street"><%= address.street %></span>, <span itemprop="city"><%= address.city %></span>
+                        </small>
+                    </address>
+                </label>
+            </div>
+            <% }) %>
+        </div>
 
+        <div class="form-group col-4" itemprop="shippingAddress">
+            <label class="form-control-label h6 mb-3" for="shippingAddress">Shipping Address</label>
 
-<% if (links.placeOrder) { %>
-<form action="<%= links.placeOrder %>" method="POST" class="mt-5 row align-items-start">
-    <% shoppingCart.items.forEach(function (shoppingCartItem, index) { %>
-        <input type="hidden" name="shoppingCartItems[]" value="<%= shoppingCartItem._id %>" />
-    <% }) %>
+            <% userProfile.addresses.forEach(function (address, index) { %>
+            <div class="form-check mb-3" itemscope itemtype="<%= shop('Address') %>" itemid="<%= links.addresses[index] %>">
+                <input class="form-check-input" type="radio" name="shippingAddress" id="shippingAddress-<%= index %>" value="<%= links.addresses[index] %>" <%= (index === 0) ? ' checked' : '' %> />
+                <label class="form-check-label" for="shippingAddress-<%= index %>">
+                    <address class="mb-0">
+                        <em itemprop="name"><%= address.name %></em><br />
+                        <small>
+                            <span itemprop="street"><%= address.street %></span>, <span itemprop="city"><%= address.city %></span>
+                        </small>
+                    </address>
+                </label>
+            </div>
+            <% }) %>
+        </div>
 
-    <h2 class="col-12 h3 mb-4">Place Order</h2>
+        <div class="form-group col-2">
+            <label class="form-control-label h6 mb-3" for="payment">Payment</label>
 
-    <div class="form-group col-4">
-        <label class="form-control-label h6 mb-3" for="billingAddress">Billing Address</label>
-
-        <% userProfile.addresses.forEach(function (address, index) { %>
-        <div class="form-check mb-3">
-            <input class="form-check-input" type="radio" name="billingAddress" id="billingAddress-<%= index %>" value="<%= address._id %>" <%= (index === 0) ? ' checked' : '' %> />
-            <label class="form-check-label" for="billingAddress-<%= index %>">
-                <address class="mb-0">
-                    <em><%= address.name %></em><br />
+            <% userProfile.paymentOptions.forEach(function (paymentOption, index) { %>
+            <div class="form-check mb-3" itemscope itemtype="<%= shop('PaymentOption') %>" itemid="<%= links.paymentOptions[index] %>">
+                <input class="form-check-input" type="radio" name="payment" id="paymentOption-<%= index %>" value="<%= links.paymentOptions[index] %>" <%= (index === 0) ? ' checked' : '' %> />
+                <label class="form-check-label" for="paymentOption-<%= index %>">
+                    <em itemprop="accountOwner"><%= paymentOption.accountOwner %></em><br />
                     <small>
-                        <%= address.street %>, <%= address.city %>
+                        <span itemprop="iban"><%= paymentOption.iban %></span><br />
+                        <span itemprop="bic"><%= paymentOption.bic %></span>
                     </small>
-                </address>
-            </label>
+                </label>
+            </div>
+            <% }) %>
         </div>
-        <% }) %>
-    </div>
 
-    <div class="form-group col-4">
-        <label class="form-control-label h6 mb-3" for="shippingAddress">Shipping Address</label>
-
-        <% userProfile.addresses.forEach(function (address, index) { %>
-        <div class="form-check mb-3">
-            <input class="form-check-input" type="radio" name="shippingAddress" id="shippingAddress-<%= index %>" value="<%= address._id %>" <%= (index === 0) ? ' checked' : '' %> />
-            <label class="form-check-label" for="shippingAddress-<%= index %>">
-                <address class="mb-0">
-                    <em><%= address.name %></em><br />
-                    <small>
-                        <%= address.street %>, <%= address.city %>
-                    </small>
-                </address>
-            </label>
+        <div class="form-group col-2 text-right">
+            <button type="submit" class="btn btn-primary">Place Order</button>
         </div>
-        <% }) %>
-    </div>
-
-    <div class="form-group col-2">
-        <label class="form-control-label h6 mb-3" for="payment">Payment</label>
-
-        <% userProfile.paymentOptions.forEach(function (paymentOption, index) { %>
-        <div class="form-check mb-3">
-            <input class="form-check-input" type="radio" name="payment" id="paymentOption-<%= index %>" value="<%= paymentOption._id %>" <%= (index === 0) ? ' checked' : '' %> />
-            <label class="form-check-label" for="paymentOption-<%= index %>">
-                <em><%= paymentOption.accountOwner %></em><br />
-                <small>
-                    <%= paymentOption.iban %><br />
-                    <%= paymentOption.bic %>
-                </small>
-            </label>
-        </div>
-        <% }) %>
-    </div>
-
-    <div class="form-group col-2 text-right">
-        <button type="submit" class="btn btn-primary">Place Order</button>
-    </div>
-</form>
-<% } %>
+    </form>
+    <% } %>
+</main>
 
 <%- include('../../formats/html/foot') %>

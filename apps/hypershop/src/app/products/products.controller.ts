@@ -25,7 +25,7 @@ export class ProductsController {
 
         return sendResponse(response, {
             json: searchResults,
-            html: renderSearchResults(searchResults),
+            html: renderSearchResults(searchResults, queryString),
             [MediaType.JsonHal]: toJsonHalSearchResults(searchResults, queryString),
             [MediaType.JsonLd]: toJsonLdSearchResults(searchResults, queryString)
         });

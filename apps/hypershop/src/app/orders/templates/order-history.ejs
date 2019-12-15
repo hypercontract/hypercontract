@@ -1,41 +1,53 @@
 <%- include('../../formats/html/head') %>
 
-<h1 class="mb-5">Order History</h1>
+<main class="container" itemscope itemtype="<%= shop('OrderHistory') %>" itemid="<%= links.self %>">
+    <h1 class="mb-5">Order History</h1>
 
-<ul class="list-unstyled">
-    <% orders.forEach(function (order, index) { %>
-    <li class="row align-items-center mb-5">
-        <div class="col">
-            <h2 class="h5 mb-1"><a href="<%= links.order[index] %>">Order <%= formatDate(order.orderDate) %></a></h2>
-            <p class="mt-2"><span class="badge badge-secondary"><%= order.orderStatus %></span></p>
-        </div>
-
-        <div class="col-12 mt-2 row">
-            <div class="col-3 billing-address">
-                <h3 class="h6">Billing Address</h3>
-
-                <address class="mb-0">
-                    <em><%= order.billingAddress.name %></em><br />
-                    <small><%= order.billingAddress.street %>, <%= order.billingAddress.city %></small>
-                </address>
+    <ul class="list-unstyled">
+        <% orders.forEach(function (order, index) { %>
+        <li class="row align-items-center mb-5" itemprop="<%= shop('orders') %>"
+            itemscope itemtype="<%= shop('Order') %>" itemid="<%= links.order[index] %>">
+            <div class="col">
+                <h2 class="h5 mb-1">
+                    <a href="<%= links.order[index] %>" rel="<%= shop('orders') %>">
+                        Order <span itemprop="orderDate"><%= formatDate(order.orderDate) %></span>
+                    </a>
+                </h2>
+                <p class="mt-2"><span class="badge badge-secondary" itemprop="orderStatus"><%= order.orderStatus %></span></p>
             </div>
-            <div class="col-3 shipping-address">
-                <h3 class="h6">Shipping Address</h3>
 
-                <address class="mb-0">
-                    <em><%= order.shippingAddress.name %></em><br />
-                    <small><%= order.shippingAddress.street %>, <%= order.shippingAddress.city %></small>
-                </address>
-            </div>
-            <div class="col-3 payment">
-                <h3 class="h6">Payment</h3>
+            <div class="col-12 mt-2 row">
+                <div class="col-3 billing-address" itemprop="billingAddress"
+                itemscope itemtype="<%= shop('BillingAddress') %>">
+                    <h3 class="h6">Billing Address</h3>
 
-                <em><%= order.payment.accountOwner %></em><br />
-                <small><%= order.payment.iban %></small>
+                    <address class="mb-0">
+                        <em itemprop="name"><%= order.billingAddress.name %></em><br />
+                        <small><span itemprop="street"><%= order.billingAddress.street %></span>,
+                            <span itemprop="city"><%= order.billingAddress.city %></span></small>
+                    </address>
+                </div>
+                <div class="col-3 shipping-address" itemprop="shippingAddress"
+                itemscope itemtype="<%= shop('ShippingAddress') %>">
+                    <h3 class="h6">Shipping Address</h3>
+
+                    <address class="mb-0">
+                        <em itemprop="name"><%= order.shippingAddress.name %></em><br />
+                        <small><span itemprop="street"><%= order.shippingAddress.street %></span>,
+                            <span itemprop="city"><%= order.shippingAddress.city %></span></small>
+                    </address>
+                </div>
+                <div class="col-3 payment" itemprop="payment"
+                    itemscope itemtype="<%= shop('Payment') %>">
+                    <h3 class="h6">Payment</h3>
+
+                    <em itemprop="name"><%= order.payment.accountOwner %></em><br />
+                    <small itemprop="iban"><%= order.payment.iban %></small>
+                </div>
             </div>
-        </div>
-    </li>
-    <% }) %>
-</ul>
+        </li>
+        <% }) %>
+    </ul>
+</main>
 
 <%- include('../../formats/html/foot') %>

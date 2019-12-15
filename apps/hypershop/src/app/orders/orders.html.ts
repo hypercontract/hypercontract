@@ -1,5 +1,6 @@
 import { format } from 'date-fns';
-import { getOrderUri } from '../routing';
+import { shop } from '../profile/namespaces';
+import { getOrdersRootUri, getOrderUri } from '../routing';
 import { Order, OrderHistory } from './order.model';
 
 const activeNavItem = 'orderHistory';
@@ -11,16 +12,20 @@ export function renderOrderHistory({ orders }: OrderHistory) {
             activeNavItem,
             orders,
             links: {
+                self: getOrdersRootUri(),
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 order: orders.map(order => getOrderUri(order._id!))
             },
-            formatDate
+            formatDate,
+            shop
         }
     ];
 }
 
 export function renderOrder(order: Order) {
     const links: { [key: string]: string } = {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        self: getOrderUri(order._id!),
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         addToShoppingCart: getOrderUri(order._id!)
     };
@@ -36,7 +41,8 @@ export function renderOrder(order: Order) {
             activeNavItem,
             order,
             links,
-            formatDate
+            formatDate,
+            shop
         }
     ];
 }

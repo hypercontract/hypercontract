@@ -1,25 +1,28 @@
 <%- include('../../formats/html/head') %>
 
-<h1 class="mb-5">Welcome</h1>
+<main class="container" itemscope itemtype="<%= shop('ApiRoot') %>" itemid="<%= links.self %>">
+    <h1 class="mb-5">Welcome</h1>
 
-<form action="<%= links.searchCatalog %>" class="row form-inline" method="GET">
-    <div class="form-group mx-sm-3">
-        <label for="queryString" class="sr-only">Search Query</label>
-        <input type="text" name="queryString" title="Search Query" class="form-control" placeholder="Search Catalog...">
-    </div>
-    <button type="submit" class="btn btn-primary">Search Products</button>
-</form>
+    <form action="<%= links.searchCatalog %>" class="row form-inline" method="GET" rel="<%= shop('searchCatalog') %>"
+        itemscope itemtype="<%= shop('SearchQuery') %>">
+        <div class="form-group mx-sm-3">
+            <label for="queryString" class="sr-only">Search Query</label>
+            <input type="text" name="queryString" title="Search Query" class="form-control" placeholder="Search Catalog..." itemprop="<%= shop('queryString') %>" />
+        </div>
+        <button type="submit" class="btn btn-primary">Search Products</button>
+    </form>
 
-<ul class="row nav flex-column mt-5">
-    <li class="nav-item">
-        <a class="nav-link" href="<%= links.shoppingCart %>">Shopping Cart</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="<%= links.userProfile %>">User Profile</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="<%= links.orders %>">Order History</a>
-    </li>
-</ul>
+    <ul class="row nav flex-column mt-5">
+        <li class="nav-item">
+            <a class="nav-link" href="<%= links.shoppingCart %>" rel="<%= shop('shoppingCart') %>">Shopping Cart</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="<%= links.userProfile %>" rel="<%= shop('userProfile') %>">User Profile</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="<%= links.orders %>" rel="<%= shop('orderHistory') %>">Order History</a>
+        </li>
+    </ul>
+</main>
 
 <%- include('../../formats/html/foot') %>
