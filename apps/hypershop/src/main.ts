@@ -11,10 +11,11 @@ import { join } from 'path';
 import { AppModule } from './app/app.module';
 import { MediaType } from './app/formats/media-type';
 import { profile } from './app/profile';
+import { environment } from './environments/environment';
 
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
-    const port = process.env.port || 80;
+    const port = process.env.port || environment.port;
 
     app.setBaseViewsDir(join(__dirname, 'app'));
     app.setViewEngine('ejs');
@@ -44,7 +45,7 @@ async function bootstrap() {
 
     app.use('/assets', serveStatic(join(__dirname, 'assets')));
 
-    await app.listen(port, () => console.log(`Listening at http://localhost:${port}`));
+    await app.listen(port, () => console.log(`hypershop listening at http://localhost:${port}`));
 }
 
 bootstrap();
