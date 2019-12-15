@@ -68,7 +68,7 @@
         <h2 class="col-12 h3 mb-4">Place Order</h2>
 
         <% shoppingCart.items.forEach(function (shoppingCartItem, index) { %>
-            <input type="hidden" name="shoppingCartItems[]" value="<%= shoppingCartItem._id %>" itemprop="shoppingCartItems" />
+            <input type="hidden" name="shoppingCartItems[]" value="<%= links.shoppingCartItem[index] %>" itemprop="shoppingCartItems" />
         <% }) %>
 
         <div class="form-group col-4" itemprop="billingAddress">

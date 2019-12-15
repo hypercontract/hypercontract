@@ -23,7 +23,7 @@
             <div class="col-2">
                 <form action="<%= links.addToShoppingCart[index] %>" method="POST" class="form-inline" rel="<%= shop('addToShoppingCart') %>"
                     itemscope itemtype="<%= shop('AdditionToShoppingCart') %>">
-                    <input type="hidden" name="product" value="<%= product._id %>" itemprop="product" />
+                    <input type="hidden" name="product" value="<%= links.product[index] %>" itemprop="product" />
 
                     <div class="input-group">
                         <label for="quantity" class="sr-only">Quantity</label>
