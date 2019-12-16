@@ -1,6 +1,8 @@
 import { hyper, ProfileStore, rdf } from '@hypercontract/profile';
 import { Request, Response } from 'express';
-import { isNull, values } from 'lodash';
+import jsonSchemaRefParser from 'json-schema-ref-parser';
+import { isNull, memoize, values } from 'lodash';
+import omitDeep from 'omit-deep';
 import { handleNotAcceptable, handleNotFound } from './error';
 import { MediaType } from './profile/media-types';
 import { getRequestUri } from './request';
@@ -11,7 +13,7 @@ export function isSchemaRequest(request: Request, profileStore: ProfileStore) {
     return !isNull(schemaType) && request.accepts(schemaType);
 }
 
-export function handleSchemaRequest(request: Request, response: Response, profileStore: ProfileStore) {
+export async function handleSchemaRequest(request: Request, response: Response, profileStore: ProfileStore) {
     const schemaUri = getRequestUri(request, profileStore);
     const schemaType = getSchemaType(schemaUri, profileStore);
     const definition = getSchemaDefinition(schemaUri, profileStore);
@@ -20,15 +22,65 @@ export function handleSchemaRequest(request: Request, response: Response, profil
         return handleNotFound(response);
     }
 
+    const dereferencedDefinition = await dereferenceSchema(
+        definition,
+        schemaType,
+        profileStore,
+        false
+    );
+
     return response.format({
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        [schemaType!]: () => response.send(definition),
+        [schemaType]: () => response.send(dereferencedDefinition),
         default: () => handleNotAcceptable(response, [
             ...values(MediaType),
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            schemaType!
+            schemaType
         ])
     });
+}
+
+const getAllSchemas = memoize((profileStore: ProfileStore): { [key: string]: any } => {
+    const schemas = profileStore.getSubjects(rdf('type'), hyper('Schema'));
+    return schemas.reduce(
+        (definitions, schema) => ({
+            ...definitions,
+            [schema]: profileStore.getObject(schema, rdf('value'))
+        }),
+        {}
+    );
+});
+
+export async function dereferenceSchema(
+    schemaDefinition: string,
+    schemaType: string,
+    profileStore: ProfileStore,
+    omitMetadata = true
+) {
+    if (schemaType !== 'application/schema+json') {
+        return schemaDefinition;
+    }
+
+    const schemas = getAllSchemas(profileStore);
+
+    const dereferencedSchemaDefinition = await jsonSchemaRefParser.dereference(
+        JSON.parse(schemaDefinition),
+        {
+            resolve: {
+                file: false,
+                http: false,
+                profileSchema: {
+                    canRead: true,
+
+                    async read(file: { url: string }) {
+                        return schemas[file.url];
+                    }
+                }
+            } as any
+        }
+    );
+    return JSON.stringify(
+        omitMetadata ? omitDeep(dereferencedSchemaDefinition, ['$id', '$schema']) : dereferencedSchemaDefinition,
+        undefined, 2
+    );
 }
 
 function getSchemaType(schemaUri: string, profileStore: ProfileStore) {

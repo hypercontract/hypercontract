@@ -1,10 +1,9 @@
 import { hyper, owl, ProfileStore, rdf, rdfs } from '@hypercontract/profile';
-import jsonSchemaRefParser from 'json-schema-ref-parser';
 import { compact, fromRDF } from 'jsonld';
 import { defaultTo, flatten, isUndefined, omitBy, without } from 'lodash';
-import omitDeep from 'omit-deep';
 import { Quad } from 'rdf-js';
 import { isArray, isNull } from 'util';
+import { dereferenceSchema } from '../../schema';
 
 interface ConceptDefinition {
     uri: string;
@@ -72,9 +71,6 @@ interface Domain {
 
 
 export async function getDefinitions(profileStore: ProfileStore) {
-
-    const schemas: any = await getAllSchemas();
-
     const title = getTitle();
     const description = getDescription();
     const [
@@ -349,7 +345,7 @@ export async function getDefinitions(profileStore: ProfileStore) {
                 const schemaType = definition.definition['hyper:schemaType'];
                 const targetType = definition.definition['hyper:targetType'];
                 const schemaDefinition = definition.definition['rdf:value'];
-                const dereferencedSchemaDefinition = await dereferenceSchema(schemaDefinition, schemaType);
+                const dereferencedSchemaDefinition = await dereferenceSchema(schemaDefinition, schemaType, profileStore);
                 return {
                     ...definition,
                     schemaType,
@@ -357,33 +353,6 @@ export async function getDefinitions(profileStore: ProfileStore) {
                     schemaDefinition: dereferencedSchemaDefinition
                 };
             });
-    }
-
-    async function dereferenceSchema(schemaDefinition: string, schemaType: string) {
-        if (schemaType !== 'application/schema+json') {
-            return schemaDefinition;
-        }
-
-        const dereferencedSchemaDefinition = await jsonSchemaRefParser.dereference(
-            JSON.parse(schemaDefinition),
-            {
-                resolve: {
-                    file: false,
-                    http: false,
-                    profileSchema: {
-                        canRead: true,
-
-                        async read(file: { url: string }) {
-                            return schemas[file.url];
-                        }
-                    }
-                } as any
-            }
-        );
-        return JSON.stringify(
-            omitDeep(dereferencedSchemaDefinition, ['$id', '$schema']),
-            undefined, 2
-        );
     }
 
     async function getConceptDefinitions(subject: string | null, predicate: string, object: string | null): Promise<ConceptDefinition[]> {
