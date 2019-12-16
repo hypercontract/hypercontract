@@ -1,4 +1,4 @@
-import { isNull } from 'lodash';
+import { isNull, trimEnd } from 'lodash';
 import { EntityId } from '../store';
 import { getBaseUri } from './base.uri';
 
@@ -15,7 +15,7 @@ export function getOrdersRootPath() {
 }
 
 export function getOrdersRootUri() {
-    return getOrdersBaseUri() + getOrdersRootPath();
+    return getOrdersBaseUri() + trimEnd(getOrdersRootPath(), '/');
 }
 
 export function getOrderPath(id: EntityId | null = null) {

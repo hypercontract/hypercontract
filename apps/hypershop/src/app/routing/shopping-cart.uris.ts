@@ -1,4 +1,4 @@
-import { isNull } from 'lodash';
+import { isNull, trimEnd } from 'lodash';
 import { EntityId } from '../store';
 import { getBaseUri } from './base.uri';
 
@@ -15,11 +15,11 @@ export function getShoppingCartRootPath() {
 }
 
 export function getShoppingCartRootUri() {
-    return getShoppingCartBaseUri() + getShoppingCartRootPath();
+    return getShoppingCartBaseUri() + trimEnd(getShoppingCartRootPath(), '/');
 }
 
 export function getShoppingCartItemsPath() {
-    return getShoppingCartRootPath() + 'items/';
+    return getShoppingCartRootPath() + 'items';
 }
 
 export function getShoppingCartItemsUri() {
@@ -27,7 +27,7 @@ export function getShoppingCartItemsUri() {
 }
 
 export function getShoppingCartItemPath(id: EntityId | null = null) {
-    const pathTemplate = getShoppingCartItemsPath() + ':shoppingCartItemId';
+    const pathTemplate = getShoppingCartItemsPath() + '/:shoppingCartItemId';
 
     if (!isNull(id)) {
         return pathTemplate.replace(':shoppingCartItemId', id);

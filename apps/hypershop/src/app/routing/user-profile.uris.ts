@@ -1,4 +1,4 @@
-import { isNull } from 'lodash';
+import { isNull, trimEnd } from 'lodash';
 import { EntityId } from '../store';
 import { getBaseUri } from './base.uri';
 
@@ -15,7 +15,7 @@ export function getUserProfileRootPath() {
 }
 
 export function getUserProfileRootUri() {
-    return getUserProfileBaseUri() + getUserProfileRootPath();
+    return getUserProfileBaseUri() + trimEnd(getUserProfileRootPath(), '/');
 }
 
 export function getAddressPath(id: EntityId | null = null) {

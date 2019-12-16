@@ -1,4 +1,4 @@
-import { isNull, isUndefined } from 'lodash';
+import { isNull, isUndefined, trimEnd } from 'lodash';
 import { URL } from 'url';
 import { EntityId } from '../store';
 import { getBaseUri } from './base.uri';
@@ -16,7 +16,7 @@ export function getProductsRootPath() {
 }
 
 export function getProductsRootUri() {
-    return getProductsBaseUri() + getProductsRootPath();
+    return getProductsBaseUri() + trimEnd(getProductsRootPath(), '/');
 }
 
 export function getCatalogSearchUri(queryString?: string) {
