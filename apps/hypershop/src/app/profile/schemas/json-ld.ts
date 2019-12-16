@@ -14,7 +14,7 @@ export const jsonLdSchemas: Schema[] = [
     objectWith('PaymentOption', ['@id', 'accountOwner', 'bic', 'iban'], ['@context']),
     objectWith('Product', ['@id', 'image', 'price', 'productDescription', 'productName'], ['@context', 'addToShoppingCart']),
     objectWith('SearchResults', ['@id', 'products', 'totalResults'], ['@context']),
-    objectWith('ShoppingCart', ['items', 'totalPrice'], ['@context', 'placeOrder']),
+    objectWith('ShoppingCart', ['@id', 'items', 'totalPrice'], ['@context', 'placeOrder']),
     objectWith('ShoppingCartItem', ['@id', 'price', 'productDescription', 'productName', 'quantity', 'product'], ['@context', 'changeQuantity', 'remove']),
     objectWith('UserProfile', ['@id', 'addresses', 'paymentOptions'], ['@context']),
     resource('product', 'Product'),
