@@ -1,4 +1,4 @@
-import { Cardinality, concept, conceptClass, ConceptClass, conceptProperty, ConceptProperty, hyper, jsonLdContext, owl, prefixes, RdfDocument, rdfs, xsd } from '@hypercontract/profile';
+import { Cardinality, concept, conceptClass, ConceptClass, conceptProperty, ConceptProperty, hyper, jsonLdContext, owl, prefixes, rdf, RdfDocument, rdfs, xsd } from '@hypercontract/profile';
 import { flatten, trimEnd } from 'lodash';
 
 const hyperClass = (name: string, definition: ConceptClass) => conceptClass(hyper(name), definition);
@@ -83,7 +83,7 @@ export const vocabulary: RdfDocument = {
         hyperProperty('valueSchema', {
             label: 'value schema',
             description: 'The Schemas that describe the serialization of a property value.',
-            domain: [rdfs('Property')],
+            domain: [rdf('Property')],
             range: [hyper('Schema')],
             cardinality: Cardinality.ZeroOrMore
         }),
