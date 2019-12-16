@@ -5,16 +5,6 @@ import { Order, OrderHistory, OrderStatus } from './order.model';
 
 export function toJsonLdOrderHistory({ orders }: OrderHistory) {
     return {
-        '@context': {
-            orders: {
-                '@id': shop('orders'),
-                '@container': '@set'
-            },
-            orderItems: {
-                '@id': shop('orderItems'),
-                '@container': '@set'
-            }
-        },
         '@id': getOrdersRootUri(),
         '@type': shop('Orders'),
         [shop('orders')]: map(orders, toJsonLdOrder)
@@ -23,12 +13,6 @@ export function toJsonLdOrderHistory({ orders }: OrderHistory) {
 
 export function toJsonLdOrder(order: Order) {
     const resource: any = {
-        '@context': {
-            orderItems: {
-                '@id': shop('orderItems'),
-                '@container': '@set'
-            }
-        },
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         '@id': getOrderUri(order._id!),
         '@type': shop('Order'),

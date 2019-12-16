@@ -5,16 +5,6 @@ import { Address, PaymentOption, UserProfile } from './user-profile.model';
 
 export function toJsonLdUserProfile(userProfile: UserProfile) {
     return {
-        '@context': {
-            addresses: {
-                '@id': shop('addresses'),
-                '@container': '@set'
-            },
-            paymentOptions: {
-                '@id': shop('paymentOptions'),
-                '@container': '@set'
-            }
-        },
         '@id': getUserProfileRootUri(),
         '@type': shop('UserProfile'),
         ...shopify(omit(userProfile, ['addresses', 'paymentOptions'])),

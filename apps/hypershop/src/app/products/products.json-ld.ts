@@ -5,12 +5,6 @@ import { Product, SearchResults } from './product.model';
 
 export function toJsonLdSearchResults(searchResults: SearchResults, queryString?: string) {
     return {
-        '@context': {
-            products: {
-                '@id': shop('products'),
-                '@container': '@set'
-            }
-        },
         '@id': getCatalogSearchUri(queryString),
         '@type': shop('SearchResults'),
         ...shopify(searchResults),

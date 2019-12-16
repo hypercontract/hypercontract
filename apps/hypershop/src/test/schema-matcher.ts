@@ -7,6 +7,7 @@ import { schemas } from '../app/profile/schemas';
 const ajv = new Ajv({
     multipleOfPrecision: 2,
     schemas: schemas.getAll()
+        .filter(schema => schema.schemaType === 'application/schema+json')
         .map(schema => JSON.parse(schema.schemaDefinition))
 });
 

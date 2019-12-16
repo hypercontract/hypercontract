@@ -11,7 +11,10 @@ export function negotiateProfile(
     supportedMediaTypes: string[]
 ) {
     response.setHeader('Content-Profile', `<${profileStore.profileUri}>`)
-    response.setHeader('Link', `<${profileStore.profileUri}>; rel="profile"`)
+    response.setHeader('Link', [
+        `<${profileStore.profileUri}>; rel="profile"`,
+        `<${getJsonLdContextUri(profileStore)}>; rel="http://www.w3.org/ns/json-ld#context"`
+    ]);
 
     const acceptableProfiles = getAcceptableProfiles(request);
 

@@ -5,12 +5,6 @@ import { ShoppingCart, ShoppingCartItem } from './shopping-cart.model';
 
 export function toJsonLdShoppingCart(shoppingCart: ShoppingCart) {
     const resource: any = {
-        '@context': {
-            items: {
-                '@id': shop('items'),
-                '@container': '@set'
-            }
-        },
         '@id': getShoppingCartRootUri(),
         '@type': shop('ShoppingCart'),
         ...shopify(omit(shoppingCart, ['items'])),

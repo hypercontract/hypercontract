@@ -22,6 +22,12 @@ export function isConceptRequest(request: Request, profileStore: ProfileStore) {
     return normalize(requestUri).startsWith(normalize(profileStore.profileUri));
 }
 
+export function isContextRequest(request: Request, profileStore: ProfileStore) {
+    const requestUri = getRequestUri(request, profileStore);
+    const contextUri = getJsonLdContextUri(profileStore);
+    return normalize(requestUri) === contextUri;
+}
+
 export function handleProfileRequest(request: Request, response: Response, profileStore: ProfileStore) {
     return handleRequest(
         response,
@@ -45,6 +51,12 @@ export function handleConceptRequest(request: Request, response: Response, profi
         ),
         profileStore
     );
+}
+
+export function handleContextRequest(request: Request, response: Response, profileStore: ProfileStore) {
+    return response
+        .set('Content-Type', MediaType.JsonLd)
+        .send(getJsonLdContext(profileStore));
 }
 
 function handleRequest(response: Response, rdfDocument: RdfDocument, profileStore: ProfileStore) {

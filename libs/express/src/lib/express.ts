@@ -12,6 +12,10 @@ export function hypercontract(profile: RdfDocument, supportedMediaTypes: string[
             return handleSchemaRequest(request, response, profileStore);
         }
 
+        if (isContextRequest(request, profileStore)) {
+            return handleContextRequest(request, response, profileStore);
+        }
+
         if (isProfileRequest(request, profileStore)) {
             return handleProfileRequest(request, response, profileStore);
         }
