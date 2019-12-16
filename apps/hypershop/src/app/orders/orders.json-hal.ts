@@ -4,7 +4,7 @@ import { shop } from '../profile/namespaces';
 import { getOrdersRootUri, getOrderUri } from '../routing';
 import { Order, OrderHistory, OrderStatus } from './order.model';
 
-export function toJsonHalOrders({ orders }: OrderHistory) {
+export function toJsonHalOrderHistory({ orders }: OrderHistory) {
     return Resource(
         {},
         getOrdersRootUri()

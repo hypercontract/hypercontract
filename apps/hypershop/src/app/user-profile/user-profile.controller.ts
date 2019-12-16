@@ -4,6 +4,7 @@ import { sendResponse } from '../formats/handler';
 import { MediaType } from '../formats/media-type';
 import { getUserProfileBasePath, getUserProfileRootPath } from '../routing';
 import { renderUserProfile } from './user-profile.html';
+import { toJsonUserProfile } from './user-profile.json';
 import { toJsonHalUserProfile } from './user-profile.json-hal';
 import { toJsonLdUserProfile } from './user-profile.json-ld';
 import { UserProfileService } from './user-profile.service';
@@ -22,7 +23,7 @@ export class UserProfileController {
         const userProfile = await this.userProfileService.getUserProfile();
 
         return sendResponse(response, {
-            json: userProfile,
+            json: toJsonUserProfile(userProfile),
             html: renderUserProfile(userProfile),
             [MediaType.JsonHal]: toJsonHalUserProfile(userProfile),
             [MediaType.JsonLd]: toJsonLdUserProfile(userProfile)

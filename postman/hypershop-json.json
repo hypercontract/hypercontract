@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "7503b23e-3bc2-4cf4-bf77-704f8dd64e68",
+		"_postman_id": "5f546348-7676-4c4a-a261-dd465ad187b8",
 		"name": "hypercontract JSON",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -636,14 +636,9 @@
 					"raw": "{\n\t\"quantity\": 2\n}"
 				},
 				"url": {
-					"raw": "{{baseUrl}}shoppingCart/items/{{shoppingCartItemId1}}/",
+					"raw": "{{shoppingCartItemId1}}",
 					"host": [
-						"{{baseUrl}}shoppingCart"
-					],
-					"path": [
-						"items",
-						"{{shoppingCartItemId1}}",
-						""
+						"{{shoppingCartItemId1}}"
 					]
 				},
 				"description": "\t"
@@ -686,14 +681,9 @@
 					"raw": "\n"
 				},
 				"url": {
-					"raw": "{{baseUrl}}shoppingCart/items/{{shoppingCartItemId2}}/",
+					"raw": "{{shoppingCartItemId2}}",
 					"host": [
-						"{{baseUrl}}shoppingCart"
-					],
-					"path": [
-						"items",
-						"{{shoppingCartItemId2}}",
-						""
+						"{{shoppingCartItemId2}}"
 					]
 				},
 				"description": "\t"

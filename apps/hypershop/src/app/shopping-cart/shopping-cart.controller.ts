@@ -7,6 +7,7 @@ import { EntityId } from '../store';
 import { UserProfileService } from '../user-profile';
 import { toJsonHalShoppingCart } from './shoppig-cart.json-hal';
 import { renderShoppingCart } from './shopping-cart.html';
+import { toJsonShoppingCart } from './shopping-cart.json';
 import { toJsonLdShoppingCart } from './shopping-cart.json-ld';
 import { ShoppingCartService } from './shopping-cart.service';
 
@@ -28,7 +29,7 @@ export class ShoppingCartController {
         ]);
 
         return sendResponse(response, {
-            json: shoppingCart,
+            json: toJsonShoppingCart(shoppingCart),
             html: renderShoppingCart(shoppingCart, userProfile),
             [MediaType.JsonHal]: toJsonHalShoppingCart(shoppingCart),
             [MediaType.JsonLd]: toJsonLdShoppingCart(shoppingCart)

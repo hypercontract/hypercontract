@@ -6,6 +6,7 @@ import { getProductPath, getProductsBasePath, getProductsRootPath } from '../rou
 import { EntityId } from '../store';
 import { ProductService } from './product.service';
 import { renderProduct, renderSearchResults } from './products.html';
+import { toJsonProduct, toJsonSearchResults } from './products.json';
 import { toJsonHalProduct, toJsonHalSearchResults } from './products.json-hal';
 import { toJsonLdProduct, toJsonLdSearchResults } from './products.json-ld';
 
@@ -24,7 +25,7 @@ export class ProductsController {
         const searchResults = await this.productService.searchCatalog(queryString);
 
         return sendResponse(response, {
-            json: searchResults,
+            json: toJsonSearchResults(searchResults),
             html: renderSearchResults(searchResults, queryString),
             [MediaType.JsonHal]: toJsonHalSearchResults(searchResults, queryString),
             [MediaType.JsonLd]: toJsonLdSearchResults(searchResults, queryString)
@@ -39,7 +40,7 @@ export class ProductsController {
         const product = await this.productService.getProduct(productId);
 
         return sendResponse(response, {
-            json: product,
+            json: toJsonProduct(product),
             html: renderProduct(product),
             [MediaType.JsonHal]: toJsonHalProduct(product),
             [MediaType.JsonLd]: toJsonLdProduct(product)
