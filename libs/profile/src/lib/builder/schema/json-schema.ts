@@ -3,7 +3,7 @@ import { Schema } from './schema';
 
 export type JSONSchema = JSONSchema7;
 
-export const toJsonSchemaId = (conceptUri: string, targetType: string) => `${conceptUri}/schema/${targetType}`;
+export const toJsonSchemaId = (conceptUri: string, targetType: string) => `${conceptUri.replace('@', 'jsonld_')}/schema/${targetType}`;
 
 export const jsonSchema = (conceptUri: string, definition: JSONSchema, targetType = 'application/json'): Schema => ({
     conceptUri,

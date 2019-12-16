@@ -5,8 +5,8 @@ import { jsonSchemaFor } from './json-schema-builder';
 const { array, empty, href, objectWith, resourceSchema, resource, string } = jsonSchemaFor(MediaType.JsonLd);
 
 export const jsonLdSchemas: Schema[] = [
-    string('@id', { $comment: 'A unique identifier.' }),
-    empty('@context', { type: ['object', 'string'] }),
+    string('jsonld_id', { $comment: 'A unique identifier.' }),
+    empty('jsonld_context', { type: ['object', 'string'] }),
     objectWith('Address', ['@id', 'city', 'country', 'name', 'street', 'zipCode'], ['@context']),
     objectWith('ApiRoot', ['@id'], ['@context', 'orderHistory', 'searchCatalog', 'shoppingCart', 'userProfile']),
     objectWith('Order', ['@id', 'orderDate', 'orderStatus', 'orderItems', 'payment', 'billingAddress', 'shippingAddress'], ['@context', 'cancellationReason', 'cancel']),

@@ -522,7 +522,7 @@ export const profile: Profile = {
             label: 'is shopping cart orderable?',
             description: 'An Order can only be placed if there is at least one Shopping Cart Item in the Shopping Cart.'
         }),
-        ...shopSchemas('@id').map(schema => valueSchema(shop('@id'), schema)),
-        ...shopSchemas('@context').map(schema => valueSchema(shop('@context'), schema)),
+        ...shopSchemas('jsonld_id').map(schema => valueSchema(shop('jsonld_id'), schema)),
+        ...shopSchemas('jsonld_context').map(schema => valueSchema(shop('jsonld_context'), schema)),
     ])
 };
