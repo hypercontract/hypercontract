@@ -37,7 +37,7 @@ export function toJsonLdOrder(order: Order) {
 
     if ([OrderStatus.Processing].includes(order.orderStatus)) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        resource[shop('cancel')] = getOrderUri(order._id!);
+        resource[shop('cancel')] = { '@id': getOrderUri(order._id!) };
     }
 
     return resource;

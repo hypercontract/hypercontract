@@ -23,7 +23,8 @@ export function toJsonLdProduct(product: Product) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         '@id': getProductUri(product._id!),
         '@type': shop('Product'),
-        ...shopify(omit(product, ['_id'])),
-        [shop('addToShoppingCart')]: getShoppingCartItemsUri(),
+        ...shopify(omit(product, ['_id', 'image'])),
+        [shop('image')]: { '@id': product.image },
+        [shop('addToShoppingCart')]: { '@id': getShoppingCartItemsUri() }
     };
 }

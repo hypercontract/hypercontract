@@ -18,7 +18,7 @@ export function toJsonLdShoppingCart(shoppingCart: ShoppingCart) {
     };
 
     if (shoppingCart.items.length > 0) {
-        resource[shop('placeOrder')] = getOrdersRootUri();
+        resource[shop('placeOrder')] = { '@id': getOrdersRootUri() };
     }
 
     return resource;
@@ -29,9 +29,9 @@ export function toJsonLdShoppingCartItem(shoppingCartItem: ShoppingCartItem) {
         '@id': getShoppingCartItemUri(shoppingCartItem._id!),
         '@type': shop('ShoppingCartItem'),
         ...shopify(omit(shoppingCartItem, ['_id'])),
-        [shop('product')]: getProductUri(shoppingCartItem.product),
-        [shop('changeQuantity')]: getShoppingCartItemUri(shoppingCartItem._id!),
-        [shop('remove')]: getShoppingCartItemUri(shoppingCartItem._id!)
+        [shop('product')]: { '@id': getProductUri(shoppingCartItem.product) },
+        [shop('changeQuantity')]: { '@id': getShoppingCartItemUri(shoppingCartItem._id!) },
+        [shop('remove')]: { '@id': getShoppingCartItemUri(shoppingCartItem._id!) }
     };
 }
 

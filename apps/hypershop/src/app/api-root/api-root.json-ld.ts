@@ -5,9 +5,9 @@ export function toJsonLdApiRoot() {
     return {
         '@id': getApiRootUri(),
         '@type': shop('ApiRoot'),
-        [shop('searchCatalog')]: getCatalogSearchUri(),
-        [shop('shoppingCart')]: getShoppingCartRootUri(),
-        [shop('orderHistory')]: getOrdersRootUri(),
-        [shop('userProfile')]: getUserProfileRootUri()
+        [shop('searchCatalog')]: { '@id':getCatalogSearchUri() },
+        [shop('shoppingCart')]: { '@id':getShoppingCartRootUri() },
+        [shop('orderHistory')]: { '@id':getOrdersRootUri() },
+        [shop('userProfile')]: { '@id':getUserProfileRootUri() }
     };
 }
