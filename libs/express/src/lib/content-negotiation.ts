@@ -1,7 +1,7 @@
+import { getJsonLdContextUri, ProfileStore } from '@hypercontract/profile';
 import { NextFunction, Request, Response } from 'express';
 import { defaultTo, isEmpty, isUndefined } from 'lodash';
 import { handleNotAcceptable } from './error';
-import { ProfileStore } from './profile-store';
 
 export function negotiateProfile(
     request: Request,

@@ -1,11 +1,10 @@
-import { hyper, owl, rdf, rdfs } from '@hypercontract/profile';
+import { hyper, owl, ProfileStore, rdf, rdfs } from '@hypercontract/profile';
 import jsonSchemaRefParser from 'json-schema-ref-parser';
 import { compact, fromRDF } from 'jsonld';
 import { defaultTo, flatten, isUndefined, omitBy, without } from 'lodash';
 import omitDeep from 'omit-deep';
 import { Quad } from 'rdf-js';
 import { isArray, isNull } from 'util';
-import { ProfileStore } from '../../profile-store';
 
 interface ConceptDefinition {
     uri: string;

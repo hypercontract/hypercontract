@@ -1,5 +1,5 @@
+import { ProfileStore } from '@hypercontract/profile';
 import { Request } from 'express';
-import { ProfileStore } from './profile-store';
 
 export function getRequestUri(request: Request, profileStore: ProfileStore) {
     const documentUri = new URL(profileStore.profileUri);

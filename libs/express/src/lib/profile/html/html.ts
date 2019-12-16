@@ -1,8 +1,7 @@
-import { RdfDocument } from '@hypercontract/profile';
+import { ProfileStore, RdfDocument } from '@hypercontract/profile';
 import { HttpStatus } from '@nestjs/common';
 import { render } from 'ejs';
 import { Response } from 'express';
-import { ProfileStore } from '../../profile-store';
 import { getDefinitions } from './definitions';
 import { template } from './profile-template';
 

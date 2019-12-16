@@ -1,8 +1,7 @@
-import { hyper, rdf } from '@hypercontract/profile';
+import { hyper, ProfileStore, rdf } from '@hypercontract/profile';
 import { Request, Response } from 'express';
 import { isNull, values } from 'lodash';
 import { handleNotAcceptable, handleNotFound } from './error';
-import { ProfileStore } from './profile-store';
 import { MediaType } from './profile/media-types';
 import { getRequestUri } from './request';
 

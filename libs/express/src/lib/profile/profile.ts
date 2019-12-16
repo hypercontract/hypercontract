@@ -1,9 +1,8 @@
-import { RdfDocument } from '@hypercontract/profile';
+import { getJsonLdContext, getJsonLdContextUri, ProfileStore, RdfDocument } from '@hypercontract/profile';
 import { Request, Response } from 'express';
 import { isEmpty, trimEnd, values } from 'lodash';
 import { Quad } from 'rdf-js';
 import { handleNotAcceptable, handleNotFound } from '../error';
-import { ProfileStore } from '../profile-store';
 import { getRequestUri } from '../request';
 import { toHtml } from './html/html';
 import { MediaType } from './media-types';

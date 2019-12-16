@@ -1,8 +1,7 @@
-import { RdfDocument } from '@hypercontract/profile';
+import { getProfileStore, RdfDocument } from '@hypercontract/profile';
 import { RequestHandler } from 'express';
 import { negotiateProfile } from './content-negotiation';
-import { getProfileStore } from './profile-store';
-import { handleConceptRequest, handleProfileRequest, isConceptRequest, isProfileRequest } from './profile/profile';
+import { handleConceptRequest, handleContextRequest, handleProfileRequest, isConceptRequest, isContextRequest, isProfileRequest } from './profile/profile';
 import { handleSchemaRequest, isSchemaRequest } from './schema';
 
 export function hypercontract(profile: RdfDocument, supportedMediaTypes: string[]): RequestHandler {

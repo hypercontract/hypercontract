@@ -1,6 +1,7 @@
-import { JsonLdContext, Prefixes, Profile, rdf } from '@hypercontract/profile';
 import { defaultTo, isEmpty, memoize } from 'lodash';
 import { N3Store, Store } from 'n3';
+import { rdf } from './namespaces';
+import { JsonLdContext, Prefixes, Profile } from './profile';
 
 export class ProfileStore {
 
