@@ -7,9 +7,16 @@
         {
             "type": "node",
             "request": "attach",
-            "name": "Debug",
+            "name": "Debug hypercontract",
             "sourceMaps": true,
             "port": 7777
+        },
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Debug hypershop",
+            "sourceMaps": true,
+            "port": 7778
         }
     ]
 }

@@ -1,0 +1,15 @@
+{
+    "id": "33d01931-4fe3-40b6-8295-0bd172cd6f8b",
+    "values": [
+        {
+            "key": "baseUrl",
+            "value": "http://localhost/",
+            "enabled": true,
+            "type": "text"
+        }
+    ],
+    "name": "My Workspace Globals",
+    "_postman_variable_scope": "globals",
+    "_postman_exported_at": "2018-07-13T14:43:49.742Z",
+    "_postman_exported_using": "Postman/6.1.4"
+}
