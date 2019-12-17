@@ -4,7 +4,9 @@
   "license": "MIT",
   "scripts": {
     "nx": "nx",
-    "start": "nx serve",
+    "start": "concurrently npm:serve-hypershop npm:serve-hypercontract --prefix-colors yellow,blue --names hypershop,hypercontract",
+    "serve-hypercontract": "nx serve hypercontract --port 7777",
+    "serve-hypershop": "nx serve hypershop --port 7778",
     "build": "nx build",
     "test": "nx test",
     "test-debug": "node --inspect=7777 ./node_modules/@nrwl/cli/bin/nx.js test --run-in-band --watch",
@@ -77,6 +79,7 @@
     "@typescript-eslint/eslint-plugin": "2.3.2",
     "@typescript-eslint/parser": "2.3.2",
     "ajv": "6.10.2",
+    "concurrently": "5.0.1",
     "dotenv": "6.2.0",
     "eslint": "6.1.0",
     "jest": "24.1.0",
