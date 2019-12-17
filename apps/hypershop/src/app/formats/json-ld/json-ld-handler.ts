@@ -11,5 +11,5 @@ export async function handleJsonLdResponse(response: Response, responseBody: any
 
     return response
         .type(MediaType.JsonLd)
-        .send(omit(body, ['@context']));
+        .send(JSON.stringify(omit(body, ['@context']), undefined, 2));
 }

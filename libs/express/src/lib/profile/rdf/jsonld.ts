@@ -16,5 +16,5 @@ export const toJsonLd: Handler = async (
         ...jsonLdContext
     });
 
-    return response.send(compactedDocument);
+    return response.send(JSON.stringify(compactedDocument, undefined, 2));
 }
