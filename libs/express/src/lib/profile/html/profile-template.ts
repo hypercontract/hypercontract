@@ -482,6 +482,17 @@ export const template = `<!DOCTYPE html>
                                     <em class="text-muted">none</em>
                                 <% } %>
                             </dd>
+                            <dt class="col-2">Returned Type</dt>
+                            <dd class="col-10">
+                                <% returnedType.forEach(({ localName: returnedTypeName, isLocal }) => { %>
+                                    <% if (isLocal) { %>
+                                    <%= returnedTypeName %>
+                                    <% } else { %>
+                                    <a href="#<%= returnedTypeName %>"><%= returnedTypeName %></a>
+                                    <% } %>
+                                    <br />
+                                <% }) %>
+                            </dd>
                         </dl>
 
                         <% if (schemas.length > 0) { %>
