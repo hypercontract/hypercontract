@@ -14,7 +14,7 @@ export const vocabulary: RdfDocument = {
     graph: flatten([
         concept(vocabularyUri, {
             label: 'hypercontract',
-            description: 'Describing RESTful Web APIs with RDF-based profiles.'
+            description: 'Describing RESTful Web APIs using profiles written in RDF.'
         }),
         hyperClass('Profile', {
             label: 'Profile',
