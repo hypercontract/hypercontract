@@ -3,46 +3,46 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
-    - feature/azure-pipelines
+  - feature/azure-pipelines
 
-    resources:
-    - repo: self
+  resources:
+  - repo: self
 
-    variables:
-      # Container registry service connection established during pipeline creation
-      dockerRegistryServiceConnection: '6a33abc3-4235-474f-98f4-9f7a28a77ccc'
-      imageRepository: 'hypershop'
-      containerRegistry: 'hypercontract.azurecr.io'
-      dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile.hypershop'
-      tag: 'latest'
+  variables:
+    # Container registry service connection established during pipeline creation
+    dockerRegistryServiceConnection: '6a33abc3-4235-474f-98f4-9f7a28a77ccc'
+    imageRepository: 'hypershop'
+    containerRegistry: 'hypercontract.azurecr.io'
+    dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile.hypershop'
+    tag: 'latest'
 
-      # Agent VM image name
-      vmImageName: 'ubuntu-latest'
+    # Agent VM image name
+    vmImageName: 'ubuntu-latest'
 
-    stages:
-    - stage: Build
-      displayName: Build and push stage
-      jobs:
-      - job: Build
-        displayName: Build
-        pool:
-          vmImage: $(vmImageName)
-        steps:
-        - task: Npm@1
-          inputs:
-            command: 'ci'
-            workingDir: '$(Build.SourcesDirectory)'
-        - task: Npm@1
-          inputs:
-            command: 'custom'
-            workingDir: '$(Build.SourcesDirectory)'
-            customCommand: 'run build -- hypershop --prod'
-        - task: Docker@2
-          displayName: Build and push an image to container registry
-          inputs:
-            command: buildAndPush
-            repository: $(imageRepository)
-            dockerfile: $(dockerfilePath)
-            containerRegistry: $(dockerRegistryServiceConnection)
-            tags: |
-              $(tag)
+  stages:
+  - stage: Build
+    displayName: Build and push stage
+    jobs:
+    - job: Build
+      displayName: Build
+      pool:
+        vmImage: $(vmImageName)
+      steps:
+      - task: Npm@1
+        inputs:
+          command: 'ci'
+          workingDir: '$(Build.SourcesDirectory)'
+      - task: Npm@1
+        inputs:
+          command: 'custom'
+          workingDir: '$(Build.SourcesDirectory)'
+          customCommand: 'run build -- hypershop --prod'
+      - task: Docker@2
+        displayName: Build and push an image to container registry
+        inputs:
+          command: buildAndPush
+          repository: $(imageRepository)
+          dockerfile: $(dockerfilePath)
+          containerRegistry: $(dockerRegistryServiceConnection)
+          tags: |
+            $(tag)
