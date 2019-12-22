@@ -1,5 +1,7 @@
 # hypercontract
 
+[![hypercontract Build Status](https://dev.azure.com/hypercontract/hypercontract/_apis/build/status/hypercontract?branchName=feature%2Fazure-pipelines)](https://dev.azure.com/hypercontract/hypercontract/_build/latest?definitionId=11&branchName=feature%2Fazure-pipelines) [![hypershop Build Status](https://dev.azure.com/hypercontract/hypercontract/_apis/build/status/hypershop?branchName=feature%2Fazure-pipelines)](https://dev.azure.com/hypercontract/hypercontract/_build/latest?definitionId=12&branchName=feature%2Fazure-pipelines)
+
 *hypercontract* is a concept for describing RESTful Web APIs using [profiles](https://tools.ietf.org/html/rfc6906) written in [RDF](https://www.w3.org/TR/rdf-primer/).
 
 This workspace contains the source code of a prototype implementation of this concept. It consists of two applications:
