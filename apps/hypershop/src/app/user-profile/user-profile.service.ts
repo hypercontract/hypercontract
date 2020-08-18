@@ -1,22 +1,20 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { createStore, EntityId } from '../store';
-import { Address, PaymentOption } from './user-profile.model';
-
-export const ADDRESS_STORE = 'ADDRESS_STORE';
-export const PAYMENT_OPTION_STORE = 'PAYMENT_OPTION_STORE';
+import { Injectable } from '@nestjs/common';
+import { EntityId } from '../store';
+import { AddressService } from './addresses/address.service';
+import { PaymentOptionService } from './payment-options/payment-option.service';
 
 @Injectable()
 export class UserProfileService {
 
     constructor(
-        @Inject(ADDRESS_STORE) private addressStore = createStore<Address>(),
-        @Inject(PAYMENT_OPTION_STORE) private paymentOptionStore = createStore<PaymentOption>()
-    ) {}
+        private addressService: AddressService,
+        private paymentOptionService: PaymentOptionService
+    ) { }
 
     public async getUserProfile() {
         const [paymentOptions, addresses] = await Promise.all([
-            this.paymentOptionStore.find(),
-            this.addressStore.find()
+            this.paymentOptionService.getAllPaymentOptions(),
+            this.addressService.getAllAddresses(),
         ])
 
         return {
@@ -26,10 +24,10 @@ export class UserProfileService {
     }
 
     public getAddress(id: EntityId) {
-        return this.addressStore.getOne(id);
+        return this.addressService.getAddress(id);
     }
 
     public getPaymentOption(id: EntityId) {
-        return this.paymentOptionStore.getOne(id);
+        return this.paymentOptionService.getPaymentOption(id);
     }
 }

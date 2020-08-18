@@ -1,20 +1,8 @@
 import { Entity } from '../store';
+import { Address } from './addresses/address.model';
+import { PaymentOption } from './payment-options/payment-option.model';
 
 export interface UserProfile extends Entity {
     addresses: Address[];
     paymentOptions: PaymentOption[];
-}
-
-export interface Address extends Entity {
-    name: string;
-    street: string;
-    zipCode: string;
-    city: string;
-    country: string;
-}
-
-export interface PaymentOption extends Entity {
-    accountOwner: string;
-    iban: string;
-    bic: string;
 }

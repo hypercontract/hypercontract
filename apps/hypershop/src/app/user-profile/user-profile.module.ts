@@ -1,26 +1,22 @@
 import { Module } from '@nestjs/common';
-import { addressMocks, paymentOptionMocks } from '../../test';
-import { createMockStore } from '../store';
+import { AddressModule } from './addresses/address.module';
+import { PaymentOptionModule } from './payment-options/payment-option.module';
 import { UserProfileController } from './user-profile.controller';
-import { ADDRESS_STORE, PAYMENT_OPTION_STORE, UserProfileService } from './user-profile.service';
+import { UserProfileService } from './user-profile.service';
 
 @Module({
+    imports: [
+        AddressModule,
+        PaymentOptionModule
+    ],
     controllers: [
         UserProfileController
     ],
     providers: [
-        UserProfileService,
-        {
-            provide: ADDRESS_STORE,
-            useValue: createMockStore(addressMocks)
-        },
-        {
-            provide: PAYMENT_OPTION_STORE,
-            useValue: createMockStore(paymentOptionMocks)
-        }
+        UserProfileService
     ],
     exports: [
         UserProfileService
     ]
 })
-export class UserProfileModule {}
+export class UserProfileModule { }
