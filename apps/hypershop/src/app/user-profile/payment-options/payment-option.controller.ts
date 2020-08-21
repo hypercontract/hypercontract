@@ -1,5 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Res } from '@nestjs/common';
-import { Response } from 'express';
+import { Body, Controller, Delete, Get, Param, Post, Put, Req, Res } from '@nestjs/common';
+import { Request, Response } from 'express';
 import { sendResponse } from '../../formats/handler';
 import { MediaType } from '../../formats/media-type';
 import { getPaymentOptionBasePath, getPaymentOptionPath, getPaymentOptionRootPath, getPaymentOptionRootUri } from '../../routing';
@@ -33,12 +33,14 @@ export class PaymentOptionController {
 
     @Post(getPaymentOptionRootPath())
     async addPaymentOption(
+        @Req() request: Request,
         @Res() response: Response,
         @Body() newPaymentOption: NewPaymentOption
     ) {
         await this.paymentOptionService.addPaymentOption(newPaymentOption);
 
-        return response.redirect(201, getPaymentOptionRootUri());
+        const statusCode = request.accepts('html') ? 303 : 201;
+        return response.redirect(statusCode, getPaymentOptionRootUri());
     }
 
     @Get(getPaymentOptionPath())

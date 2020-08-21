@@ -1,5 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Res } from '@nestjs/common';
-import { Response } from 'express';
+import { Body, Controller, Delete, Get, Param, Post, Put, Req, Res } from '@nestjs/common';
+import { Request, Response } from 'express';
 import { sendResponse } from '../../formats/handler';
 import { MediaType } from '../../formats/media-type';
 import { getAddressBasePath, getAddressPath, getAddressRootPath, getAddressRootUri } from '../../routing';
@@ -32,12 +32,14 @@ export class AddressController {
 
     @Post(getAddressRootPath())
     async addAddress(
+        @Req() request: Request,
         @Res() response: Response,
         @Body() newAddress: NewAddress
     ) {
         await this.addressService.addAddress(newAddress);
 
-        return response.redirect(201, getAddressRootUri());
+        const statusCode = request.accepts('html') ? 303 : 201;
+        return response.redirect(statusCode, getAddressRootUri());
     }
 
     @Get(getAddressPath())
