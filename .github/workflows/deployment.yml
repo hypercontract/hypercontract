@@ -1,11 +1,11 @@
-name: Deploy
+name: Build and Deploy
 
 on:
   push:
     branches: [ "master" ]
 
 jobs:
-  build:
+  hypercontract:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -19,23 +19,56 @@ jobs:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-    - name: Build hypercontract
+    - name: build and push hypercontract
       uses: docker/build-push-action@v5
       with:
+        push: true
         file: ./Dockerfile.hypercontract
         tags: |
           hypercontract/hypercontract:latest
           hypercontract/hypercontract:${{ github.sha }}
-    - name: Build hypershop
+
+  hypershop:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Log in to the Container registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    - name: build and push hypershop
       uses: docker/build-push-action@v5
       with:
+        push: true
         file: ./Dockerfile.hypershop
         tags: |
           hypercontract/hypershop:latest
           hypercontract/hypershop:${{ github.sha }}
-    - name: Build docs
+
+  docs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Log in to the Container registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    - name: build and push docs
       uses: docker/build-push-action@v5
       with:
+        push: true
         file: ./Dockerfile.docs
         tags: |
           hypercontract/docs:latest
