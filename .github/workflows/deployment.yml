@@ -25,8 +25,8 @@ jobs:
         push: true
         file: ./Dockerfile.hypercontract
         tags: |
-          hypercontract/hypercontract:latest
-          hypercontract/hypercontract:${{ github.sha }}
+          ghcr.io/hypercontract/hypercontract:latest
+          ghcr.io/hypercontract/hypercontract:${{ github.sha }}
 
   hypershop:
     runs-on: ubuntu-latest
@@ -48,8 +48,8 @@ jobs:
         push: true
         file: ./Dockerfile.hypershop
         tags: |
-          hypercontract/hypershop:latest
-          hypercontract/hypershop:${{ github.sha }}
+          ghcr.io/hypercontract/hypershop:latest
+          ghcr.io/hypercontract/hypershop:${{ github.sha }}
 
   docs:
     runs-on: ubuntu-latest
@@ -71,5 +71,5 @@ jobs:
         push: true
         file: ./Dockerfile.docs
         tags: |
-          hypercontract/docs:latest
-          hypercontract/docs:${{ github.sha }}
+          ghcr.io/hypercontract/docs:latest
+          ghcr.io/hypercontract/docs:${{ github.sha }}
