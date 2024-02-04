@@ -25,18 +25,18 @@ jobs:
         file: ./Dockerfile.hypercontract
         tags: |
           hypercontract/hypercontract:latest
-          hypercontract/hypercontract:$(date +%s)
+          hypercontract/hypercontract:${{ github.sha }}
     - name: Build hypershop
       uses: docker/build-push-action@v5
       with:
         file: ./Dockerfile.hypershop
         tags: |
           hypercontract/hypershop:latest
-          hypercontract/hypershop:$(date +%s)
+          hypercontract/hypershop:${{ github.sha }}
     - name: Build docs
       uses: docker/build-push-action@v5
       with:
         file: ./Dockerfile.docs
         tags: |
           hypercontract/docs:latest
-          hypercontract/docs:$(date +%s)
+          hypercontract/docs:${{ github.sha }}
