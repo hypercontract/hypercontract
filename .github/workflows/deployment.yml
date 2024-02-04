@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Build and deploy
 
 on:
   push:
@@ -19,7 +19,7 @@ jobs:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-    - name: build and push hypercontract
+    - name: Build and push hypercontract
       uses: docker/build-push-action@v5
       with:
         push: true
@@ -42,7 +42,7 @@ jobs:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-    - name: build and push hypershop
+    - name: Build and push hypershop
       uses: docker/build-push-action@v5
       with:
         push: true
@@ -65,7 +65,7 @@ jobs:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-    - name: build and push docs
+    - name: Build and push docs
       uses: docker/build-push-action@v5
       with:
         push: true
