@@ -1,0 +1,42 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Log in to the Container registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    - name: Build hypercontract
+      uses: docker/build-push-action@v5
+      with:
+        file: ./Dockerfile.hypercontract
+        tags: |
+          hypercontract/hypercontract:latest
+          hypercontract/hypercontract:$(date +%s)
+    - name: Build hypershop
+      uses: docker/build-push-action@v5
+      with:
+        file: ./Dockerfile.hypershop
+        tags: |
+          hypercontract/hypershop:latest
+          hypercontract/hypershop:$(date +%s)
+    - name: Build docs
+      uses: docker/build-push-action@v5
+      with:
+        file: ./Dockerfile.docs
+        tags: |
+          hypercontract/docs:latest
+          hypercontract/docs:$(date +%s)
