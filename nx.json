@@ -19,11 +19,6 @@
   },
   "defaultProject": "hypershop",
   "generators": {
-    "@nrwl/workspace": {
-      "library": {
-        "linter": "eslint"
-      }
-    },
     "@nrwl/cypress": {
       "cypress-project": {
         "linter": "eslint"
@@ -47,17 +42,22 @@
         "linter": "eslint"
       }
     },
-    "@nrwl/node": {
-      "application": {
-        "linter": "eslint"
-      }
-    },
-    "@nrwl/nest": {
-      "application": {
-        "linter": "eslint"
-      }
-    },
     "@nrwl/express": {
+      "application": {
+        "linter": "eslint"
+      }
+    },
+    "@nx/workspace": {
+      "library": {
+        "linter": "eslint"
+      }
+    },
+    "@nx/node": {
+      "application": {
+        "linter": "eslint"
+      }
+    },
+    "@nx/nest": {
       "application": {
         "linter": "eslint"
       }
@@ -97,7 +97,8 @@
       "default",
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
       "!{projectRoot}/tsconfig.spec.json",
-      "!{projectRoot}/jest.config.[jt]s"
+      "!{projectRoot}/jest.config.[jt]s",
+      "!{projectRoot}/src/test-setup.[jt]s"
     ]
   }
 }

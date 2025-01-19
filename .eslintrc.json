@@ -1,7 +1,7 @@
 {
   "root": true,
   "plugins": [
-    "@nrwl/nx"
+    "@nx"
   ],
   "overrides": [
     {
@@ -24,7 +24,7 @@
           }
         ],
         "@typescript-eslint/no-explicit-any": "off",
-        "@nrwl/nx/enforce-module-boundaries": [
+        "@nx/enforce-module-boundaries": [
           "error",
           {
             "allow": [],
@@ -55,7 +55,7 @@
         "*.tsx"
       ],
       "extends": [
-        "plugin:@nrwl/nx/typescript"
+        "plugin:@nx/typescript"
       ],
       "parserOptions": {
         "project": "./tsconfig.*?.json"
@@ -68,7 +68,7 @@
         "*.jsx"
       ],
       "extends": [
-        "plugin:@nrwl/nx/javascript"
+        "plugin:@nx/javascript"
       ],
       "rules": {}
     }
