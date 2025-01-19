@@ -22,7 +22,8 @@
               "apps/hypershop/src/app/shopping-cart/templates",
               "apps/hypershop/src/app/user-profile/templates",
               "apps/hypershop/src/app/orders/templates"
-            ]
+            ],
+            "buildLibsFromSource": true
           },
           "configurations": {
             "production": {
@@ -48,14 +49,13 @@
           "builder": "@nrwl/linter:lint",
           "options": {
             "linter": "eslint",
-            "config": "apps/hypershop/.eslintrc",
             "tsConfig": [
               "apps/hypershop/tsconfig.app.json",
               "apps/hypershop/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**",
-              "!apps/hypershop/**"
+              "!apps/hypershop/**/*"
             ]
           }
         },
@@ -63,7 +63,8 @@
           "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "apps/hypershop/jest.config.js",
-            "tsConfig": "apps/hypershop/tsconfig.spec.json"
+            "tsConfig": "apps/hypershop/tsconfig.spec.json",
+            "passWithNoTests": true
           }
         }
       }
@@ -78,14 +79,13 @@
           "builder": "@nrwl/linter:lint",
           "options": {
             "linter": "eslint",
-            "config": "libs/express/.eslintrc",
             "tsConfig": [
               "libs/express/tsconfig.lib.json",
               "libs/express/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**",
-              "!libs/express/**"
+              "!libs/express/**/*"
             ]
           }
         },
@@ -93,7 +93,8 @@
           "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "libs/express/jest.config.js",
-            "tsConfig": "libs/express/tsconfig.spec.json"
+            "tsConfig": "libs/express/tsconfig.spec.json",
+            "passWithNoTests": true
           }
         }
       }
@@ -108,14 +109,13 @@
           "builder": "@nrwl/linter:lint",
           "options": {
             "linter": "eslint",
-            "config": "libs/profile/.eslintrc",
             "tsConfig": [
               "libs/profile/tsconfig.lib.json",
               "libs/profile/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**",
-              "!libs/profile/**"
+              "!libs/profile/**/*"
             ]
           }
         },
@@ -123,7 +123,8 @@
           "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "libs/profile/jest.config.js",
-            "tsConfig": "libs/profile/tsconfig.spec.json"
+            "tsConfig": "libs/profile/tsconfig.spec.json",
+            "passWithNoTests": true
           }
         }
       }
@@ -143,7 +144,8 @@
             "tsConfig": "apps/hypercontract/tsconfig.app.json",
             "assets": [
               "apps/hypercontract/src/assets"
-            ]
+            ],
+            "buildLibsFromSource": true
           },
           "configurations": {
             "production": {
@@ -169,14 +171,13 @@
           "builder": "@nrwl/linter:lint",
           "options": {
             "linter": "eslint",
-            "config": "apps/hypercontract/.eslintrc",
             "tsConfig": [
               "apps/hypercontract/tsconfig.app.json",
               "apps/hypercontract/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**",
-              "!apps/hypercontract/**"
+              "!apps/hypercontract/**/*"
             ]
           }
         },
@@ -184,7 +185,8 @@
           "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "apps/hypercontract/jest.config.js",
-            "tsConfig": "apps/hypercontract/tsconfig.spec.json"
+            "tsConfig": "apps/hypercontract/tsconfig.spec.json",
+            "passWithNoTests": true
           }
         }
       }
