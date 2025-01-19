@@ -1,5 +1,6 @@
 FROM node:12 AS builder
 WORKDIR /usr/src/app
+# docker build is expected to be run with the root of the repository as the build context
 COPY . ./
 RUN npm ci
 RUN npm run build -- hypercontract --prod
