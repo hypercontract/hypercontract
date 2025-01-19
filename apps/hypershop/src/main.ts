@@ -1,12 +1,16 @@
+/**
+ * This is not a production server yet!
+ * This is only a minimal backend to get started.
+ */
+
 import { hypercontract } from '@hypercontract/express';
+import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import * as bodyParser from 'body-parser';
-import cors from 'cors';
-import { Request, static as serveStatic } from 'express';
+import { static as serveStatic } from 'express';
 import { get, isUndefined, values } from 'lodash';
 import methodOverride from 'method-override';
-import morgan from 'morgan';
 import { join } from 'path';
 import { AppModule } from './app/app.module';
 import { MediaType } from './app/formats/media-type';
@@ -20,12 +24,12 @@ async function bootstrap() {
     app.setBaseViewsDir(join(__dirname, 'app'));
     app.setViewEngine('ejs');
 
-    app.use(morgan('combined'));
-    app.use(cors({
+    app.enableCors({
         exposedHeaders: [
             'Location'
         ]
-    }));
+    })
+
     app.use(bodyParser.urlencoded({
         extended: true
     }));
@@ -33,7 +37,7 @@ async function bootstrap() {
     app.use(bodyParser.json({ type: MediaType.JsonHal }));
     app.use(bodyParser.json({ type: MediaType.JsonLd }));
 
-    app.use(methodOverride((request: Request) => {
+    app.use(methodOverride((request) => {
         const method = get(request, 'body._method');
         if (!isUndefined(method)) {
             delete request.body._method;
@@ -45,7 +49,11 @@ async function bootstrap() {
 
     app.use('/assets', serveStatic(join(__dirname, 'assets')));
 
-    await app.listen(port, () => console.log(`hypershop listening at http://localhost:${port}`));
+    await app.listen(port);
+
+    Logger.log(
+        `🚀 hypershop is running on: http://localhost:${port}`
+    );
 }
 
 bootstrap();

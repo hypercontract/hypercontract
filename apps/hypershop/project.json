@@ -3,70 +3,66 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/hypershop/src",
   "projectType": "application",
-  "prefix": "hypershop",
-  "generators": {},
+  "tags": [],
   "targets": {
-    "build": {
-      "executor": "@nrwl/webpack:webpack",
-      "options": {
-        "outputPath": "dist/apps/hypershop",
-        "main": "apps/hypershop/src/main.ts",
-        "tsConfig": "apps/hypershop/tsconfig.app.json",
-        "assets": [
-          "apps/hypershop/src/assets",
-          "apps/hypershop/src/app/formats/html",
-          "apps/hypershop/src/app/api-root/templates",
-          "apps/hypershop/src/app/products/templates",
-          "apps/hypershop/src/app/shopping-cart/templates",
-          "apps/hypershop/src/app/user-profile/templates",
-          "apps/hypershop/src/app/orders/templates"
-        ],
-        "buildLibsFromSource": true,
-        "target": "node",
-        "compiler": "tsc"
+      "build": {
+          "executor": "@nx/webpack:webpack",
+          "outputs": ["{options.outputPath}"],
+          "defaultConfiguration": "production",
+          "options": {
+              "target": "node",
+              "compiler": "tsc",
+              "outputPath": "dist/apps/hypershop",
+              "main": "apps/hypershop/src/main.ts",
+              "tsConfig": "apps/hypershop/tsconfig.app.json",
+              "assets": [
+                  "apps/hypershop/src/assets",
+                  "apps/hypershop/src/app/formats/html",
+                  "apps/hypershop/src/app/api-root/templates",
+                  "apps/hypershop/src/app/products/templates",
+                  "apps/hypershop/src/app/shopping-cart/templates",
+                  "apps/hypershop/src/app/user-profile/templates",
+                  "apps/hypershop/src/app/orders/templates"
+              ],
+              "webpackConfig": "apps/hypershop/webpack.config.js",
+              "generatePackageJson": true
+          },
+          "configurations": {
+              "development": {},
+              "production": {
+                  "fileReplacements": [
+                      {
+                      "replace": "apps/hypershop/src/environments/environment.ts",
+                      "with": "apps/hypershop/src/environments/environment.prod.ts"
+                      }
+                  ]
+              }
+          }
       },
-      "configurations": {
-        "production": {
-          "optimization": true,
-          "extractLicenses": true,
-          "inspect": false,
-          "fileReplacements": [
-            {
-              "replace": "apps/hypershop/src/environments/environment.ts",
-              "with": "apps/hypershop/src/environments/environment.prod.ts"
-            }
-          ]
-        }
+      "serve": {
+          "executor": "@nx/js:node",
+          "defaultConfiguration": "development",
+          "dependsOn": ["build"],
+          "options": {
+              "buildTarget": "hypershop:build",
+              "runBuildTargetDependencies": false
+          },
+          "configurations": {
+              "development": {
+                  "buildTarget": "hypershop:build:development"
+              },
+              "production": {
+                  "buildTarget": "hypershop:build:production"
+              }
+          }
       },
-      "outputs": [
-        "{options.outputPath}"
-      ]
-    },
-    "serve": {
-      "executor": "@nx/js:node",
-      "options": {
-        "buildTarget": "hypershop:build"
+      "lint": {
+          "executor": "@nx/eslint:lint"
+      },
+      "test": {
+          "options": {
+              "passWithNoTests": true
+          }
       }
-    },
-    "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "options": {
-        "lintFilePatterns": [
-          "apps/hypershop/**/*.ts",
-          "apps/hypershop/**/*.spec.ts",
-          "apps/hypershop/**/*.d.ts"
-        ]
-      }
-    },
-    "test": {
-      "executor": "@nx/jest:jest",
-      "options": {
-        "jestConfig": "apps/hypershop/jest.config.ts"
-      },
-      "outputs": [
-        "{workspaceRoot}/coverage/apps/hypershop"
-      ]
-    }
-  },
-  "tags": []
+  }
 }
