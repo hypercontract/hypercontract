@@ -1,116 +1,32 @@
 {
   "migrations": [
     {
-      "version": "8.10.0-beta.1",
-      "description": "Fix rules in `tslint.json`",
-      "factory": "./src/migrations/update-8-10-0/fix-tslint-json",
+      "version": "10.0.0-beta.0",
+      "description": "Add default branch to nx.json",
+      "factory": "./src/migrations/update-10-0-0/update-10-0-0",
       "package": "@nrwl/workspace",
-      "name": "fix-tslint-json"
+      "name": "add-default-branch-to-nx-json"
     },
     {
-      "version": "8.12.0-beta.1",
-      "description": "Add implicit e2e dependencies",
-      "factory": "./src/migrations/update-8-12-0/add-implicit-e2e-deps",
+      "version": "10.0.0-beta.0",
+      "description": "Migrate tsconfigs to solution style tsconfigs",
+      "factory": "./src/migrations/update-10-0-0/solution-tsconfigs",
       "package": "@nrwl/workspace",
-      "name": "add-implicit-e2e-deps"
+      "name": "solution-tsconfigs"
     },
     {
-      "version": "8.12.0-beta.1",
-      "description": "Update package.json dependencies",
-      "factory": "./src/migrations/update-8-12-0/update-package-json-deps",
-      "package": "@nrwl/workspace",
-      "name": "update-package-json-deps"
-    },
-    {
-      "version": "8.12.0-beta.1",
-      "description": "Add enforceBuildableLibDependency flag to the nx enforce boundary lint rule",
-      "factory": "./src/migrations/update-8-12-0/update-enforce-boundary-lint-rule",
-      "package": "@nrwl/workspace",
-      "name": "update-enforce-boundary-lint-rule"
-    },
-    {
-      "version": "9.0.0-beta.1",
-      "description": "Update typescript to 3.6 and angular/cli to version 9",
-      "factory": "./src/migrations/update-9-0-0/update-9-0-0",
-      "package": "@nrwl/workspace",
-      "name": "update-9-0-0"
-    },
-    {
-      "version": "9.1.0-beta.1",
-      "description": "Update prettier to 1.19.1 with support for typescript 3.7; Update eslint and tslint",
-      "factory": "./src/migrations/update-9-1-0/update-9-1-0",
-      "package": "@nrwl/workspace",
-      "name": "update-9-1-0"
-    },
-    {
-      "version": "9.1.0-beta.1",
-      "description": "Update eslint and tslint config to provide better IDE support",
-      "factory": "./src/migrations/update-9-1-0/update-lint-config",
-      "package": "@nrwl/workspace",
-      "name": "update-lint-config-9-1-0"
-    },
-    {
-      "version": "9.2.0-beta.1",
-      "description": "Add cacheable operations to nx.json",
-      "factory": "./src/migrations/update-9-2-0/update-9-2-0",
-      "package": "@nrwl/workspace",
-      "name": "update-9-2-0"
-    },
-    {
-      "version": "9.3.0-beta.1",
-      "description": "Update prettier to v2",
-      "factory": "./src/migrations/update-9-3-0/update-9-3-0",
-      "package": "@nrwl/workspace",
-      "name": "update-9-3-0"
-    },
-    {
-      "version": "9.4.0-beta.1",
-      "description": "Remove config builder option when using eslint to enable automatic detection",
-      "factory": "./src/migrations/update-9-4-0/update-eslint-config",
-      "package": "@nrwl/workspace",
-      "name": "update-eslint-config"
-    },
-    {
-      "version": "9.4.0-beta.1",
-      "description": "Fix exclude patterns in tslint and eslint to ensure it does not break linting when a files option is defined",
-      "factory": "./src/migrations/update-9-4-0/update-linters-exclude",
-      "package": "@nrwl/workspace",
-      "name": "update-linters-exclude"
-    },
-    {
-      "version": "9.4.0-beta.1",
-      "description": "Decorate cli to enable computation caching",
-      "factory": "./src/migrations/update-9-4-0/add-decorate-cli",
-      "package": "@nrwl/workspace",
-      "name": "add-decorate-cli"
-    },
-    {
-      "version": "9.0.0-beta.1",
-      "description": "Upgrades jest-preset-angular to 8.0.0",
-      "factory": "./src/migrations/update-9-0-0/update-9-0-0",
+      "version": "10.0.0-beta.2",
+      "description": "update jest configs to include setup env files",
+      "factory": "./src/migrations/update-10-0-0/update-jest-configs",
       "package": "@nrwl/jest",
-      "name": "update-9.0.0"
+      "name": "update-10.0.0"
     },
     {
-      "version": "9.0.1-beta.1",
-      "description": "Correctly sets passWithNoTests option",
-      "factory": "./src/migrations/update-9-0-1/update-9-0-1",
-      "package": "@nrwl/jest",
-      "name": "update-9.0.1"
-    },
-    {
-      "version": "9.2.0-beta.3",
-      "description": "Update jest to v25",
-      "factory": "./src/migrations/update-9-2-0/update-9-2-0",
-      "package": "@nrwl/jest",
-      "name": "update-9.2.0"
-    },
-    {
-      "version": "9.2.0-beta.1",
-      "description": "Set buildLibsFromSource property to true to not break existing projects.",
-      "factory": "./src/migrations/update-9-2-0/set-build-libs-from-source",
-      "package": "@nrwl/node",
-      "name": "set-build-libs-from-source"
+      "version": "10.0.0-beta.1",
+      "description": "Update Nest.js libraries",
+      "factory": "./src/migrations/update-10-0-0/update-10-0-0",
+      "package": "@nrwl/nest",
+      "name": "update-10-0-0"
     }
   ]
 }

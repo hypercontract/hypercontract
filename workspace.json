@@ -63,7 +63,6 @@
           "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "apps/hypershop/jest.config.js",
-            "tsConfig": "apps/hypershop/tsconfig.spec.json",
             "passWithNoTests": true
           }
         }
@@ -93,7 +92,6 @@
           "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "libs/express/jest.config.js",
-            "tsConfig": "libs/express/tsconfig.spec.json",
             "passWithNoTests": true
           }
         }
@@ -123,7 +121,6 @@
           "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "libs/profile/jest.config.js",
-            "tsConfig": "libs/profile/tsconfig.spec.json",
             "passWithNoTests": true
           }
         }
@@ -185,7 +182,6 @@
           "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "apps/hypercontract/jest.config.js",
-            "tsConfig": "apps/hypercontract/tsconfig.spec.json",
             "passWithNoTests": true
           }
         }
