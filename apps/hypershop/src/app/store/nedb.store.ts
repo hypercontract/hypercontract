@@ -1,5 +1,5 @@
-import Datastore from 'nedb';
-import { isNull } from 'util';
+import Datastore from '@seald-io/nedb';
+import { isNull } from 'lodash';
 import { v1 as uuid } from 'uuid';
 import { Entity, EntityId } from './entity.model';
 import { Store } from './store.model';

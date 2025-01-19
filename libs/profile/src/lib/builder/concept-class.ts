@@ -1,4 +1,4 @@
-import { namedNode } from '@rdfjs/data-model';
+import RDF from '@rdfjs/data-model';
 import { flatten, isEmpty } from 'lodash';
 import { owl, rdf } from '../namespaces';
 import { concept, Concept } from './concept';
@@ -13,7 +13,7 @@ export const conceptClass = (uri: string, definition: ConceptClass) => [
     ...concept(uri, definition),
     ...getInstanceSchemaStatements(uri, definition),
     ...toQuads(
-        [namedNode(uri), namedNode(rdf('type')), namedNode(owl('Class'))],
+        [RDF.namedNode(uri), RDF.namedNode(rdf('type')), RDF.namedNode(owl('Class'))],
     )
 ];
 

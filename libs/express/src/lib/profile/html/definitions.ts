@@ -1,8 +1,7 @@
 import { hyper, owl, ProfileStore, rdf, rdfs } from '@hypercontract/profile';
+import { Quad } from '@rdfjs/types';
 import { compact, fromRDF } from 'jsonld';
-import { defaultTo, flatten, isUndefined, omitBy, without } from 'lodash';
-import { Quad } from 'rdf-js';
-import { isArray, isNull } from 'util';
+import { defaultTo, flatten, isArray, isNull, isUndefined, omitBy, without } from 'lodash';
 import { dereferenceSchema } from '../../schema';
 
 interface ConceptDefinition {

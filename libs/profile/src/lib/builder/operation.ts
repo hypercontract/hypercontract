@@ -1,4 +1,4 @@
-import { literal, namedNode } from '@rdfjs/data-model';
+import RDF from '@rdfjs/data-model';
 import { isEmpty, isUndefined } from 'lodash';
 import { hyper, rdf } from '../namespaces';
 import { Statement } from '../profile';
@@ -24,8 +24,8 @@ export interface Operation extends StateTransition {
 export const operation = (uri: string, definition: Operation) => [
     ...stateTransition(uri, definition),
     ...toQuads(
-        [namedNode(uri), namedNode(rdf('type')), namedNode(hyper('Operation'))],
-        [namedNode(uri), namedNode(hyper('method')), literal(definition.method)],
+        [RDF.namedNode(uri), RDF.namedNode(rdf('type')), RDF.namedNode(hyper('Operation'))],
+        [RDF.namedNode(uri), RDF.namedNode(hyper('method')), RDF.literal(definition.method)],
         getReturnedTypeStatement(uri, definition),
         getExpectedBodyStatement(uri, definition),
         getExpectedQueryParamsStatement(uri, definition),
@@ -38,7 +38,7 @@ function getReturnedTypeStatement(uri: string, { returnedType }: Operation): Sta
         return null;
     }
 
-    return [namedNode(uri), namedNode(hyper('returnedType')), namedNode(returnedType)];
+    return [RDF.namedNode(uri), RDF.namedNode(hyper('returnedType')), RDF.namedNode(returnedType)];
 }
 
 function getExpectedBodyStatement(uri: string, { expectedBody }: Operation): Statement | null {
@@ -46,7 +46,7 @@ function getExpectedBodyStatement(uri: string, { expectedBody }: Operation): Sta
         return null;
     }
 
-    return [namedNode(uri), namedNode(hyper('expectedBody')), namedNode(expectedBody)];
+    return [RDF.namedNode(uri), RDF.namedNode(hyper('expectedBody')), RDF.namedNode(expectedBody)];
 }
 
 function getExpectedQueryParamsStatement(uri: string, { expectedQueryParams }: Operation): Statement | null {
@@ -54,7 +54,7 @@ function getExpectedQueryParamsStatement(uri: string, { expectedQueryParams }: O
         return null;
     }
 
-    return [namedNode(uri), namedNode(hyper('expectedQueryParams')), namedNode(expectedQueryParams)];
+    return [RDF.namedNode(uri), RDF.namedNode(hyper('expectedQueryParams')), RDF.namedNode(expectedQueryParams)];
 }
 
 function getConstraintStatements(uri: string, { constraints }: Operation): Statement[] {
@@ -64,6 +64,6 @@ function getConstraintStatements(uri: string, { constraints }: Operation): State
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return constraints!.map(
-        constraint => [namedNode(uri), namedNode(hyper('constraint')), namedNode(constraint)]
+        constraint => [RDF.namedNode(uri), RDF.namedNode(hyper('constraint')), RDF.namedNode(constraint)]
     );
 }

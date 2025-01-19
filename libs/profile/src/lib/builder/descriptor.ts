@@ -1,4 +1,4 @@
-import { namedNode } from '@rdfjs/data-model';
+import RDF from '@rdfjs/data-model';
 import { flatten, isEmpty, isUndefined } from 'lodash';
 import { owl, rdf, rdfs } from '../namespaces';
 import { Statement } from '../profile';
@@ -23,7 +23,7 @@ export const descriptor = (uri: string, definition: Descriptor) => [
     ...concept(uri, definition),
     ...getValueSchemaStatements(uri, definition),
     ...toQuads(
-        isOne(definition.cardinality) ? [namedNode(uri), namedNode(rdf('type')), namedNode(owl('FunctionalProperty'))] : null,
+        isOne(definition.cardinality) ? [RDF.namedNode(uri), RDF.namedNode(rdf('type')), RDF.namedNode(owl('FunctionalProperty'))] : null,
         ...getDomainStatements(uri, definition),
         ...getRangeStatements(uri, definition)
     )
@@ -42,13 +42,13 @@ function getValueSchemaStatements(uri: string, { schemas }: Descriptor) {
 
 function getDomainStatements(uri: string, { domain }: Descriptor): Statement[] {
     return domain.map(
-        domainUri => [namedNode(uri), namedNode(rdfs('domain')), namedNode(domainUri)]
+        domainUri => [RDF.namedNode(uri), RDF.namedNode(rdfs('domain')), RDF.namedNode(domainUri)]
     );
 }
 
 function getRangeStatements(uri: string, { range }: Descriptor): Statement[] {
     return range.map(
-        rangeUri => [namedNode(uri), namedNode(rdfs('range')), namedNode(rangeUri)]
+        rangeUri => [RDF.namedNode(uri), RDF.namedNode(rdfs('range')), RDF.namedNode(rangeUri)]
     );
 }
 
