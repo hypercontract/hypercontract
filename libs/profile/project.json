@@ -1,0 +1,33 @@
+{
+  "name": "profile",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/profile/src",
+  "projectType": "library",
+  "generators": {},
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/profile/**/*.ts",
+          "libs/profile/**/*.spec.ts",
+          "libs/profile/**/*.spec.tsx",
+          "libs/profile/**/*.spec.js",
+          "libs/profile/**/*.spec.jsx",
+          "libs/profile/**/*.d.ts"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "options": {
+        "jestConfig": "libs/profile/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "outputs": [
+        "{workspaceRoot}/coverage/libs/profile"
+      ]
+    }
+  },
+  "tags": []
+}

@@ -1,0 +1,67 @@
+{
+  "name": "hypercontract",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/hypercontract/src",
+  "projectType": "application",
+  "prefix": "hypercontract",
+  "generators": {},
+  "targets": {
+    "build": {
+      "executor": "@nrwl/webpack:webpack",
+      "options": {
+        "outputPath": "dist/apps/hypercontract",
+        "main": "apps/hypercontract/src/main.ts",
+        "tsConfig": "apps/hypercontract/tsconfig.app.json",
+        "assets": [
+          "apps/hypercontract/src/assets"
+        ],
+        "buildLibsFromSource": true,
+        "target": "node",
+        "compiler": "tsc"
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/hypercontract/src/environments/environment.ts",
+              "with": "apps/hypercontract/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      },
+      "outputs": [
+        "{options.outputPath}"
+      ]
+    },
+    "serve": {
+      "executor": "@nrwl/node:node",
+      "options": {
+        "buildTarget": "hypercontract:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "apps/hypercontract/**/*.ts",
+          "apps/hypercontract/**/*.spec.ts",
+          "apps/hypercontract/**/*.d.ts"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "options": {
+        "jestConfig": "apps/hypercontract/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "outputs": [
+        "{workspaceRoot}/coverage/apps/hypercontract"
+      ]
+    }
+  },
+  "tags": []
+}

@@ -1,0 +1,73 @@
+{
+  "name": "hypershop",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/hypershop/src",
+  "projectType": "application",
+  "prefix": "hypershop",
+  "generators": {},
+  "targets": {
+    "build": {
+      "executor": "@nrwl/webpack:webpack",
+      "options": {
+        "outputPath": "dist/apps/hypershop",
+        "main": "apps/hypershop/src/main.ts",
+        "tsConfig": "apps/hypershop/tsconfig.app.json",
+        "assets": [
+          "apps/hypershop/src/assets",
+          "apps/hypershop/src/app/formats/html",
+          "apps/hypershop/src/app/api-root/templates",
+          "apps/hypershop/src/app/products/templates",
+          "apps/hypershop/src/app/shopping-cart/templates",
+          "apps/hypershop/src/app/user-profile/templates",
+          "apps/hypershop/src/app/orders/templates"
+        ],
+        "buildLibsFromSource": true,
+        "target": "node",
+        "compiler": "tsc"
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/hypershop/src/environments/environment.ts",
+              "with": "apps/hypershop/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      },
+      "outputs": [
+        "{options.outputPath}"
+      ]
+    },
+    "serve": {
+      "executor": "@nrwl/node:node",
+      "options": {
+        "buildTarget": "hypershop:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "apps/hypershop/**/*.ts",
+          "apps/hypershop/**/*.spec.ts",
+          "apps/hypershop/**/*.d.ts"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "options": {
+        "jestConfig": "apps/hypershop/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "outputs": [
+        "{workspaceRoot}/coverage/apps/hypershop"
+      ]
+    }
+  },
+  "tags": []
+}

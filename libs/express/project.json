@@ -1,0 +1,33 @@
+{
+  "name": "express",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/express/src",
+  "projectType": "library",
+  "generators": {},
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/express/**/*.ts",
+          "libs/express/**/*.spec.ts",
+          "libs/express/**/*.spec.tsx",
+          "libs/express/**/*.spec.js",
+          "libs/express/**/*.spec.jsx",
+          "libs/express/**/*.d.ts"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "options": {
+        "jestConfig": "libs/express/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "outputs": [
+        "{workspaceRoot}/coverage/libs/express"
+      ]
+    }
+  },
+  "tags": []
+}
