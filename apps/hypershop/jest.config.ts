@@ -1,6 +1,6 @@
 export default {
     displayName: 'hypershop',
-    preset: '../../jest.preset.js',
+    preset: '../../jest.preset.ts',
     testEnvironment: 'node',
     transform: {
         '^.+\\.[tj]s$': [
