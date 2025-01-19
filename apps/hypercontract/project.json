@@ -55,8 +55,7 @@
     "test": {
       "executor": "@nx/jest:jest",
       "options": {
-        "jestConfig": "apps/hypercontract/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "apps/hypercontract/jest.config.ts"
       },
       "outputs": [
         "{workspaceRoot}/coverage/apps/hypercontract"

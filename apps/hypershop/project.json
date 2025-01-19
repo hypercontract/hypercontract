@@ -61,8 +61,7 @@
     "test": {
       "executor": "@nx/jest:jest",
       "options": {
-        "jestConfig": "apps/hypershop/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "apps/hypershop/jest.config.ts"
       },
       "outputs": [
         "{workspaceRoot}/coverage/apps/hypershop"
