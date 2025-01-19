@@ -1,11 +1,11 @@
-FROM node:12 AS builder
+FROM node:22 AS builder
 WORKDIR /usr/src/app
 # docker build is expected to be run with the root of the repository as the build context
 COPY . ./
 RUN npm ci
 RUN npm run build -- hypershop --prod
 
-FROM node:12
+FROM node:22
 WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/package.json .
 COPY --from=builder /usr/src/app/package-lock.json .
