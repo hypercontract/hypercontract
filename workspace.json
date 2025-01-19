@@ -1,6 +1,102 @@
 {
   "version": 1,
   "projects": {
+    "express": {
+      "root": "libs/express",
+      "sourceRoot": "libs/express/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/express/**/*.ts",
+              "libs/express/**/*.spec.ts",
+              "libs/express/**/*.spec.tsx",
+              "libs/express/**/*.spec.js",
+              "libs/express/**/*.spec.jsx",
+              "libs/express/**/*.d.ts"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/express/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": [
+            "coverage/libs/express"
+          ]
+        }
+      },
+      "tags": []
+    },
+    "hypercontract": {
+      "root": "apps/hypercontract",
+      "sourceRoot": "apps/hypercontract/src",
+      "projectType": "application",
+      "prefix": "hypercontract",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:webpack",
+          "options": {
+            "outputPath": "dist/apps/hypercontract",
+            "main": "apps/hypercontract/src/main.ts",
+            "tsConfig": "apps/hypercontract/tsconfig.app.json",
+            "assets": [
+              "apps/hypercontract/src/assets"
+            ],
+            "buildLibsFromSource": true
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/hypercontract/src/environments/environment.ts",
+                  "with": "apps/hypercontract/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          },
+          "outputs": [
+            "{options.outputPath}"
+          ]
+        },
+        "serve": {
+          "builder": "@nrwl/node:node",
+          "options": {
+            "buildTarget": "hypercontract:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/hypercontract/**/*.ts",
+              "apps/hypercontract/**/*.spec.ts",
+              "apps/hypercontract/**/*.d.ts"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/hypercontract/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": [
+            "coverage/apps/hypercontract"
+          ]
+        }
+      },
+      "tags": []
+    },
     "hypershop": {
       "root": "apps/hypershop",
       "sourceRoot": "apps/hypershop/src",
@@ -9,7 +105,7 @@
       "schematics": {},
       "architect": {
         "build": {
-          "builder": "@nrwl/node:build",
+          "builder": "@nrwl/node:webpack",
           "options": {
             "outputPath": "dist/apps/hypershop",
             "main": "apps/hypershop/src/main.ts",
@@ -43,7 +139,7 @@
           ]
         },
         "serve": {
-          "builder": "@nrwl/node:execute",
+          "builder": "@nrwl/node:node",
           "options": {
             "buildTarget": "hypershop:build"
           }
@@ -68,38 +164,8 @@
             "coverage/apps/hypershop"
           ]
         }
-      }
-    },
-    "express": {
-      "root": "libs/express",
-      "sourceRoot": "libs/express/src",
-      "projectType": "library",
-      "schematics": {},
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/express/**/*.ts",
-              "libs/express/**/*.spec.ts",
-              "libs/express/**/*.spec.tsx",
-              "libs/express/**/*.spec.js",
-              "libs/express/**/*.spec.jsx",
-              "libs/express/**/*.d.ts"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/express/jest.config.js",
-            "passWithNoTests": true
-          },
-          "outputs": [
-            "coverage/libs/express"
-          ]
-        }
-      }
+      },
+      "tags": []
     },
     "profile": {
       "root": "libs/profile",
@@ -130,119 +196,8 @@
             "coverage/libs/profile"
           ]
         }
-      }
-    },
-    "hypercontract": {
-      "root": "apps/hypercontract",
-      "sourceRoot": "apps/hypercontract/src",
-      "projectType": "application",
-      "prefix": "hypercontract",
-      "schematics": {},
-      "architect": {
-        "build": {
-          "builder": "@nrwl/node:build",
-          "options": {
-            "outputPath": "dist/apps/hypercontract",
-            "main": "apps/hypercontract/src/main.ts",
-            "tsConfig": "apps/hypercontract/tsconfig.app.json",
-            "assets": [
-              "apps/hypercontract/src/assets"
-            ],
-            "buildLibsFromSource": true
-          },
-          "configurations": {
-            "production": {
-              "optimization": true,
-              "extractLicenses": true,
-              "inspect": false,
-              "fileReplacements": [
-                {
-                  "replace": "apps/hypercontract/src/environments/environment.ts",
-                  "with": "apps/hypercontract/src/environments/environment.prod.ts"
-                }
-              ]
-            }
-          },
-          "outputs": [
-            "{options.outputPath}"
-          ]
-        },
-        "serve": {
-          "builder": "@nrwl/node:execute",
-          "options": {
-            "buildTarget": "hypercontract:build"
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "apps/hypercontract/**/*.ts",
-              "apps/hypercontract/**/*.spec.ts",
-              "apps/hypercontract/**/*.d.ts"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "apps/hypercontract/jest.config.js",
-            "passWithNoTests": true
-          },
-          "outputs": [
-            "coverage/apps/hypercontract"
-          ]
-        }
-      }
-    }
-  },
-  "cli": {
-    "defaultCollection": "@nrwl/nest"
-  },
-  "schematics": {
-    "@nrwl/workspace": {
-      "library": {
-        "linter": "eslint"
-      }
-    },
-    "@nrwl/cypress": {
-      "cypress-project": {
-        "linter": "eslint"
-      }
-    },
-    "@nrwl/react": {
-      "application": {
-        "linter": "eslint"
       },
-      "library": {
-        "linter": "eslint"
-      }
-    },
-    "@nrwl/next": {
-      "application": {
-        "linter": "eslint"
-      }
-    },
-    "@nrwl/web": {
-      "application": {
-        "linter": "eslint"
-      }
-    },
-    "@nrwl/node": {
-      "application": {
-        "linter": "eslint"
-      }
-    },
-    "@nrwl/nest": {
-      "application": {
-        "linter": "eslint"
-      }
-    },
-    "@nrwl/express": {
-      "application": {
-        "linter": "eslint"
-      }
+      "tags": []
     }
-  },
-  "defaultProject": "hypershop"
+  }
 }

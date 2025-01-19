@@ -13,15 +13,27 @@
     "strict": true,
     "target": "es2015",
     "module": "esnext",
-    "typeRoots": ["node_modules/@types"],
-    "lib": ["es2017", "dom"],
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@hypercontract/express": ["libs/express/src/index.ts"],
-      "@hypercontract/profile": ["libs/profile/src/index.ts"]
+      "@hypercontract/express": [
+        "libs/express/src/index.ts"
+      ],
+      "@hypercontract/profile": [
+        "libs/profile/src/index.ts"
+      ]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }
