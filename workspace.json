@@ -37,7 +37,10 @@
                 }
               ]
             }
-          }
+          },
+          "outputs": [
+            "{options.outputPath}"
+          ]
         },
         "serve": {
           "builder": "@nrwl/node:execute",
@@ -46,16 +49,12 @@
           }
         },
         "lint": {
-          "builder": "@nrwl/linter:lint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "linter": "eslint",
-            "tsConfig": [
-              "apps/hypershop/tsconfig.app.json",
-              "apps/hypershop/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!apps/hypershop/**/*"
+            "lintFilePatterns": [
+              "apps/hypershop/**/*.ts",
+              "apps/hypershop/**/*.spec.ts",
+              "apps/hypershop/**/*.d.ts"
             ]
           }
         },
@@ -64,7 +63,10 @@
           "options": {
             "jestConfig": "apps/hypershop/jest.config.js",
             "passWithNoTests": true
-          }
+          },
+          "outputs": [
+            "coverage/apps/hypershop"
+          ]
         }
       }
     },
@@ -75,16 +77,15 @@
       "schematics": {},
       "architect": {
         "lint": {
-          "builder": "@nrwl/linter:lint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "linter": "eslint",
-            "tsConfig": [
-              "libs/express/tsconfig.lib.json",
-              "libs/express/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/express/**/*"
+            "lintFilePatterns": [
+              "libs/express/**/*.ts",
+              "libs/express/**/*.spec.ts",
+              "libs/express/**/*.spec.tsx",
+              "libs/express/**/*.spec.js",
+              "libs/express/**/*.spec.jsx",
+              "libs/express/**/*.d.ts"
             ]
           }
         },
@@ -93,7 +94,10 @@
           "options": {
             "jestConfig": "libs/express/jest.config.js",
             "passWithNoTests": true
-          }
+          },
+          "outputs": [
+            "coverage/libs/express"
+          ]
         }
       }
     },
@@ -104,16 +108,15 @@
       "schematics": {},
       "architect": {
         "lint": {
-          "builder": "@nrwl/linter:lint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "linter": "eslint",
-            "tsConfig": [
-              "libs/profile/tsconfig.lib.json",
-              "libs/profile/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/profile/**/*"
+            "lintFilePatterns": [
+              "libs/profile/**/*.ts",
+              "libs/profile/**/*.spec.ts",
+              "libs/profile/**/*.spec.tsx",
+              "libs/profile/**/*.spec.js",
+              "libs/profile/**/*.spec.jsx",
+              "libs/profile/**/*.d.ts"
             ]
           }
         },
@@ -122,7 +125,10 @@
           "options": {
             "jestConfig": "libs/profile/jest.config.js",
             "passWithNoTests": true
-          }
+          },
+          "outputs": [
+            "coverage/libs/profile"
+          ]
         }
       }
     },
@@ -156,7 +162,10 @@
                 }
               ]
             }
-          }
+          },
+          "outputs": [
+            "{options.outputPath}"
+          ]
         },
         "serve": {
           "builder": "@nrwl/node:execute",
@@ -165,16 +174,12 @@
           }
         },
         "lint": {
-          "builder": "@nrwl/linter:lint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "linter": "eslint",
-            "tsConfig": [
-              "apps/hypercontract/tsconfig.app.json",
-              "apps/hypercontract/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!apps/hypercontract/**/*"
+            "lintFilePatterns": [
+              "apps/hypercontract/**/*.ts",
+              "apps/hypercontract/**/*.spec.ts",
+              "apps/hypercontract/**/*.d.ts"
             ]
           }
         },
@@ -183,7 +188,10 @@
           "options": {
             "jestConfig": "apps/hypercontract/jest.config.js",
             "passWithNoTests": true
-          }
+          },
+          "outputs": [
+            "coverage/apps/hypercontract"
+          ]
         }
       }
     }
