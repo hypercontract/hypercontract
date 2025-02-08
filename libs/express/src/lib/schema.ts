@@ -1,6 +1,6 @@
+import RefParser from '@apidevtools/json-schema-ref-parser';
 import { hyper, ProfileStore, rdf } from '@hypercontract/profile';
 import { Request, Response } from 'express';
-import jsonSchemaRefParser from 'json-schema-ref-parser';
 import { isNull, memoize, values } from 'lodash';
 import omitDeep from 'omit-deep';
 import { handleNotAcceptable, handleNotFound } from './error';
@@ -61,7 +61,7 @@ export async function dereferenceSchema(
 
     const schemas = getAllSchemas(profileStore);
 
-    const dereferencedSchemaDefinition = await jsonSchemaRefParser.dereference(
+    const dereferencedSchemaDefinition = await RefParser.dereference(
         JSON.parse(schemaDefinition),
         {
             resolve: {

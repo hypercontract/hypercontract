@@ -1,4 +1,4 @@
-import { literal, namedNode } from '@rdfjs/data-model';
+import RDF from '@rdfjs/data-model';
 import { rdfs } from '../namespaces';
 import { toQuads } from './quad';
 
@@ -8,6 +8,6 @@ export interface Concept {
 }
 
 export const concept = (uri: string, { label, description }: Concept) => toQuads(
-    [namedNode(uri), namedNode(rdfs('label')), literal(label)],
-    [namedNode(uri), namedNode(rdfs('comment')), literal(description)]
+    [RDF.namedNode(uri), RDF.namedNode(rdfs('label')), RDF.literal(label)],
+    [RDF.namedNode(uri), RDF.namedNode(rdfs('comment')), RDF.literal(description)]
 );

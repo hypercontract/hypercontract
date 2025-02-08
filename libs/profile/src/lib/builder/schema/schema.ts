@@ -1,4 +1,4 @@
-import { literal, namedNode } from '@rdfjs/data-model';
+import RDF from '@rdfjs/data-model';
 import { isUndefined, values } from 'lodash';
 import { hyper, rdf } from '../../namespaces';
 import { toQuads } from '../quad';
@@ -49,11 +49,11 @@ export interface Schema {
 export const schema = (uri: string, schemaRelation: string, definition: Schema) => {
     const schemaUri = getSchemaUri(uri, definition);
     return toQuads(
-        [namedNode(uri), namedNode(schemaRelation), namedNode(schemaUri)],
-        [namedNode(schemaUri), namedNode(rdf('type')), namedNode(hyper('Schema'))],
-        [namedNode(schemaUri), namedNode(hyper('targetType')), literal(definition.targetType)],
-        [namedNode(schemaUri), namedNode(hyper('schemaType')), literal(definition.schemaType)],
-        [namedNode(schemaUri), namedNode(rdf('value')), literal(definition.schemaDefinition)],
+        [RDF.namedNode(uri), RDF.namedNode(schemaRelation), RDF.namedNode(schemaUri)],
+        [RDF.namedNode(schemaUri), RDF.namedNode(rdf('type')), RDF.namedNode(hyper('Schema'))],
+        [RDF.namedNode(schemaUri), RDF.namedNode(hyper('targetType')), RDF.literal(definition.targetType)],
+        [RDF.namedNode(schemaUri), RDF.namedNode(hyper('schemaType')), RDF.literal(definition.schemaType)],
+        [RDF.namedNode(schemaUri), RDF.namedNode(rdf('value')), RDF.literal(definition.schemaDefinition)],
     );
 };
 

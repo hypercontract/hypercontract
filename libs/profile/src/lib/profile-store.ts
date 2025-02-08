@@ -1,5 +1,5 @@
 import { defaultTo, isEmpty, memoize } from 'lodash';
-import { N3Store, Store } from 'n3';
+import { Store } from 'n3';
 import { rdf } from './namespaces';
 import { JsonLdContext, Prefixes, Profile } from './profile';
 
@@ -10,7 +10,7 @@ export class ProfileStore {
     public readonly prefixes: Prefixes;
     public readonly jsonLdContext: JsonLdContext;
 
-    private store: N3Store;
+    private store: Store;
 
     constructor({ defaultNamespace, graph, prefixes, jsonLdContext, uri }: Profile) {
         this.profileUri = uri;

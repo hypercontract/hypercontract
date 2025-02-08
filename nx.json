@@ -59,7 +59,7 @@
             "inputs": [
                 "default",
                 "^production",
-                "{workspaceRoot}/jest.preset.js"
+                "{workspaceRoot}/jest.preset.ts"
             ],
             "cache": true,
             "options": {
@@ -94,6 +94,29 @@
             "!{projectRoot}/src/test-setup.[jt]s"
         ]
     },
+    "plugins": [
+        {
+            "plugin": "@nx/webpack/plugin",
+            "options": {
+                "buildTargetName": "build",
+                "serveTargetName": "serve",
+                "previewTargetName": "preview"
+            }
+        },
+        {
+            "plugin": "@nx/eslint/plugin",
+            "options": {
+                "targetName": "lint"
+            }
+        },
+        {
+            "plugin": "@nx/jest/plugin",
+            "options": {
+               "targetName": "test"
+            },
+            "exclude": []
+        }
+    ],
     "parallel": 1,
     "useInferencePlugins": false,
     "defaultBase": "master",

@@ -1,7 +1,7 @@
 import { getJsonLdContext, getJsonLdContextUri, ProfileStore, RdfDocument } from '@hypercontract/profile';
+import { Quad } from '@rdfjs/types';
 import { Request, Response } from 'express';
 import { isEmpty, trimEnd, values } from 'lodash';
-import { Quad } from 'rdf-js';
 import { handleNotAcceptable, handleNotFound } from '../error';
 import { getRequestUri } from '../request';
 import { toHtml } from './html/html';
@@ -76,7 +76,7 @@ function handleRequest(response: Response, rdfDocument: RdfDocument, profileStor
     });
 }
 
-function toRdfDocument(uri: string, graph: Quad[], { defaultNamespace, prefixes, jsonLdContext}: ProfileStore): RdfDocument {
+function toRdfDocument(uri: string, graph: Quad[], { defaultNamespace, prefixes, jsonLdContext }: ProfileStore): RdfDocument {
     return {
         uri,
         defaultNamespace,

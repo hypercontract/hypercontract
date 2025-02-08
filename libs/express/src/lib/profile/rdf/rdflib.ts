@@ -1,9 +1,8 @@
 import { RdfDocument } from '@hypercontract/profile';
+import { Quad, Quad_Graph, Quad_Object, Quad_Predicate, Quad_Subject } from '@rdfjs/types';
 import { Response } from 'express';
-import { BlankNode, DefaultGraph, Literal, NamedNode, Quad, Variable } from 'rdf-js';
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-// @ts-ignore @types/rdflib contains invalid types
-import { blankNode, defaultGraph, graph as rdfLibGraph, lit, namedNode, serialize, Statement, variable } from 'rdflib';
+import { blankNode, defaultGraph, lit, namedNode, graph as rdfLibGraph, serialize, Statement, variable } from 'rdflib';
+import { GraphType, ObjectType, PredicateType, SubjectType } from 'rdflib/lib/types';
 import { handleInternalServerError } from '../../error';
 import { Handler } from '../handler';
 
@@ -20,7 +19,7 @@ export const toRdfXml: Handler = (
         .forEach(statement => store.add(statement));
 
     // target, kb, base, contentType, callback, options
-    serialize(undefined, store, defaultNamespace, 'application/rdf+xml', (error: any, document: string) => {
+    serialize(null, store, defaultNamespace, 'application/rdf+xml', (error: any, document: any) => {
         if (error) {
             handleInternalServerError(response);
         }
@@ -41,34 +40,65 @@ function setBase(document: string, defaultNamespace: string): string {
 
 function toRdfLibStatement(quad: Quad) {
     return new Statement(
-        toRdfLibTerm(quad.subject),
-        toRdfLibTerm(quad.predicate),
-        toRdfLibTerm(quad.object),
-        toRdfLibTerm(quad.graph)
+        toSubjectType(quad.subject),
+        toPredicateType(quad.predicate),
+        toObjectType(quad.object),
+        toGraphType(quad.graph)
     );
 }
 
-function toRdfLibTerm(term: Variable | NamedNode | BlankNode | Literal | DefaultGraph) {
-    if (term.termType === 'NamedNode') {
-        return namedNode(term.value);
-    }
-
+function toSubjectType(term: Quad_Subject): SubjectType {
     if (term.termType === 'BlankNode') {
         return blankNode(term.value);
     }
-
-    if (term.termType === 'Literal') {
-        return lit(term.value, term.language, namedNode(term.datatype.value));
+    if (term.termType === 'NamedNode') {
+        return namedNode(term.value);
     }
-
-    if (term.termType === 'DefaultGraph') {
-        return defaultGraph();
-    }
-
     if (term.termType === 'Variable') {
         return variable(term.value);
     }
 
-    console.warn(`Unknown term type: ${JSON.stringify(term)}`);
-    return term;
+    throw new Error(`Unsupported term type: ${JSON.stringify(term)}`);
+}
+
+function toPredicateType(term: Quad_Predicate): PredicateType {
+    if (term.termType === 'NamedNode') {
+        return namedNode(term.value);
+    }
+    if (term.termType === 'Variable') {
+        return variable(term.value);
+    }
+
+    throw new Error(`Unsupported term type: ${JSON.stringify(term)}`);
+}
+
+function toObjectType(term: Quad_Object): ObjectType {
+    if (term.termType === 'BlankNode') {
+        return blankNode(term.value);
+    }
+    if (term.termType === 'NamedNode') {
+        return namedNode(term.value);
+    }
+    if (term.termType === 'Variable') {
+        return variable(term.value);
+    }
+    if (term.termType === 'Literal') {
+        return lit(term.value, term.language, namedNode(term.datatype.value));
+    }
+
+    throw new Error(`Unsupported term type: ${JSON.stringify(term)}`);
+}
+
+function toGraphType(term: Quad_Graph): GraphType {
+    if (term.termType === 'NamedNode') {
+        return namedNode(term.value);
+    }
+    if (term.termType === 'Variable') {
+        return variable(term.value);
+    }
+    if (term.termType === 'DefaultGraph') {
+        return defaultGraph();
+    }
+
+    throw new Error(`Unsupported term type: ${JSON.stringify(term)}`);
 }

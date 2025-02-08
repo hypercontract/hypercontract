@@ -1,6 +1,6 @@
-import Datastore from 'nedb';
-import { isNull } from 'util';
-import uuid from 'uuid';
+import Datastore from '@seald-io/nedb';
+import { isNull } from 'lodash';
+import { v1 as uuid } from 'uuid';
 import { Entity, EntityId } from './entity.model';
 import { Store } from './store.model';
 
@@ -95,7 +95,7 @@ export class NeDBStore<T extends Entity> implements Store<T> {
     }
 
     private generateIds<T>(entities: T[]) {
-        return entities.map((entity: T) => Object.assign({ _id: uuid.v1() }, entity));
+        return entities.map((entity: T) => Object.assign({ _id: uuid() }, entity));
     }
 
 }

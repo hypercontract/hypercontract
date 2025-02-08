@@ -1,4 +1,4 @@
-import { namedNode } from '@rdfjs/data-model';
+import RDF from '@rdfjs/data-model';
 import { isEmpty, isUndefined } from 'lodash';
 import { owl, prefixes, rdf } from '../namespaces';
 import { descriptor, Descriptor } from './descriptor';
@@ -13,7 +13,7 @@ export const conceptProperty = (uri: string, definition: ConceptProperty) => {
     return [
         ...descriptor(uri, definition),
         ...toQuads(
-            [namedNode(uri), namedNode(rdf('type')), namedNode(propertyType)],
+            [RDF.namedNode(uri), RDF.namedNode(rdf('type')), RDF.namedNode(propertyType)],
         )
     ];
 }
