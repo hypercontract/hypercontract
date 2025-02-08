@@ -33,7 +33,7 @@ patches:
         value: docs
       - op: replace
         path: /spec/template/spec/containers/0/image
-        value: ghcr.io/hypercontract/docs
+        value: ghcr.io/hypercontract/docs:latest
   - target:
       kind: HorizontalPodAutoscaler
       name: app-name

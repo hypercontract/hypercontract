@@ -33,7 +33,7 @@ patches:
         value: hypershop
       - op: replace
         path: /spec/template/spec/containers/0/image
-        value: ghcr.io/hypercontract/hypershop
+        value: ghcr.io/hypercontract/hypershop:latest
   - target:
       kind: HorizontalPodAutoscaler
       name: app-name

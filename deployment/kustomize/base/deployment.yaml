@@ -30,9 +30,9 @@ spec:
               memory: 128Mi
           livenessProbe:
             httpGet:
-              path: /healthz/live
+              path: /
               port: 80
           readinessProbe:
             httpGet:
-              path: /healthz/ready
+              path: /
               port: 80
