@@ -1,0 +1,46 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+
+commonLabels:
+  app: docs
+
+patches:
+  - target:
+      kind: Service
+      name: app-name
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: docs
+      - op: replace
+        path: /spec/selector/app
+        value: docs
+  - target:
+      kind: Deployment
+      name: app-name
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: docs
+      - op: replace
+        path: /spec/selector/matchLabels/app
+        value: docs
+      - op: replace
+        path: /spec/template/spec/containers/0/name
+        value: docs
+      - op: replace
+        path: /spec/template/spec/containers/0/image
+        value: ghcr.io/hypercontract/docs
+  - target:
+      kind: HorizontalPodAutoscaler
+      name: app-name
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: docs
+      - op: replace
+        path: /spec/scaleTargetRef/name
+        value: docs
