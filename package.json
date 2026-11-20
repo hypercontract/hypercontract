@@ -38,7 +38,7 @@
         "@rdfjs/types": "2.0.1",
         "@seald-io/nedb": "4.0.4",
         "@types/ejs": "3.1.5",
-        "@types/lodash": "4.17.14",
+        "@types/lodash": "4.17.27",
         "@types/method-override": "3.0.0",
         "body-parser": "1.20.9",
         "date-fns": "2.30.0",
