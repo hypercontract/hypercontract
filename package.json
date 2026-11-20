@@ -76,7 +76,7 @@
         "@types/n3": "1.21.1",
         "@types/node": "22.10.7",
         "@types/omit-deep": "0.3.2",
-        "@types/rdfjs__data-model": "2.0.8",
+        "@types/rdfjs__data-model": "2.0.9",
         "@types/rdflib": "1.2.0",
         "@types/supertest": "2.0.16",
         "ajv": "8.17.1",
