@@ -86,7 +86,7 @@
         "jest-environment-jsdom": "29.7.0",
         "jest-environment-node": "29.7.0",
         "newman": "6.2.0",
-        "nx": "20.3.2",
+        "nx": "22.7.10",
         "prettier": "2.8.8",
         "supertest": "7.0.0",
         "ts-jest": "29.2.5",
