@@ -40,7 +40,7 @@
         "@types/ejs": "3.1.5",
         "@types/lodash": "4.17.14",
         "@types/method-override": "3.0.0",
-        "body-parser": "1.20.3",
+        "body-parser": "1.20.6",
         "date-fns": "2.30.0",
         "deep-map-keys": "2.0.1",
         "ejs": "3.1.10",
