@@ -1,7 +1,7 @@
 # profile
 
-This library was generated with [Nx](https://nx.dev).
+The `@hypercontract/profile` workspace defines and builds Hypercontract profiles.
 
 ## Running unit tests
 
-Run `ng test profile` to execute the unit tests via [Jest](https://jestjs.io).
+From the repository root, run `npm test -- --selectProjects profile` to run this workspace's Jest tests.

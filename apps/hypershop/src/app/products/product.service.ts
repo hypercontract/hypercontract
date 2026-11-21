@@ -33,14 +33,10 @@ function getQueryMatcher(rawQuery: string) {
     const queryString = defaultTo(rawQuery, '').toLowerCase();
 
     return {
-        $where: function (): boolean {
+        $where: function (this: Product): boolean {
             return (
-                // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-                // @ts-ignore
-                this['productName'].toLowerCase().indexOf(queryString) > -1 ||
-                // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-                // @ts-ignore
-                this['productDescription'].toLowerCase().indexOf(queryString) > -1
+                this.productName.toLowerCase().indexOf(queryString) > -1 ||
+                this.productDescription.toLowerCase().indexOf(queryString) > -1
             );
         }
     }

@@ -1,19 +1,10 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "types": [
-      "node",
-      "jest"
-    ]
-  },
-  "include": [],
-  "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.lib.json"
+    "extends": "../../tsconfig.base.json",
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es2021",
+        "types": ["node", "jest"],
+        "noEmit": true
     },
-    {
-      "path": "./tsconfig.spec.json"
-    }
-  ]
+    "include": ["src/**/*.ts", "jest.config.ts"]
 }

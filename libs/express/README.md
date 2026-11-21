@@ -1,7 +1,7 @@
 # express
 
-This library was generated with [Nx](https://nx.dev).
+The `@hypercontract/express` workspace serves Hypercontract profiles through Express.
 
 ## Running unit tests
 
-Run `ng test express` to execute the unit tests via [Jest](https://jestjs.io).
+From the repository root, run `npm test -- --selectProjects express` to run this workspace's Jest tests.

@@ -14,8 +14,6 @@ export const toRdfXml: Handler = (
 
     graph
         .map(quad => toRdfLibStatement(quad))
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore @types/rdflib contains invalid types
         .forEach(statement => store.add(statement));
 
     // target, kb, base, contentType, callback, options

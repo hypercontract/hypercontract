@@ -1,0 +1,10 @@
+{
+    "extends": "../../tsconfig.build.base.json",
+    "compilerOptions": { "rootDir": "src", "outDir": "dist", "tsBuildInfoFile": "dist/build.tsbuildinfo" },
+    "include": ["src/**/*.ts"],
+    "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts", "src/test/schema-matcher.ts"],
+    "references": [
+        { "path": "../../libs/profile/tsconfig.build.json" },
+        { "path": "../../libs/express/tsconfig.build.json" }
+    ]
+}

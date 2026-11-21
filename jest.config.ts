@@ -1,5 +1,12 @@
-import { getJestProjectsAsync } from '@nx/jest';
+import type { Config } from 'jest';
 
-export default async () => ({
-  projects: await getJestProjectsAsync()
-});
+const config: Config = {
+    projects: [
+        '<rootDir>/apps/hypercontract/jest.config.ts',
+        '<rootDir>/apps/hypershop/jest.config.ts',
+        '<rootDir>/libs/express/jest.config.ts',
+        '<rootDir>/libs/profile/jest.config.ts',
+    ],
+};
+
+export default config;

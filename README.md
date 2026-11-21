@@ -9,12 +9,12 @@ This workspace contains the source code of a prototype implementation of this co
 
 ## Requirements
 
-* [Node.js](https://nodejs.org/en/) 12 or higher
-* [npm](https://www.npmjs.com/get-npm) 6 or higher
+* [Node.js](https://nodejs.org/en/) 22.13 or newer in the Node.js 22 release line, with its bundled npm
 
 ## Quick Start
 
 ### Setup
+
 ```sh
 git clone https://github.com/hypercontract/hypercontract.git
 cd hypercontract
@@ -29,16 +29,32 @@ Run `npm start` and browse to...
 - http://localhost/profile to open the *hypershop* API documentation
 - http://localhost:8080 to open the *hypercontract* vocabulary documentation
 
+`npm run serve-hypercontract` and `npm run serve-hypershop` start either app on its own. The dev commands compile and watch the app and its shared libraries.
+
+Static assets and EJS templates are copied during the build, not watched. After editing them, restart the dev command or run the corresponding build command to refresh the copies.
+
+`npm run build` compiles both apps. `npm run build:hypercontract` and `npm run build:hypershop` compile only the selected app and its libraries. To run a compiled app with production settings, set `NODE_ENV=production` and run `node apps/<app>/dist/main.js`.
+
+For debugging, use a separate inspector port, for example `node --inspect=7777 apps/hypercontract/dist/main.js` after building. The inspector port does not change the HTTP port.
+
 ### Test
 
-- `npm test` - Run E2E tests
+- `npm test` - Run the Jest suite, including Hypershop HTTP integration tests
+- `npm test -- --selectProjects hypershop` - Run just the Hypershop suite
+- `npm run test-debug` - Watch Jest tests with the inspector on port `7777`
 - `npm start`, then `npm run test-postman` - run [Postman](https://www.getpostman.com/) tests
 
 Alternatively, you can import Postman collections from `/postman` into your Postman application. 
 
+### Lint and Format
+
+- `npm run lint` - Lint app and library sources with ESLint
+- `npm run format:check` - Check repository formatting with Prettier
+- `npm run format:write` - Format the repository (also available as `npm run format`)
+
 ## Architecture Overview
 
-The project is written in TypeScript and set up as an [Nx Workspace](https://nx.dev/) consisting of two applications and two libraries.
+The project uses npm workspaces for the two applications and two libraries. TypeScript project references build the libraries before the applications that depend on them.
 
 <img src="docs/architecture-overview.png" alt="Architecture Overview" width="200"/>
 
