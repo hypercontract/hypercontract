@@ -74,7 +74,7 @@
         "@types/json-schema": "7.0.15",
         "@types/jsonld": "1.5.15",
         "@types/n3": "1.21.1",
-        "@types/node": "22.10.7",
+        "@types/node": "22.20.5",
         "@types/omit-deep": "0.3.2",
         "@types/rdfjs__data-model": "2.0.8",
         "@types/rdflib": "1.2.0",
