@@ -2,6 +2,9 @@
     "name": "hypercontract",
     "version": "0.0.0",
     "license": "MIT",
+    "engines": {
+        "node": "26.x"
+    },
     "workspaces": ["libs/profile", "libs/express", "apps/hypercontract", "apps/hypershop"],
     "scripts": {
         "start": "npm run build && concurrently --kill-others-on-fail --names build,hypercontract,hypershop npm:watch:build npm:watch:hypercontract npm:watch:hypershop",
@@ -38,7 +41,7 @@
         "@types/lodash": "4.17.14",
         "@types/method-override": "3.0.0",
         "@types/n3": "1.21.1",
-        "@types/node": "22.10.7",
+        "@types/node": "26.6.6",
         "@types/omit-deep": "0.3.2",
         "@types/rdfjs__data-model": "2.0.8",
         "@types/rdflib": "1.2.0",

@@ -1,11 +1,11 @@
-FROM node:22 AS builder
+FROM node:26 AS builder
 WORKDIR /usr/src/app
 # docker build is expected to be run with the root of the repository as the build context
 COPY . ./
 RUN npm ci
 RUN npm run build:hypershop
 
-FROM node:22
+FROM node:26
 WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/package.json /usr/src/app/package-lock.json ./
 COPY --from=builder /usr/src/app/apps/hypercontract/package.json ./apps/hypercontract/

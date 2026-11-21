@@ -9,7 +9,7 @@ This workspace contains the source code of a prototype implementation of this co
 
 ## Requirements
 
-* [Node.js](https://nodejs.org/en/) 22.13 or newer in the Node.js 22 release line, with its bundled npm
+* [Node.js](https://nodejs.org/en/) 26 LTS, with its bundled npm
 
 ## Quick Start
 
