@@ -7,7 +7,7 @@
         "@hypercontract/profile": "0.0.0",
         "@seald-io/nedb": "4.0.4",
         "body-parser": "1.20.9",
-        "cors": "2.8.5",
+        "cors": "2.8.6",
         "date-fns": "2.30.0",
         "deep-map-keys": "2.0.1",
         "ejs": "3.1.10",
