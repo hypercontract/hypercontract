@@ -39,9 +39,8 @@ For debugging, use a separate inspector port, for example `node --inspect=7777 a
 
 ### Test
 
-- `npm test` - Run the Jest suite, including Hypershop HTTP integration tests
-- `npm test -- --selectProjects hypershop` - Run just the Hypershop suite
-- `npm run test-debug` - Watch Jest tests with the inspector on port `7777`
+- `npm test` - Compile and run the Hypershop HTTP integration tests with Node's built-in test runner
+- `npm run test-debug` - Recompile and rerun the tests on changes, with the inspector on port `7777`
 - `npm start`, then `npm run test-postman` - run [Postman](https://www.getpostman.com/) tests
 
 Alternatively, you can import Postman collections from `/postman` into your Postman application. 

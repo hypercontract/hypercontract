@@ -3,8 +3,8 @@
     "compilerOptions": {
         "module": "commonjs",
         "target": "es2021",
-        "types": ["node", "jest"],
+        "types": ["node"],
         "noEmit": true
     },
-    "include": ["src/**/*.ts", "jest.config.ts"]
+    "include": ["src/**/*.ts"]
 }

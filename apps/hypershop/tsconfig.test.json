@@ -1,0 +1,13 @@
+{
+    "extends": "../../tsconfig.build.base.json",
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "../../dist/hypershop-test",
+        "tsBuildInfoFile": "../../dist/hypershop-test/test.tsbuildinfo"
+    },
+    "include": ["src/**/*.ts"],
+    "references": [
+        { "path": "../../libs/profile/tsconfig.build.json" },
+        { "path": "../../libs/express/tsconfig.build.json" }
+    ]
+}
