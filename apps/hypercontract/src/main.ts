@@ -19,7 +19,7 @@ async function bootstrap() {
         exposedHeaders: [
             'Location'
         ]
-    })
+    });
 
     app.use(hypercontract(vocabulary, []));
 

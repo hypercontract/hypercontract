@@ -33,7 +33,7 @@ export class ShoppingCartController {
             html: renderShoppingCart(shoppingCart, userProfile),
             [MediaType.JsonHal]: toJsonHalShoppingCart(shoppingCart),
             [MediaType.JsonLd]: toJsonLdShoppingCart(shoppingCart)
-        })
+        });
     }
 
     @Post(getShoppingCartItemsPath())

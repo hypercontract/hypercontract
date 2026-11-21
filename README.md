@@ -48,9 +48,9 @@ Alternatively, you can import Postman collections from `/postman` into your Post
 
 ### Lint and Format
 
-- `npm run lint` - Lint app and library sources with ESLint
-- `npm run format:check` - Check repository formatting with Prettier
-- `npm run format:write` - Format the repository (also available as `npm run format`)
+- `npm run lint` - Check JavaScript and TypeScript for lint and formatting issues
+- `npm run format:check` - Check JavaScript and TypeScript formatting
+- `npm run format:write` - Fix JavaScript and TypeScript formatting (also available as `npm run format`)
 
 ## Architecture Overview
 

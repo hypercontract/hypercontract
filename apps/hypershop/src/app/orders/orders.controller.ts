@@ -79,6 +79,6 @@ export class OrdersController {
     ) {
         await this.orderService.cancelOrder(orderId, cancellationReason);
 
-        return response.redirect(303, getOrderUri(orderId))
+        return response.redirect(303, getOrderUri(orderId));
     }
-  }
+}

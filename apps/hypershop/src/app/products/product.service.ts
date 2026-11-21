@@ -39,5 +39,5 @@ function getQueryMatcher(rawQuery: string) {
                 this.productDescription.toLowerCase().indexOf(queryString) > -1
             );
         }
-    }
+    };
 }

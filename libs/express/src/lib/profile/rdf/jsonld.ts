@@ -17,4 +17,4 @@ export const toJsonLd: Handler = async (
     });
 
     return response.send(JSON.stringify(compactedDocument, undefined, 2));
-}
+};

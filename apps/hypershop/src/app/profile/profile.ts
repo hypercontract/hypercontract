@@ -458,7 +458,7 @@ export const profile: Profile = {
             returnedType: shop('Order'),
             constraints: [
                 shop('isOrderCancellable'
-            )]
+                )]
         }),
         shopOperation('changeQuantity', {
             label: 'change quantity',
@@ -487,7 +487,7 @@ export const profile: Profile = {
             returnedType: shop('Order'),
             constraints: [
                 shop('isShoppingCartOrderable'
-            )]
+                )]
         }),
         shopOperation('remove', {
             label: 'remove',

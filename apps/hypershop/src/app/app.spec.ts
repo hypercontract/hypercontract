@@ -35,7 +35,7 @@ describe('hypershop', () => {
                     .set('Accept', mediaType)
                     .expect(200)
                     .expect(response => {
-                        toMatchSchemaOf('ApiRoot', response)
+                        toMatchSchemaOf('ApiRoot', response);
                     });
             });
 
@@ -45,7 +45,7 @@ describe('hypershop', () => {
                     .set('Accept', mediaType)
                     .expect(200)
                     .expect(response => {
-                        toMatchSchemaOf('SearchResults', response)
+                        toMatchSchemaOf('SearchResults', response);
                     });
             });
 
@@ -55,7 +55,7 @@ describe('hypershop', () => {
                     .set('Accept', mediaType)
                     .expect(200)
                     .expect(response => {
-                        toMatchSchemaOf('Product', response)
+                        toMatchSchemaOf('Product', response);
                     });
             });
 
@@ -65,7 +65,7 @@ describe('hypershop', () => {
                     .set('Accept', mediaType)
                     .expect(200)
                     .expect(response => {
-                        toMatchSchemaOf('SearchResults', response)
+                        toMatchSchemaOf('SearchResults', response);
                     });
             });
 
@@ -75,7 +75,7 @@ describe('hypershop', () => {
                     .set('Accept', mediaType)
                     .expect(200)
                     .expect(response => {
-                        toMatchSchemaOf('ShoppingCart', response)
+                        toMatchSchemaOf('ShoppingCart', response);
                     });
             });
 
@@ -85,7 +85,7 @@ describe('hypershop', () => {
                     .set('Accept', mediaType)
                     .expect(200)
                     .expect(response => {
-                        toMatchSchemaOf('OrderHistory', response)
+                        toMatchSchemaOf('OrderHistory', response);
                     });
             });
 
@@ -95,7 +95,7 @@ describe('hypershop', () => {
                     .set('Accept', mediaType)
                     .expect(200)
                     .expect(response => {
-                        toMatchSchemaOf('Order', response)
+                        toMatchSchemaOf('Order', response);
                     });
             });
 
@@ -105,7 +105,7 @@ describe('hypershop', () => {
                     .set('Accept', mediaType)
                     .expect(200)
                     .expect(response => {
-                        toMatchSchemaOf('UserProfile', response)
+                        toMatchSchemaOf('UserProfile', response);
                     });
             });
 

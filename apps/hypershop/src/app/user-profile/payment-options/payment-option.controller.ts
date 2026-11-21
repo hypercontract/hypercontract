@@ -28,7 +28,7 @@ export class PaymentOptionController {
             json: toJsonPaymentOptions(paymentOptiones),
             [MediaType.JsonHal]: toJsonHalPaymentOptions(paymentOptiones),
             [MediaType.JsonLd]: toJsonLdPaymentOptions(paymentOptiones)
-        })
+        });
     }
 
     @Post(getPaymentOptionRootPath())

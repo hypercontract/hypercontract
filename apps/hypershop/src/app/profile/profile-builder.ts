@@ -18,21 +18,21 @@ export const shopEntryPoint = (entryPointUrl: string, type: string, definition: 
 export const shopClass = (name: string, definition: ConceptClass) => conceptClass(
     shop(name),
     { ...definition, schemas: shopSchemas(name)
-});
+    });
 
 export const shopProperty = (name: string, definition: ConceptProperty) => conceptProperty(
     shop(name),
     { ...definition, schemas: shopSchemas(name)
-});
+    });
 
 export const shopStateTransition = (name: string, definition: StateTransition) => stateTransition(
     shop(name),
     { ...definition, schemas: shopSchemas(name)
-});
+    });
 
 export const shopOperation = (name: string, definition: Operation) => operation(
     shop(name),
     { ...definition, schemas: shopSchemas(name)
-});
+    });
 
 export const shopPrecondition = (name: string, definition: Precondition) => precondition(shop(name), definition);

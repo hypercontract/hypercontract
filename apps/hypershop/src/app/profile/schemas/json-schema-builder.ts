@@ -50,5 +50,5 @@ export function jsonSchemaFor(targetType: MediaType) {
         hrefSchema,
         refSchema,
         resourceSchema
-    }
+    };
 }

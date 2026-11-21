@@ -1,7 +1,6 @@
 {
     "recommendations": [
-        "ms-vscode.vscode-typescript-tslint-plugin",
-        "firsttris.vscode-jest-runner",
-        "esbenp.prettier-vscode"
+        "dbaeumer.vscode-eslint",
+        "firsttris.vscode-jest-runner"
     ]
 }

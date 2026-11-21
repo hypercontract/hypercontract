@@ -15,7 +15,7 @@ export class UserProfileService {
         const [paymentOptions, addresses] = await Promise.all([
             this.paymentOptionService.getAllPaymentOptions(),
             this.addressService.getAllAddresses(),
-        ])
+        ]);
 
         return {
             paymentOptions,

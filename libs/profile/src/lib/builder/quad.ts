@@ -7,4 +7,4 @@ export const toQuads = (...statements: (Statement | null)[]): Quad[] => statemen
     .filter(statement => !isNull(statement))
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     .map(statement => statement!)
-    .map(([subject, predicate, object]) => RDF.quad(subject, predicate, object))
+    .map(([subject, predicate, object]) => RDF.quad(subject, predicate, object));

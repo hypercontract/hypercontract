@@ -19,7 +19,7 @@ export function handleNotFound(response: Response) {
     return response
         .status(HttpStatus.NOT_FOUND)
         .send();
-    }
+}
 
 export function handleInternalServerError(response: Response) {
     return response

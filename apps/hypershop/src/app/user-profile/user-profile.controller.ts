@@ -27,6 +27,6 @@ export class UserProfileController {
             html: renderUserProfile(userProfile),
             [MediaType.JsonHal]: toJsonHalUserProfile(userProfile),
             [MediaType.JsonLd]: toJsonLdUserProfile(userProfile)
-        })
+        });
     }
 }

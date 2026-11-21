@@ -25,5 +25,5 @@ export function hypercontract(profile: RdfDocument, supportedMediaTypes: string[
         }
 
         return negotiateProfile(request, response, next, profileStore, supportedMediaTypes);
-    }
+    };
 }

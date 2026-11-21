@@ -37,7 +37,7 @@ export const toHtml = async (
     });
 
     return response.send(document);
-}
+};
 
 function redirectToConcept(rdfDocument: RdfDocument, profileStore: ProfileStore, response: Response) {
     const redirectUrl = rdfDocument.uri.replace(profileStore.defaultNamespace, `${profileStore.profileUri}#`);

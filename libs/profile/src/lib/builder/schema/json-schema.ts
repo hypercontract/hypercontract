@@ -14,7 +14,7 @@ export const jsonSchema = (conceptUri: string, definition: JSONSchema, targetTyp
         $id: toJsonSchemaId(conceptUri, targetType),
         ...definition
     })
-})
+});
 
 export const jsonSchemaObject = (definition: JSONSchema = {}): JSONSchema => ({
     type: 'object',

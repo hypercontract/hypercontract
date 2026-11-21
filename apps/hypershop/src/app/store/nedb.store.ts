@@ -13,7 +13,7 @@ export class NeDBStore<T extends Entity> implements Store<T> {
     }
 
     async getOne(entityId: EntityId) {
-        const entity = await this.findOne(entityId)
+        const entity = await this.findOne(entityId);
 
         if (isNull(entity)) {
             throw new Error(`No entity found for ID <${entityId}>.`);

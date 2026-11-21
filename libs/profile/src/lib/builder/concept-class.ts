@@ -19,7 +19,7 @@ export const conceptClass = (uri: string, definition: ConceptClass) => [
 
 function getInstanceSchemaStatements(uri: string, { schemas }: ConceptClass) {
     if (isEmpty(schemas)) {
-        return []
+        return [];
     }
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

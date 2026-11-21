@@ -26,7 +26,7 @@ export const toRdfXml: Handler = (
             setBase(document, defaultNamespace)
         );
     });
-}
+};
 
 function setBase(document: string, defaultNamespace: string): string {
     // TODO: parse XML, set xml:base and serialize

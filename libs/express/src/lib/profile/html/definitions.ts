@@ -154,7 +154,7 @@ export async function getDefinitions(profileStore: ProfileStore) {
     }
 
     async function getPropertiesForClass(classUri: string): Promise<PropertyDefinition[]> {
-        const conceptDefinitions = await getConceptDefinitions(null, rdfs('domain'), classUri)
+        const conceptDefinitions = await getConceptDefinitions(null, rdfs('domain'), classUri);
         return Promise.all(toPropertyDefinitions(conceptDefinitions));
     }
 
@@ -179,7 +179,7 @@ export async function getDefinitions(profileStore: ProfileStore) {
     }
 
     async function getStateTransitionsForClass(classUri: string): Promise<StateTransitionDefinition[]> {
-        const conceptDefinitions = await getConceptDefinitions(null, rdfs('domain'), classUri)
+        const conceptDefinitions = await getConceptDefinitions(null, rdfs('domain'), classUri);
         return Promise.all(toStateTransitionDefinitions(conceptDefinitions));
     }
 
@@ -196,17 +196,17 @@ export async function getDefinitions(profileStore: ProfileStore) {
                     domain: getDomain(definition),
                     range: getRange(definition),
                     schemas
-                }
+                };
             });
     }
 
     async function getOperations(): Promise<OperationDefinition[]> {
-        const conceptDefinitions = await getConceptDefinitions(null, rdf('type'), hyper('Operation'))
+        const conceptDefinitions = await getConceptDefinitions(null, rdf('type'), hyper('Operation'));
         return Promise.all(toOperationDefinitions(conceptDefinitions));
     }
 
     async function getOperationsForClass(classUri: string): Promise<OperationDefinition[]> {
-        const conceptDefinitions = await getConceptDefinitions(null, rdfs('domain'), classUri)
+        const conceptDefinitions = await getConceptDefinitions(null, rdfs('domain'), classUri);
         return Promise.all(toOperationDefinitions(conceptDefinitions));
     }
 
@@ -231,7 +231,7 @@ export async function getDefinitions(profileStore: ProfileStore) {
     }
 
     async function getPreconditionsForClass(classUri: string): Promise<PreconditionDefinition[]> {
-        const conceptDefinitions = await getConceptDefinitions(classUri, hyper('constraint'), null)
+        const conceptDefinitions = await getConceptDefinitions(classUri, hyper('constraint'), null);
         return toPreconditionDefinitions(conceptDefinitions);
     }
 
@@ -267,7 +267,7 @@ export async function getDefinitions(profileStore: ProfileStore) {
     function getEntryPointType(conceptDefinition: ConceptDefinition): string[] {
         return getTypes(conceptDefinition)
             .filter(type => type.startsWith(profileStore.defaultNamespace))
-            .map(uri => localName(uri))
+            .map(uri => localName(uri));
     }
 
     function getDomain(conceptDefinition: ConceptDefinition): Domain[] {
@@ -322,17 +322,6 @@ export async function getDefinitions(profileStore: ProfileStore) {
         return getSchemasFor(uri, 'valueSchema');
     }
 
-    async function getAllSchemas() {
-        const conceptDefinitions = await getConceptDefinitions(null, rdf('type'), hyper('Schema'));
-        return conceptDefinitions.reduce(
-            (schemas, definition) => ({
-                ...schemas,
-                [definition.uri]: definition.definition['rdf:value']
-            }),
-            {}
-        );
-    }
-
     async function getSchemasFor(uri: string, type: 'instanceSchema' | 'valueSchema') {
         const conceptDefinitions = await getConceptDefinitions(uri, hyper(type), null);
         return Promise.all(toSchemas(conceptDefinitions));
@@ -357,16 +346,12 @@ export async function getDefinitions(profileStore: ProfileStore) {
     async function getConceptDefinitions(subject: string | null, predicate: string, object: string | null): Promise<ConceptDefinition[]> {
         let concepts: string[];
 
-        if (isNull(subject)) {
-            concepts = profileStore.getSubjects(predicate, object!)
-        }
-
-        if (isNull(object)) {
-            concepts = profileStore.getObjects(subject!, predicate)
-        }
-
-        if (isUndefined(concepts!)) {
-            throw new Error('Neither subject nor object provided');
+        if (isNull(subject) && !isNull(object)) {
+            concepts = profileStore.getSubjects(predicate, object);
+        } else if (!isNull(subject) && isNull(object)) {
+            concepts = profileStore.getObjects(subject, predicate);
+        } else {
+            throw new Error('Provide either a subject or an object');
         }
 
         const conceptDefinitions = await Promise.all(
@@ -382,11 +367,11 @@ export async function getDefinitions(profileStore: ProfileStore) {
                     description: definition['rdfs:comment'],
                     definition,
                     related
-                }
+                };
             })
         );
         return conceptDefinitions
-            .sort(compareConceptDefintions)
+            .sort(compareConceptDefintions);
     }
 
     function compareConceptDefintions({ localName: nameLeft }: ConceptDefinition, { localName: nameRight }: ConceptDefinition) {

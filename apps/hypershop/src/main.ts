@@ -28,7 +28,7 @@ async function bootstrap() {
         exposedHeaders: [
             'Location'
         ]
-    })
+    });
 
     app.use(bodyParser.urlencoded({
         extended: true

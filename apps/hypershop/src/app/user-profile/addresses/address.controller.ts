@@ -27,7 +27,7 @@ export class AddressController {
             json: toJsonAddresses(addresses),
             [MediaType.JsonHal]: toJsonHalAddresses(addresses),
             [MediaType.JsonLd]: toJsonLdAddresses(addresses)
-        })
+        });
     }
 
     @Post(getAddressRootPath())

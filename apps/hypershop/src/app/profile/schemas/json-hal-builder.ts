@@ -3,7 +3,7 @@ import { MediaType } from '../../formats/media-type';
 import { shop } from '../namespaces';
 import { jsonSchemaFor } from './json-schema-builder';
 
-const { array, hrefSchema, object, refSchema } = jsonSchemaFor(MediaType.JsonHal);
+const { hrefSchema, object, refSchema } = jsonSchemaFor(MediaType.JsonHal);
 
 export const halLinkObject = (href: JSONSchema): JSONSchema => ({
     type: 'object',

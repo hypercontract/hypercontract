@@ -16,7 +16,7 @@ export const conceptProperty = (uri: string, definition: ConceptProperty) => {
             [RDF.namedNode(uri), RDF.namedNode(rdf('type')), RDF.namedNode(propertyType)],
         )
     ];
-}
+};
 
 function getPropertyType({ type, range }: ConceptProperty): string {
     if (!isUndefined(type)) {
