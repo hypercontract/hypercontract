@@ -1,11 +1,12 @@
 import { getProfileStore, RdfDocument } from '@hypercontract/profile';
 import { RequestHandler } from 'express';
 import { negotiateProfile } from './content-negotiation';
+import { asyncHandler } from './http';
 import { handleConceptRequest, handleContextRequest, handleProfileRequest, isConceptRequest, isContextRequest, isProfileRequest } from './profile/profile';
 import { handleSchemaRequest, isSchemaRequest } from './schema';
 
 export function hypercontract(profile: RdfDocument, supportedMediaTypes: string[]): RequestHandler {
-    return (request, response, next) => {
+    return asyncHandler((request, response, next) => {
         const profileStore = getProfileStore(profile);
 
         if (isSchemaRequest(request, profileStore)) {
@@ -25,5 +26,5 @@ export function hypercontract(profile: RdfDocument, supportedMediaTypes: string[
         }
 
         return negotiateProfile(request, response, next, profileStore, supportedMediaTypes);
-    };
+    });
 }

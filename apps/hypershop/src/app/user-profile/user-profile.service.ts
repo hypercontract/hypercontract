@@ -1,9 +1,7 @@
-import { Injectable } from '@nestjs/common';
 import { EntityId } from '../store';
 import { AddressService } from './addresses/address.service';
 import { PaymentOptionService } from './payment-options/payment-option.service';
 
-@Injectable()
 export class UserProfileService {
 
     constructor(

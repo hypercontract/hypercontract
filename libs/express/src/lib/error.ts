@@ -1,4 +1,3 @@
-import { HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
 import { isEmpty } from 'lodash';
 
@@ -8,7 +7,7 @@ export function handleNotAcceptable(
     supportedProfiles: string[] = []
 ) {
     return response
-        .status(HttpStatus.NOT_ACCEPTABLE)
+        .status(406)
         .header('Link', supportedMediaTypes.map(
             mediaType => `${getAlternateLink(mediaType, supportedProfiles)}`
         ))
@@ -17,13 +16,13 @@ export function handleNotAcceptable(
 
 export function handleNotFound(response: Response) {
     return response
-        .status(HttpStatus.NOT_FOUND)
+        .status(404)
         .send();
 }
 
 export function handleInternalServerError(response: Response) {
     return response
-        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .status(500)
         .send();
 }
 

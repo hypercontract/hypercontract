@@ -1,4 +1,4 @@
-import { handleNotAcceptable } from '@hypercontract/express';
+import { formatResponse, handleNotAcceptable } from '@hypercontract/express';
 import { Response } from 'express';
 import { mapValues, values } from 'lodash';
 import { profile } from '../profile';
@@ -22,12 +22,11 @@ const handlerMapping: HandlerMapping = {
 };
 
 export function sendResponse(response: Response, responseBodies: { [key: string]: any }) {
-    response
-        .format({
-            ...mapValues(
-                responseBodies,
-                (responseBody, mediaType) => () => handlerMapping[mediaType](response, responseBody)
-            ),
-            default: () => handleNotAcceptable(response, values(MediaType), [profile.uri])
-        });
+    return formatResponse(response, {
+        ...mapValues(
+            responseBodies,
+            (responseBody, mediaType) => () => handlerMapping[mediaType](response, responseBody)
+        ),
+        default: () => handleNotAcceptable(response, values(MediaType), [profile.uri])
+    });
 }

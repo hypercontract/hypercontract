@@ -15,7 +15,7 @@
         "build": "tsc -b apps/hypercontract/tsconfig.build.json apps/hypershop/tsconfig.build.json && node tools/copy-assets.cjs hypercontract hypershop",
         "build:hypercontract": "tsc -b apps/hypercontract/tsconfig.build.json && node tools/copy-assets.cjs hypercontract",
         "build:hypershop": "tsc -b apps/hypershop/tsconfig.build.json && node tools/copy-assets.cjs hypershop",
-        "build:test": "tsc -b apps/hypershop/tsconfig.test.json",
+        "build:test": "tsc -b apps/hypershop/tsconfig.test.json && node tools/copy-assets.cjs hypershop-test",
         "test": "npm run build:test && node --test dist/hypershop-test/app/app.spec.js",
         "test-debug": "npm run build:test && concurrently --kill-others-on-fail --names build,test npm:watch:build:test npm:watch:test",
         "watch:build:test": "tsc -b apps/hypershop/tsconfig.test.json --watch --preserveWatchOutput",
@@ -29,8 +29,8 @@
     "private": true,
     "devDependencies": {
         "@eslint/js": "9.18.0",
-        "@nestjs/testing": "10.4.15",
         "@stylistic/eslint-plugin": "5.10.0",
+        "@types/cors": "2.8.17",
         "@types/ejs": "3.1.5",
         "@types/express": "4.17.21",
         "@types/json-schema": "7.0.15",

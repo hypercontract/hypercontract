@@ -7,7 +7,6 @@
     "dependencies": {
         "@apidevtools/json-schema-ref-parser": "11.7.3",
         "@hypercontract/profile": "0.0.0",
-        "@nestjs/common": "10.4.16",
         "@rdfjs/types": "2.0.1",
         "ejs": "3.1.10",
         "jsonld": "8.3.3",

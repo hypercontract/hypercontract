@@ -1,16 +1,12 @@
-import { Inject, Injectable } from '@nestjs/common';
 import { isNull } from 'lodash';
 import { Product, ProductService } from '../products';
 import { ShoppingCartItem } from '../shopping-cart';
-import { createStore, EntityId } from '../store';
+import { EntityId, Store } from '../store';
 
-export const SHOPPING_CART_ITEM_STORE = 'SHOPPING_CART_ITEM_STORE';
-
-@Injectable()
 export class ShoppingCartService {
 
     constructor(
-        @Inject(SHOPPING_CART_ITEM_STORE) private store = createStore<ShoppingCartItem>(),
+        private store: Store<ShoppingCartItem>,
         private productService: ProductService
     ) {}
 

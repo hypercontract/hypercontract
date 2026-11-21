@@ -1,14 +1,10 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { createStore, EntityId } from '../../store';
+import { EntityId, Store } from '../../store';
 import { Address, NewAddress } from './address.model';
 
-export const ADDRESS_STORE = 'ADDRESS_STORE';
-
-@Injectable()
 export class AddressService {
 
     constructor(
-        @Inject(ADDRESS_STORE) private addressStore = createStore<Address>()
+        private addressStore: Store<Address>
     ) { }
 
     public getAddress(id: EntityId) {

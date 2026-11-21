@@ -1,5 +1,4 @@
 import { ProfileStore, RdfDocument } from '@hypercontract/profile';
-import { HttpStatus } from '@nestjs/common';
 import { render } from 'ejs';
 import { Response } from 'express';
 import { getDefinitions } from './definitions';
@@ -41,7 +40,7 @@ export const toHtml = async (
 
 function redirectToConcept(rdfDocument: RdfDocument, profileStore: ProfileStore, response: Response) {
     const redirectUrl = rdfDocument.uri.replace(profileStore.defaultNamespace, `${profileStore.profileUri}#`);
-    return response.redirect(HttpStatus.SEE_OTHER, redirectUrl);
+    return response.redirect(303, redirectUrl);
 }
 
 function isConceptRequest(rdfDocument: RdfDocument, profileStore: ProfileStore) {

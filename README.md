@@ -59,11 +59,11 @@ The project uses npm workspaces for the two applications and two libraries. Type
 
 **hypercontract**
 
-`hypercontract` is a web application built with [NestJS](https://nestjs.com/), using [Express](https://expressjs.com/) under the hood. Its only purpose is to publish the *hypercontract* RDF vocabulary at https://hypercontract.org.
+`hypercontract` is an [Express](https://expressjs.com/) application that publishes the *hypercontract* RDF vocabulary at https://hypercontract.org.
 
 **hypershop**
 
-`hypershop` is a web application, also built with [NestJS](https://nestjs.com/) and [Express](https://expressjs.com/). It serves as a demo to showcase how to describe a RESTful Web API using *hypercontract*. For this, it serves a simple online shop offering a catalog of randomly generated products that can be added to a shopping cart to place a new order.
+`hypershop` is an [Express](https://expressjs.com/) application that demonstrates how to describe a RESTful Web API using *hypercontract*. It serves a simple online shop offering a catalog of randomly generated products that can be added to a shopping cart to place a new order.
 
 The functionality of *hypershop*  can be accessed through the browser as HTML representations or using an HTTP client as JSON, JSON-HAL or JSON-LD
 

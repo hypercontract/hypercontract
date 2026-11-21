@@ -1,14 +1,10 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { createStore, EntityId } from '../../store';
+import { EntityId, Store } from '../../store';
 import { PaymentOption } from './payment-option.model';
 
-export const PAYMENT_OPTION_STORE = 'PAYMENT_OPTION_STORE';
-
-@Injectable()
 export class PaymentOptionService {
 
     constructor(
-        @Inject(PAYMENT_OPTION_STORE) private paymentOptionStore = createStore<PaymentOption>()
+        private paymentOptionStore: Store<PaymentOption>
     ) { }
 
     public getPaymentOption(id: EntityId) {

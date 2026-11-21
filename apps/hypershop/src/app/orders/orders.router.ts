@@ -1,8 +1,8 @@
-import { Body, Controller, Get, Param, Patch, Post, Req, Res } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { asyncHandler } from '@hypercontract/express';
+import { Router } from 'express';
 import { sendResponse } from '../formats/handler';
 import { MediaType } from '../formats/media-type';
-import { getAddressUri, getOrderPath, getOrdersBasePath, getOrdersRootPath, getOrderUri, getPaymentOptionUri, getShoppingCartItemUri } from '../routing';
+import { getAddressUri, getOrderPath, getOrdersRootPath, getOrderUri, getPaymentOptionUri, getShoppingCartItemUri } from '../routing';
 import { EntityId } from '../store';
 import { OrderService } from './order.service';
 import { renderOrder, renderOrderHistory } from './orders.html';
@@ -10,18 +10,11 @@ import { toJsonOrder, toJsonOrderHistory } from './orders.json';
 import { toJsonHalOrder, toJsonHalOrderHistory as toJsonHalOrderHistory } from './orders.json-hal';
 import { toJsonLdOrder, toJsonLdOrderHistory } from './orders.json-ld';
 
-@Controller(getOrdersBasePath())
-export class OrdersController {
+export function createOrdersRouter(orderService: OrderService): Router {
+    const router = Router();
 
-    constructor(
-        private orderService: OrderService
-    ) {}
-
-    @Get(getOrdersRootPath())
-    async getOrderHistory(
-        @Res() response: Response
-    ) {
-        const orderHistory = await this.orderService.getOrderHistory();
+    router.get(getOrdersRootPath(), asyncHandler(async (_request, response) => {
+        const orderHistory = await orderService.getOrderHistory();
 
         return sendResponse(response, {
             json: toJsonOrderHistory(orderHistory),
@@ -29,23 +22,20 @@ export class OrdersController {
             [MediaType.JsonHal]: toJsonHalOrderHistory(orderHistory),
             [MediaType.JsonLd]: toJsonLdOrderHistory(orderHistory)
         });
-    }
+    }));
 
-    @Post(getOrdersRootPath())
-    async placeOrder(
-        @Res() response: Response,
-        @Req() request: Request,
-        @Body('shoppingCartItems') shoppingCartItems: EntityId[],
-        @Body('billingAddress') billingAddress: EntityId,
-        @Body('shippingAddress') shippingAddress: EntityId,
-        @Body('payment') payment: EntityId
-    ) {
+    router.post(getOrdersRootPath(), asyncHandler(async (request, response) => {
+        const shoppingCartItems = request.body?.shoppingCartItems as EntityId[];
+        const billingAddress = request.body?.billingAddress as EntityId;
+        const shippingAddress = request.body?.shippingAddress as EntityId;
+        const payment = request.body?.payment as EntityId;
+
         const shoppingCartItemIds = shoppingCartItems.map(item => item.replace(new RegExp(getShoppingCartItemUri('(.*)')), '$1') as EntityId);
         const billingAddressId = billingAddress.replace(new RegExp(getAddressUri('(.*)')), '$1');
         const shippingAddressId = shippingAddress.replace(new RegExp(getAddressUri('(.*)')), '$1');
         const paymentId = payment.replace(new RegExp(getPaymentOptionUri('(.*)')), '$1');
 
-        const orderId = await this.orderService.placeOrder({
+        const orderId = await orderService.placeOrder({
             shoppingCartItems: shoppingCartItemIds,
             billingAddress: billingAddressId,
             shippingAddress: shippingAddressId,
@@ -54,14 +44,12 @@ export class OrdersController {
 
         const statusCode = request.accepts('html') ? 303 : 201;
         return response.redirect(statusCode, getOrderUri(orderId));
-    }
+    }));
 
-    @Get(getOrderPath())
-    async getOrder(
-        @Res() response: Response,
-        @Param('orderId') orderId: EntityId,
-    ) {
-        const order = await this.orderService.getOrder(orderId);
+    router.get(getOrderPath(), asyncHandler(async (request, response) => {
+        const orderId = request.params.orderId;
+
+        const order = await orderService.getOrder(orderId);
 
         return sendResponse(response, {
             json: toJsonOrder(order),
@@ -69,16 +57,16 @@ export class OrdersController {
             [MediaType.JsonHal]: toJsonHalOrder(order),
             [MediaType.JsonLd]: toJsonLdOrder(order)
         });
-    }
+    }));
 
-    @Patch(getOrderPath())
-    async cancelOrder(
-        @Res() response: Response,
-        @Param('orderId') orderId: EntityId,
-        @Body('cancellationReason') cancellationReason: string,
-    ) {
-        await this.orderService.cancelOrder(orderId, cancellationReason);
+    router.patch(getOrderPath(), asyncHandler(async (request, response) => {
+        const orderId = request.params.orderId;
+        const cancellationReason = request.body?.cancellationReason as string;
+
+        await orderService.cancelOrder(orderId, cancellationReason);
 
         return response.redirect(303, getOrderUri(orderId));
-    }
+    }));
+
+    return router;
 }

@@ -1,28 +1,21 @@
-import { Controller, Get, Param, Query, Res } from '@nestjs/common';
-import { Response } from 'express';
+import { asyncHandler } from '@hypercontract/express';
+import { Router } from 'express';
 import { sendResponse } from '../formats/handler';
 import { MediaType } from '../formats/media-type';
-import { getProductPath, getProductsBasePath, getProductsRootPath } from '../routing/product.uris';
-import { EntityId } from '../store';
+import { getProductPath, getProductsRootPath } from '../routing/product.uris';
 import { ProductService } from './product.service';
 import { renderProduct, renderSearchResults } from './products.html';
 import { toJsonProduct, toJsonSearchResults } from './products.json';
 import { toJsonHalProduct, toJsonHalSearchResults } from './products.json-hal';
 import { toJsonLdProduct, toJsonLdSearchResults } from './products.json-ld';
 
-@Controller(getProductsBasePath())
-export class ProductsController {
+export function createProductsRouter(productService: ProductService): Router {
+    const router = Router();
 
-    constructor(
-        private productService: ProductService
-    ) {}
+    router.get(getProductsRootPath(), asyncHandler(async (request, response) => {
+        const queryString = request.query.queryString as string;
 
-    @Get(getProductsRootPath())
-    async getSearchResults(
-        @Res() response: Response,
-        @Query('queryString') queryString: string
-    ) {
-        const searchResults = await this.productService.searchCatalog(queryString);
+        const searchResults = await productService.searchCatalog(queryString);
 
         return sendResponse(response, {
             json: toJsonSearchResults(searchResults),
@@ -30,14 +23,12 @@ export class ProductsController {
             [MediaType.JsonHal]: toJsonHalSearchResults(searchResults, queryString),
             [MediaType.JsonLd]: toJsonLdSearchResults(searchResults, queryString)
         });
-    }
+    }));
 
-    @Get(getProductPath())
-    async getProduct(
-        @Res() response: Response,
-        @Param('productId') productId: EntityId
-    ) {
-        const product = await this.productService.getProduct(productId);
+    router.get(getProductPath(), asyncHandler(async (request, response) => {
+        const productId = request.params.productId;
+
+        const product = await productService.getProduct(productId);
 
         return sendResponse(response, {
             json: toJsonProduct(product),
@@ -45,6 +36,7 @@ export class ProductsController {
             [MediaType.JsonHal]: toJsonHalProduct(product),
             [MediaType.JsonLd]: toJsonLdProduct(product)
         });
-    }
+    }));
 
+    return router;
 }

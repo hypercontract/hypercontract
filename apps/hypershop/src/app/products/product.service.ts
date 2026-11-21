@@ -1,15 +1,11 @@
-import { Inject, Injectable } from '@nestjs/common';
 import { defaultTo } from 'lodash';
 import { EntityId, Store } from '../store';
 import { Product, SearchResults } from './product.model';
 
-export const PRODUCT_STORE = 'PRODUCT_STORE';
-
-@Injectable()
 export class ProductService {
 
     constructor(
-        @Inject(PRODUCT_STORE) private store: Store<Product>,
+        private store: Store<Product>,
     ) {}
 
     public async searchCatalog(queryString: string) {

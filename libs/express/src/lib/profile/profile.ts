@@ -3,6 +3,7 @@ import { Quad } from '@rdfjs/types';
 import { Request, Response } from 'express';
 import { isEmpty, trimEnd, values } from 'lodash';
 import { handleNotAcceptable, handleNotFound } from '../error';
+import { formatResponse } from '../http';
 import { getRequestUri } from '../request';
 import { toHtml } from './html/html';
 import { MediaType } from './media-types';
@@ -64,7 +65,7 @@ function handleRequest(response: Response, rdfDocument: RdfDocument, profileStor
         return handleNotFound(response);
     }
 
-    return response.format({
+    return formatResponse(response, {
         [MediaType.JsonLd]: () => toJsonLd(response, rdfDocument),
         [MediaType.RdfXml]: () => toRdfXml(response, rdfDocument),
         [MediaType.Turtle]: () => toTurtle(response, rdfDocument),

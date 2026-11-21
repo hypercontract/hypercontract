@@ -3,31 +3,26 @@
  * This is only a minimal backend to get started.
  */
 
-import { hypercontract } from '@hypercontract/express';
-import { Logger } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app/app.module';
+import { handleRequestError, handleUnknownRoute, hypercontract } from '@hypercontract/express';
+import cors from 'cors';
+import express from 'express';
 import { vocabulary } from './app/vocabulary';
 import { environment } from './environments/environment';
 
 
-async function bootstrap() {
-    const app = await NestFactory.create(AppModule);
+function bootstrap() {
+    const app = express();
     const port = process.env.port || environment.port;
 
-    app.enableCors({
-        exposedHeaders: [
-            'Location'
-        ]
-    });
+    app.use(cors({ exposedHeaders: ['Location'] }));
 
     app.use(hypercontract(vocabulary, []));
+    app.use(handleUnknownRoute);
+    app.use(handleRequestError);
 
-    await app.listen(port);
-
-    Logger.log(
-        `🚀 hypercontract is running on: http://localhost:${port}`
-    );
+    app.listen(port, () => {
+        console.log(`🚀 hypercontract is running on: http://localhost:${port}`);
+    });
 }
 
 bootstrap();
