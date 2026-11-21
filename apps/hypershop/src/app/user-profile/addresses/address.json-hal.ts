@@ -3,6 +3,7 @@ import { map, omit } from 'lodash';
 import { shop } from '../../profile/namespaces';
 import { getAddressRootUri, getAddressUri } from '../../routing';
 import { Address } from './address.model';
+import { requireEntityId } from '../../store/entity.model';
 
 export function toJsonHalAddresses(addresses: Address[]) {
     return Resource(
@@ -18,6 +19,6 @@ export function toJsonHalAddresses(addresses: Address[]) {
 export function toJsonHalAddress(address: Address) {
     return Resource(
         omit(address, ['_id']),
-        getAddressUri(address._id!)
+        getAddressUri(requireEntityId(address))
     );
 }

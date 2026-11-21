@@ -1,5 +1,6 @@
 import { getAddressUri } from '../../routing';
 import { Address } from './address.model';
+import { requireEntityId } from '../../store/entity.model';
 
 export function toJsonAddresses(addresses: Address[]) {
     return addresses.map(toJsonAddress);
@@ -8,6 +9,6 @@ export function toJsonAddresses(addresses: Address[]) {
 export function toJsonAddress(address: Address) {
     return {
         ...address,
-        _id: getAddressUri(address._id!)
+        _id: getAddressUri(requireEntityId(address))
     };
 }

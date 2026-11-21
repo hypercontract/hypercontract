@@ -1,5 +1,6 @@
 import { getProductUri, getShoppingCartItemUri } from '../routing';
 import { ShoppingCart, ShoppingCartItem } from './shopping-cart.model';
+import { requireEntityId } from '../store/entity.model';
 
 export function toJsonShoppingCart(shoppingCart: ShoppingCart) {
     return {
@@ -11,7 +12,7 @@ export function toJsonShoppingCart(shoppingCart: ShoppingCart) {
 export function toJsonShoppingCartItem(shoppingCartItem: ShoppingCartItem) {
     return {
         ...shoppingCartItem,
-        _id: getShoppingCartItemUri(shoppingCartItem._id!),
+        _id: getShoppingCartItemUri(requireEntityId(shoppingCartItem)),
         product: getProductUri(shoppingCartItem.product)
     };
 }

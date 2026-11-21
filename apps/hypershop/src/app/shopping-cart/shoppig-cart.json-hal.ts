@@ -3,6 +3,7 @@ import { map, omit } from 'lodash';
 import { shop } from '../profile/namespaces';
 import { getOrdersRootUri, getProductUri, getShoppingCartItemUri, getShoppingCartRootUri } from '../routing';
 import { ShoppingCart, ShoppingCartItem } from './shopping-cart.model';
+import { requireEntityId } from '../store/entity.model';
 
 export function toJsonHalShoppingCart(shoppingCart: ShoppingCart) {
     const resource = Resource(
@@ -24,9 +25,9 @@ export function toJsonHalShoppingCart(shoppingCart: ShoppingCart) {
 export function toJsonHalShoppingCartItem(shoppingCartItem: ShoppingCartItem) {
     return Resource(
         omit(shoppingCartItem, ['_id', 'product']),
-        getShoppingCartItemUri(shoppingCartItem._id!)
+        getShoppingCartItemUri(requireEntityId(shoppingCartItem))
     )
         .link(shop('product'), getProductUri(shoppingCartItem.product))
-        .link(shop('changeQuantity'), getShoppingCartItemUri(shoppingCartItem._id!))
-        .link(shop('remove'), getShoppingCartItemUri(shoppingCartItem._id!));
+        .link(shop('changeQuantity'), getShoppingCartItemUri(requireEntityId(shoppingCartItem)))
+        .link(shop('remove'), getShoppingCartItemUri(requireEntityId(shoppingCartItem)));
 }

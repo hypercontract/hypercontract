@@ -1,5 +1,6 @@
 import { getProductUri } from '../routing';
 import { Product, SearchResults } from './product.model';
+import { requireEntityId } from '../store/entity.model';
 
 export function toJsonSearchResults(searchResults: SearchResults) {
     return {
@@ -11,6 +12,6 @@ export function toJsonSearchResults(searchResults: SearchResults) {
 export function toJsonProduct(product: Product) {
     return {
         ...product,
-        _id: getProductUri(product._id!)
+        _id: getProductUri(requireEntityId(product))
     };
 }

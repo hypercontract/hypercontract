@@ -3,6 +3,7 @@ import { map, omit } from 'lodash';
 import { shop } from '../profile/namespaces';
 import { getCatalogSearchUri, getProductUri, getShoppingCartItemsUri } from '../routing';
 import { Product, SearchResults } from './product.model';
+import { requireEntityId } from '../store/entity.model';
 
 export function toJsonHalSearchResults(searchResults: SearchResults, queryString: string) {
     return Resource(
@@ -20,7 +21,7 @@ export function toJsonHalSearchResults(searchResults: SearchResults, queryString
 export function toJsonHalProduct(product: Product) {
     return Resource(
         omit(product, ['_id', 'image']),
-        getProductUri(product._id!)
+        getProductUri(requireEntityId(product))
     )
         .link(shop('addToShoppingCart'), getShoppingCartItemsUri())
         .link(shop('image'), product.image);

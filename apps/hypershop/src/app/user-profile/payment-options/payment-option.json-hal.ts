@@ -3,6 +3,7 @@ import { map, omit } from 'lodash';
 import { shop } from '../../profile/namespaces';
 import { getPaymentOptionRootUri, getPaymentOptionUri } from '../../routing';
 import { PaymentOption } from './payment-option.model';
+import { requireEntityId } from '../../store/entity.model';
 
 export function toJsonHalPaymentOptions(paymentOptions: PaymentOption[]) {
     return Resource(
@@ -18,6 +19,6 @@ export function toJsonHalPaymentOptions(paymentOptions: PaymentOption[]) {
 export function toJsonHalPaymentOption(paymentOption: PaymentOption) {
     return Resource(
         omit(paymentOption, ['_id']),
-        getPaymentOptionUri(paymentOption._id!)
+        getPaymentOptionUri(requireEntityId(paymentOption))
     );
 }

@@ -2,6 +2,7 @@ import { map, omit } from 'lodash';
 import { shop, shopify } from '../../profile/namespaces';
 import { getPaymentOptionRootUri, getPaymentOptionUri } from '../../routing';
 import { PaymentOption } from './payment-option.model';
+import { requireEntityId } from '../../store/entity.model';
 
 export function toJsonLdPaymentOptions(paymentOptions: PaymentOption[]) {
     return {
@@ -13,7 +14,7 @@ export function toJsonLdPaymentOptions(paymentOptions: PaymentOption[]) {
 
 export function toJsonLdPaymentOption(paymentOption: PaymentOption) {
     return {
-        '@id': getPaymentOptionUri(paymentOption._id!),
+        '@id': getPaymentOptionUri(requireEntityId(paymentOption)),
         '@type': shop('PaymentOption'),
         ...shopify(omit(paymentOption, ['_id']))
     };
