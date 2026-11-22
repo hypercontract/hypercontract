@@ -5,9 +5,9 @@
     "dependencies": {
         "@hypercontract/express": "0.0.0",
         "@hypercontract/profile": "0.0.0",
-        "cors": "2.8.5",
-        "express": "4.21.2",
+        "cors": "2.8.6",
+        "express": "4.22.3",
         "lodash": "4.18.1",
-        "tslib": "2.8.1"
+        "tslib": "2.9.1"
     }
 }
