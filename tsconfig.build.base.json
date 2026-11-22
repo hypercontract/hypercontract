@@ -2,6 +2,6 @@
     "extends": "./tsconfig.base.json",
     "compilerOptions": {
         "paths": {}, "composite": true, "declaration": true,
-        "module": "commonjs", "target": "es2021", "types": ["node"]
+        "module": "nodenext", "target": "es2021", "types": ["node"]
     }
 }
