@@ -1,7 +1,7 @@
 {
     "extends": "../../tsconfig.base.json",
     "compilerOptions": {
-        "module": "commonjs",
+        "module": "nodenext",
         "target": "es2021",
         "types": ["node"],
         "noEmit": true

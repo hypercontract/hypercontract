@@ -4,13 +4,13 @@
     "rootDir": ".",
     "sourceMap": true,
     "declaration": false,
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "importHelpers": true,
     "strict": true,
     "target": "es2015",
-    "module": "esnext",
+    "module": "nodenext",
     "typeRoots": [
       "node_modules/@types"
     ],
@@ -20,13 +20,12 @@
     ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "baseUrl": ".",
     "paths": {
       "@hypercontract/express": [
-        "libs/express/src/index.ts"
+        "./libs/express/src/index.ts"
       ],
       "@hypercontract/profile": [
-        "libs/profile/src/index.ts"
+        "./libs/profile/src/index.ts"
       ]
     }
   },
