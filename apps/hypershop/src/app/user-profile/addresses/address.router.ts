@@ -31,7 +31,7 @@ export function createAddressRouter(addressService: AddressService): Router {
         return response.redirect(statusCode, getAddressRootUri());
     }));
 
-    router.get(getAddressPath(), asyncHandler(async (request, response) => {
+    router.get(getAddressPath(), asyncHandler<{ addressId: string }>(async (request, response) => {
         const addressId = request.params.addressId;
 
         const address = await addressService.getAddress(addressId);
@@ -43,7 +43,7 @@ export function createAddressRouter(addressService: AddressService): Router {
         });
     }));
 
-    router.put(getAddressPath(), asyncHandler(async (request, response) => {
+    router.put(getAddressPath(), asyncHandler<{ addressId: string }>(async (request, response) => {
         const addressId = request.params.addressId;
         const addressUpdate = request.body as AddressUpdate;
 
@@ -52,7 +52,7 @@ export function createAddressRouter(addressService: AddressService): Router {
         return response.redirect(303, getAddressRootUri());
     }));
 
-    router.delete(getAddressPath(), asyncHandler(async (request, response) => {
+    router.delete(getAddressPath(), asyncHandler<{ addressId: string }>(async (request, response) => {
         const addressId = request.params.addressId;
 
         await addressService.removeAddress(addressId);

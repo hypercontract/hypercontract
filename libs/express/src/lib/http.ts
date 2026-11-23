@@ -1,6 +1,8 @@
 import { ErrorRequestHandler, NextFunction, Request, RequestHandler, Response } from 'express';
 
-export function asyncHandler(handler: (request: Request, response: Response, next: NextFunction) => unknown): RequestHandler {
+export function asyncHandler<P = Request['params']>(
+    handler: (request: Request<P>, response: Response, next: NextFunction) => unknown
+): RequestHandler<P> {
     return (request, response, next) => {
         void Promise.resolve(handler(request, response, next)).catch(next);
     };

@@ -25,7 +25,7 @@ export function createProductsRouter(productService: ProductService): Router {
         });
     }));
 
-    router.get(getProductPath(), asyncHandler(async (request, response) => {
+    router.get(getProductPath(), asyncHandler<{ productId: string }>(async (request, response) => {
         const productId = request.params.productId;
 
         const product = await productService.getProduct(productId);

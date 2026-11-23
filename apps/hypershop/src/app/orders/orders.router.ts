@@ -46,7 +46,7 @@ export function createOrdersRouter(orderService: OrderService): Router {
         return response.redirect(statusCode, getOrderUri(orderId));
     }));
 
-    router.get(getOrderPath(), asyncHandler(async (request, response) => {
+    router.get(getOrderPath(), asyncHandler<{ orderId: string }>(async (request, response) => {
         const orderId = request.params.orderId;
 
         const order = await orderService.getOrder(orderId);
@@ -59,7 +59,7 @@ export function createOrdersRouter(orderService: OrderService): Router {
         });
     }));
 
-    router.patch(getOrderPath(), asyncHandler(async (request, response) => {
+    router.patch(getOrderPath(), asyncHandler<{ orderId: string }>(async (request, response) => {
         const orderId = request.params.orderId;
         const cancellationReason = request.body?.cancellationReason as string;
 
