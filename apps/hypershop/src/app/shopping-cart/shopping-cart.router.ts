@@ -43,7 +43,7 @@ export function createShoppingCartRouter(
         return response.redirect(statusCode, getShoppingCartRootUri());
     }));
 
-    router.patch(getShoppingCartItemPath(), asyncHandler(async (request, response) => {
+    router.patch(getShoppingCartItemPath(), asyncHandler<{ shoppingCartItemId: string }>(async (request, response) => {
         const shoppingCartItemId = request.params.shoppingCartItemId;
         const quantity = request.body?.quantity as number;
 
@@ -52,7 +52,7 @@ export function createShoppingCartRouter(
         return response.redirect(303, getShoppingCartRootUri());
     }));
 
-    router.delete(getShoppingCartItemPath(), asyncHandler(async (request, response) => {
+    router.delete(getShoppingCartItemPath(), asyncHandler<{ shoppingCartItemId: string }>(async (request, response) => {
         const shoppingCartItemId = request.params.shoppingCartItemId;
 
         await shoppingCartService.remove(shoppingCartItemId);

@@ -32,7 +32,7 @@ export function createPaymentOptionRouter(paymentOptionService: PaymentOptionSer
         return response.redirect(statusCode, getPaymentOptionRootUri());
     }));
 
-    router.get(getPaymentOptionPath(), asyncHandler(async (request, response) => {
+    router.get(getPaymentOptionPath(), asyncHandler<{ paymentOptionId: string }>(async (request, response) => {
         const paymentOptionId = request.params.paymentOptionId;
 
         const paymentOption = await paymentOptionService.getPaymentOption(paymentOptionId);
@@ -44,7 +44,7 @@ export function createPaymentOptionRouter(paymentOptionService: PaymentOptionSer
         });
     }));
 
-    router.put(getPaymentOptionPath(), asyncHandler(async (request, response) => {
+    router.put(getPaymentOptionPath(), asyncHandler<{ paymentOptionId: string }>(async (request, response) => {
         const paymentOptionId = request.params.paymentOptionId;
         const paymentOptionUpdate = request.body as PaymentOptionUpdate;
 
@@ -53,7 +53,7 @@ export function createPaymentOptionRouter(paymentOptionService: PaymentOptionSer
         return response.redirect(303, getPaymentOptionRootUri());
     }));
 
-    router.delete(getPaymentOptionPath(), asyncHandler(async (request, response) => {
+    router.delete(getPaymentOptionPath(), asyncHandler<{ paymentOptionId: string }>(async (request, response) => {
         const paymentOptionId = request.params.paymentOptionId;
 
         await paymentOptionService.removePaymentOption(paymentOptionId);
