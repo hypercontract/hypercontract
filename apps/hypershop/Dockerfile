@@ -1,11 +1,11 @@
-FROM node:26@sha256:e18c3ccdf7d71619990b0e85639f506e2028a95410999cab24cc373cbd10e0ac AS builder
+FROM node:26@sha256:f8e5d4bb28fa55c74f1345166a082a10b7c68f22304350c1ce0d18358ae94996 AS builder
 WORKDIR /usr/src/app
 # docker build is expected to be run with the root of the repository as the build context
 COPY . ./
 RUN npm ci
 RUN npm run build:hypershop
 
-FROM node:26@sha256:e18c3ccdf7d71619990b0e85639f506e2028a95410999cab24cc373cbd10e0ac
+FROM node:26@sha256:f8e5d4bb28fa55c74f1345166a082a10b7c68f22304350c1ce0d18358ae94996
 WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/package.json /usr/src/app/package-lock.json ./
 COPY --from=builder /usr/src/app/apps/hypercontract/package.json ./apps/hypercontract/
