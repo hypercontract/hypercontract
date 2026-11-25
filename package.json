@@ -41,7 +41,7 @@
         "@types/lodash": "4.17.27",
         "@types/method-override": "3.0.0",
         "@types/n3": "1.26.6",
-        "@types/node": "26.6.6",
+        "@types/node": "26.6.10",
         "@types/omit-deep": "0.3.2",
         "@types/rdfjs__data-model": "2.0.9",
         "@types/rdflib": "1.2.0",
