@@ -12,7 +12,11 @@
             "matchManagers": ["npm"],
             "matchUpdateTypes": ["minor", "patch"],
             "groupName": "npm minor and patch updates",
-            "groupSlug": "npm-minor-patch"
+            "groupSlug": "npm-minor-patch",
+            "minimumReleaseAge": "3 days",
+            "minimumReleaseAgeBehaviour": "timestamp-required",
+            "internalChecksFilter": "strict",
+            "automerge": true
         },
         {
             "matchManagers": ["npm"],
