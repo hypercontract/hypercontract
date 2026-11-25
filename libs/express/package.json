@@ -5,7 +5,7 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "dependencies": {
-        "@apidevtools/json-schema-ref-parser": "16.0.8",
+        "@apidevtools/json-schema-ref-parser": "16.1.1",
         "@hypercontract/profile": "0.0.0",
         "@rdfjs/types": "2.0.1",
         "ejs": "7.0.2",
